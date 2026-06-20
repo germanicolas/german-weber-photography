@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>German Weber Photography</title>
+  <meta name="description" content="Fine Art Photography por German Weber — Fotografía de paisajes, naturaleza y arquitectura. Impresiones disponibles.">
+  <meta property="og:title" content="German Weber Photography">
+  <meta property="og:description" content="Fine Art Photography — Concón, Chile">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav id="nav">
+  <a href="#" class="nav-logo"></a>
+  <ul class="nav-links">
+    <li><a href="#gallery">Impresiones</a></li>
+    <li><a href="#about">Sobre mí</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile nav overlay -->
+<div class="nav-mobile">
+  <a href="#gallery">Impresiones</a>
+  <a href="#about">Sobre mí</a>
+  <a href="#contact">Contacto</a>
+</div>
+
+<!-- ── Hero ── -->
+<section id="hero">
+  <div class="hero-slides"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-subtitle">Fine Art Photography</p>
+    <img class="hero-logo" src="images/logo.svg" alt="German Weber">
+    <a class="hero-scroll" href="#gallery">Explorar</a>
+  </div>
+  <div class="hero-dots"></div>
+</section>
+
+<!-- ── Gallery ── -->
+<section id="gallery">
+  <p class="section-label">Tienda</p>
+  <div class="gold-line"></div>
+  <h2 class="section-title">Fine Art <em>Prints</em></h2>
+  <p class="gallery-intro">
+    Cada imagen está disponible como impresión fine art de alta calidad, producida en conjunto con una galería especializada en Concón, Chile. Disponible en múltiples tamaños, con o sin marco o paspartú.
+  </p>
+
+  <hr class="section-divider">
+
+  <p class="section-label">Portfolio</p>
+  <div class="gold-line"></div>
+  <div class="gallery-filters" id="gallery-filters"></div>
+  <div class="gallery-grid" id="gallery-grid"></div>
+
+  <p class="gallery-footer-note">
+    ¿No ves lo que buscas? Todas las fotografías están disponibles como impresión.
+    <a href="#contact" class="prints-contact-link">Escríbeme</a> y lo coordinamos.
+  </p>
+</section>
+
+<!-- ── Lightbox ── -->
+<div id="lightbox" role="dialog" aria-modal="true">
+  <button class="lb-close" id="lb-close" aria-label="Cerrar">✕</button>
+  <button class="lb-prev" id="lb-prev" aria-label="Anterior">‹</button>
+  <button class="lb-next" id="lb-next" aria-label="Siguiente">›</button>
+  <div class="lightbox-inner">
+    <div class="lightbox-img-wrap">
+      <img id="lb-img" src="" alt="">
+      <div class="lightbox-info">
+        <div>
+          <div class="lightbox-title" id="lb-title"></div>
+          <div class="lightbox-loc" id="lb-loc"></div>
+        </div>
+        <button class="lb-btn-print" id="lb-print" data-code="">Solicitar Impresión</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── Print Modal ── -->
+<div id="print-modal" role="dialog" aria-modal="true">
+  <div class="print-modal-inner">
+    <button class="pm-close" id="pm-close" aria-label="Cerrar">✕</button>
+    <div class="pm-visual">
+      <div class="pm-frame-wrap" id="pm-frame-wrap">
+        <span class="pm-rail pm-rail-top"></span>
+        <span class="pm-rail pm-rail-right"></span>
+        <span class="pm-rail pm-rail-bottom"></span>
+        <span class="pm-rail pm-rail-left"></span>
+        <div class="pm-mat" id="pm-mat">
+          <img id="pm-img" src="" alt="">
+        </div>
+      </div>
+      <div class="pm-toggle" id="pm-toggle"></div>
+    </div>
+    <div class="pm-body">
+      <div>
+        <div class="pm-title" id="pm-title"></div>
+        <div class="pm-location" id="pm-loc"></div>
+        <div class="pm-le-badge" id="pm-le-badge" style="display:none; margin-top:0.8rem;"></div>
+      </div>
+
+      <div>
+        <div class="pm-label">Tamaño</div>
+        <div class="pm-options">
+          <div class="pm-option-row">
+            <button class="pm-opt pm-size active" data-size="s">20 × 30 cm</button>
+            <button class="pm-opt pm-size" data-size="m">40 × 60 cm</button>
+            <button class="pm-opt pm-size" data-size="l">60 × 90 cm</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="pm-label">Terminación</div>
+        <div class="pm-options">
+          <div class="pm-option-row">
+            <button class="pm-opt pm-frame active" data-frame="sin">Sin enmarcar</button>
+            <button class="pm-opt pm-frame" data-frame="marco">Con marco</button>
+            <button class="pm-opt pm-frame" data-frame="passe">Con paspartú</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="pm-color-section" style="display:none">
+        <div class="pm-label">Color de marco</div>
+        <div class="pm-color-options">
+          <button class="pm-color-btn" data-color="negro">
+            <span class="pm-swatch" style="background:#1a1a1a"></span>Negro
+          </button>
+          <button class="pm-color-btn" data-color="natural">
+            <span class="pm-swatch" style="background:#8c6230"></span>Natural
+          </button>
+          <button class="pm-color-btn" data-color="blanco">
+            <span class="pm-swatch" style="background:#f0ede8; border:1px solid #bbb"></span>Blanco
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="pm-label">Precio estimado</div>
+        <div class="pm-price-display"><span id="pm-price"></span></div>
+      </div>
+
+      <button class="pm-submit" id="pm-submit">
+        Solicitar por correo
+      </button>
+
+      <p class="pm-note">
+        Al hacer clic se abrirá tu cliente de correo con los detalles de tu pedido. Respondo en menos de 48 horas para confirmar disponibilidad y coordinar el pago.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ── About ── -->
+<section id="about">
+  <div class="about-photo">
+    <img src="images/web/AER-008.jpg" alt="German Weber — fotografía en terreno">
+  </div>
+  <div class="about-text">
+    <div>
+      <p class="section-label">Sobre mí</p>
+      <div class="gold-line"></div>
+      <h2 class="section-title">La <em>mirada</em></h2>
+    </div>
+    <p>
+      Soy <strong>German Weber</strong>, fotógrafo basado en <strong>Concón, Chile</strong>.
+      Mi trabajo explora la tensión entre lo monumental y lo íntimo — desde paisajes
+      patagónicos y ecosistemas costeros hasta la geometría de las ciudades que he
+      recorrido en Sudamérica, Europa y Oceanía.
+    </p>
+    <p>
+      Trabajo principalmente con drone y cámara en mano, buscando perspectivas que
+      revelen lo extraordinario en lo cotidiano. Cada imagen es una edición cuidadosa,
+      no un disparo de azar.
+    </p>
+    <p>
+      Las impresiones se producen en colaboración con una galería fine art en Concón,
+      asegurando calidad y permanencia en cada papel.
+    </p>
+    <div class="about-stat-grid">
+      <div>
+        <div class="about-stat-num">76</div>
+        <div class="about-stat-lbl">Imágenes en colección</div>
+      </div>
+      <div>
+        <div class="about-stat-num">8</div>
+        <div class="about-stat-lbl">Países fotografiados</div>
+      </div>
+      <div>
+        <div class="about-stat-num">10</div>
+        <div class="about-stat-lbl">Ed. limitadas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ── -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div>
+        <p class="section-label">Contacto</p>
+        <div class="gold-line"></div>
+        <h2 class="section-title">Hablemos</h2>
+      </div>
+      <p>
+        Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas.
+      </p>
+      <div class="contact-detail">
+        <div class="contact-detail-label">Ubicación</div>
+        <div class="contact-detail-value">Concón, Región de Valparaíso, Chile</div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-label">Email</div>
+        <div class="contact-detail-value">germanicolas@gmail.com</div>
+      </div>
+    </div>
+
+    <form class="contact-form" id="contact-form">
+      <div class="form-group">
+        <label for="f-nombre">Nombre</label>
+        <input type="text" id="f-nombre" name="nombre" required placeholder="Tu nombre">
+      </div>
+      <div class="form-group">
+        <label for="f-email">Email</label>
+        <input type="email" id="f-email" name="email" required placeholder="tu@email.com">
+      </div>
+      <div class="form-group">
+        <label for="f-asunto">Asunto</label>
+        <select id="f-asunto" name="asunto">
+          <option value="Consulta general">Consulta general</option>
+          <option value="Orden de impresión">Orden de impresión</option>
+          <option value="Sesión fotográfica">Sesión fotográfica</option>
+          <option value="Edición limitada">Edición limitada</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="f-mensaje">Mensaje</label>
+        <textarea id="f-mensaje" name="mensaje" required placeholder="Cuéntame en qué puedo ayudarte..."></textarea>
+      </div>
+      <button type="submit" class="form-submit">Enviar mensaje</button>
+      <div class="form-success" id="form-success">
+        ¡Mensaje enviado! Te responderé pronto.
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-logo">German Weber Photography</div>
+  <div class="footer-copy">© 2025 · Concón, Chile</div>
+  <div class="footer-links">
+    <a href="#gallery">Impresiones</a>
+    <a href="#about">Sobre mí</a>
+    <a href="#contact">Contacto</a>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

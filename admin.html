@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — German Weber Photography</title>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --bg2: #161616;
+      --bg3: #1e1e1e;
+      --border: #2a2a2a;
+      --text: #f0ede8;
+      --muted: #888;
+      --gold: #c9a96e;
+      --red: #c0392b;
+      --green: #27ae60;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; font-size: 14px; }
+    a { color: var(--gold); text-decoration: none; }
+
+    /* ── Login ── */
+    #login-screen {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh;
+    }
+    .login-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      width: 360px;
+      text-align: center;
+    }
+    .login-box h1 { font-size: 1.1rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+    .login-box p { color: var(--muted); font-size: 0.8rem; margin-bottom: 2rem; }
+    .login-box input {
+      width: 100%; padding: 0.75rem 1rem;
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text); font-size: 0.9rem;
+      margin-bottom: 1rem; outline: none;
+    }
+    .login-box input:focus { border-color: var(--gold); }
+    .login-box button {
+      width: 100%; padding: 0.75rem;
+      background: var(--gold); color: #000;
+      font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+      font-weight: 600; cursor: pointer; border: none;
+      transition: background 0.2s;
+    }
+    .login-box button:hover { background: #e0c48a; }
+    .login-error { color: var(--red); font-size: 0.8rem; margin-top: 0.8rem; display: none; }
+
+    /* ── Admin layout ── */
+    #admin-screen { display: none; }
+    .admin-nav {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex; align-items: center; gap: 2rem;
+      height: 56px; position: sticky; top: 0; z-index: 10;
+    }
+    .admin-nav-logo { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+    .admin-nav-tabs { display: flex; gap: 0; margin-left: auto; }
+    .tab-btn {
+      padding: 0 1.2rem; height: 56px; border: none; background: none;
+      color: var(--muted); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s;
+    }
+    .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+    .tab-btn:hover { color: var(--text); }
+    .admin-logout {
+      margin-left: 1rem; padding: 0.4rem 0.8rem;
+      border: 1px solid var(--border); background: none;
+      color: var(--muted); font-size: 0.7rem; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+    }
+    .admin-logout:hover { border-color: var(--red); color: var(--red); }
+
+    .admin-content { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+
+    /* ── Tabs ── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Section header ── */
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .section-header h2 { font-size: 1rem; font-weight: 500; letter-spacing: 0.05em; }
+    .section-header p { color: var(--muted); font-size: 0.8rem; margin-top: 0.25rem; }
+
+    /* ── Buttons ── */
+    .btn {
+      padding: 0.5rem 1.2rem; font-size: 0.72rem; letter-spacing: 0.12em;
+      text-transform: uppercase; font-weight: 600; cursor: pointer;
+      border: none; transition: background 0.2s;
+    }
+    .btn-gold { background: var(--gold); color: #000; }
+    .btn-gold:hover { background: #e0c48a; }
+    .btn-outline { background: none; border: 1px solid var(--border); color: var(--muted); }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── Filters ── */
+    .filter-bar { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .filter-bar button {
+      padding: 0.35rem 0.8rem; font-size: 0.7rem; letter-spacing: 0.08em;
+      border: 1px solid var(--border); background: none; color: var(--muted); cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-bar button.active { border-color: var(--gold); color: var(--gold); background: rgba(201,169,110,0.08); }
+
+    /* ── Photo table ── */
+    .photo-table { width: 100%; border-collapse: collapse; }
+    .photo-table th {
+      text-align: left; padding: 0.6rem 0.8rem;
+      font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .photo-table td { padding: 0.5rem 0.8rem; border-bottom: 1px solid #1a1a1a; vertical-align: middle; }
+    .photo-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .thumb { width: 52px; height: 40px; object-fit: cover; display: block; }
+    .code-badge { font-size: 0.65rem; color: var(--muted); font-family: monospace; }
+
+    .editable {
+      background: var(--bg3); border: 1px solid transparent;
+      color: var(--text); padding: 0.35rem 0.5rem;
+      font-size: 0.85rem; font-family: inherit; width: 100%;
+      transition: border-color 0.2s; outline: none;
+    }
+    .editable:focus { border-color: var(--gold); }
+
+    select.editable { cursor: pointer; }
+
+    .le-toggle { display: flex; align-items: center; gap: 0.5rem; }
+    input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--gold); cursor: pointer; }
+
+    .edition-cell { display: flex; gap: 0.4rem; align-items: center; }
+    .edition-input { width: 70px; }
+
+    .badge-le {
+      font-size: 0.6rem; padding: 0.15rem 0.4rem;
+      background: rgba(201,169,110,0.15); color: var(--gold);
+      letter-spacing: 0.08em; text-transform: uppercase; border-radius: 2px;
+    }
+
+    /* ── Prices tab ── */
+    .prices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .price-card { background: var(--bg2); border: 1px solid var(--border); padding: 1.5rem; }
+    .price-card h3 { font-size: 0.9rem; margin-bottom: 1.2rem; color: var(--gold); }
+    .price-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem; }
+    .price-row label { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
+    .price-input {
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text); padding: 0.35rem 0.5rem; font-size: 0.85rem;
+      width: 110px; text-align: right; outline: none; font-family: inherit;
+    }
+    .price-input:focus { border-color: var(--gold); }
+    .le-note { font-size: 0.72rem; color: var(--muted); margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+
+    /* ── Export bar ── */
+    .export-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 1rem 2rem; display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem;
+      transform: translateY(100%); transition: transform 0.3s ease;
+      z-index: 20;
+    }
+    .export-bar.visible { transform: translateY(0); }
+    .export-bar p { font-size: 0.8rem; color: var(--muted); }
+    .export-bar p span { color: var(--gold); font-weight: 600; }
+    .export-btns { display: flex; gap: 0.75rem; }
+
+    /* ── Hero grid ── */
+    .hero-thumb-wrap {
+      position: relative; cursor: pointer;
+      border: 2px solid transparent; transition: border-color 0.2s;
+      background: var(--bg3);
+    }
+    .hero-thumb-wrap:hover { border-color: var(--muted); }
+    .hero-thumb-wrap.selected { border-color: var(--gold); }
+    .hero-thumb-wrap img { width: 100%; height: 100px; object-fit: cover; display: block; }
+    .hero-thumb-label {
+      font-size: 0.65rem; padding: 0.3rem 0.4rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      color: var(--muted);
+    }
+    .hero-thumb-order {
+      position: absolute; top: 5px; left: 5px;
+      background: var(--gold); color: #000;
+      font-size: 0.65rem; font-weight: 700;
+      width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-orientation {
+      position: absolute; top: 5px; right: 5px;
+      font-size: 0.55rem; padding: 0.15rem 0.3rem;
+      background: rgba(0,0,0,0.6); color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .hero-orientation.h { color: #6dbf82; }
+
+    /* Selected order strip */
+    .hero-order-item {
+      position: relative; width: 140px; flex-shrink: 0;
+      border: 1px solid var(--gold); background: var(--bg3);
+    }
+    .hero-order-item img { width: 100%; height: 80px; object-fit: cover; display: block; }
+    .hero-order-controls {
+      display: flex; align-items: center; gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .hero-order-controls button {
+      flex: 1; padding: 0.3rem 0; font-size: 0.8rem;
+      color: var(--muted); background: none; border: none;
+      cursor: pointer; transition: color 0.2s;
+    }
+    .hero-order-controls button:hover { color: var(--gold); }
+    .hero-order-controls .remove-btn { color: #c0392b; font-size: 0.7rem; }
+    .hero-order-controls .remove-btn:hover { color: #e74c3c; }
+    .hero-order-num {
+      position: absolute; top: 4px; left: 4px;
+      background: var(--gold); color: #000;
+      font-size: 0.6rem; font-weight: 700;
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed; bottom: 80px; right: 2rem;
+      background: var(--green); color: #fff;
+      padding: 0.6rem 1.2rem; font-size: 0.8rem;
+      opacity: 0; transition: opacity 0.3s;
+      pointer-events: none; z-index: 30;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- ── Login ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>German Weber</h1>
+    <p>Panel de administración</p>
+    <input type="password" id="pw-input" placeholder="Contraseña" autofocus>
+    <button onclick="checkLogin()">Entrar</button>
+    <div class="login-error" id="login-error">Contraseña incorrecta</div>
+  </div>
+</div>
+
+<!-- ── Admin ── -->
+<div id="admin-screen">
+  <nav class="admin-nav">
+    <div class="admin-nav-logo">Admin · German Weber</div>
+    <div class="admin-nav-tabs">
+      <button class="tab-btn active" data-tab="fotos">Fotografías</button>
+      <button class="tab-btn" data-tab="inicio">Inicio</button>
+      <button class="tab-btn" data-tab="precios">Precios</button>
+    </div>
+    <button class="admin-logout" onclick="logout()">Salir</button>
+  </nav>
+
+  <div class="admin-content">
+
+    <!-- ── Tab: Fotos ── -->
+    <div class="tab-panel active" id="tab-fotos">
+      <div class="section-header">
+        <div>
+          <h2>Catálogo de fotografías</h2>
+          <p>Edita título, ubicación, categoría y datos de edición limitada. Los cambios no se guardan hasta que exportes.</p>
+        </div>
+      </div>
+
+      <div class="filter-bar" id="cat-filter"></div>
+
+      <table class="photo-table" id="photo-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Código</th>
+            <th style="min-width:180px">Título</th>
+            <th style="min-width:160px">Ubicación</th>
+            <th>Categoría</th>
+            <th>Ed. Limitada</th>
+            <th>Edición</th>
+            <th>Disponible</th>
+          </tr>
+        </thead>
+        <tbody id="photo-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- ── Tab: Inicio ── -->
+    <div class="tab-panel" id="tab-inicio">
+      <div class="section-header">
+        <div>
+          <h2>Fotos del slider de inicio</h2>
+          <p>Selecciona y ordena las fotos que aparecen en el hero. Recomendado: fotos horizontales.</p>
+        </div>
+      </div>
+
+      <!-- Selected order -->
+      <div style="margin-bottom:2rem">
+        <div style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem">Orden actual del slider</div>
+        <div id="hero-order" style="display:flex;gap:0.75rem;flex-wrap:wrap;min-height:80px;align-items:flex-start"></div>
+      </div>
+
+      <!-- Photo grid -->
+      <div style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem">
+        Todas las fotografías — haz clic para agregar/quitar del slider
+      </div>
+      <div id="hero-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.75rem"></div>
+    </div>
+
+    <!-- ── Tab: Precios ── -->
+    <div class="tab-panel" id="tab-precios">
+      <div class="section-header">
+        <div>
+          <h2>Precios de impresiones</h2>
+          <p>Valores en CLP. Las ediciones limitadas se multiplican automáticamente por el factor LE.</p>
+        </div>
+      </div>
+      <div class="prices-grid" id="prices-grid"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Save bar ── -->
+<div class="export-bar" id="export-bar">
+  <p>Tienes cambios sin guardar.</p>
+  <div class="export-btns">
+    <button class="btn btn-outline" onclick="discardChanges()">Descartar</button>
+    <button class="btn btn-gold" onclick="saveChanges()">Guardar cambios</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/data.js"></script>
+<script>
+// ── Auth ──
+const HASH = '99e17671dbffd1fba3460506a2a4cba5f39d931e545930ce8ddeaa4cf46973a6';
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function checkLogin() {
+  const pw = document.getElementById('pw-input').value;
+  const hash = await sha256(pw);
+  if (hash === HASH) {
+    sessionStorage.setItem('gw-admin', '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    initAdmin();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('pw-input').value = '';
+  }
+}
+
+document.getElementById('pw-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkLogin();
+});
+
+function logout() {
+  sessionStorage.removeItem('gw-admin');
+  location.reload();
+}
+
+if (sessionStorage.getItem('gw-admin') === '1') {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-screen').style.display = 'block';
+  document.addEventListener('DOMContentLoaded', initAdmin);
+}
+
+// ── Data (deep copy to edit) ──
+let photos, sizes, lePremium, heroPhotos;
+let dirty = false;
+
+// Horizontal photo codes (pre-computed from sips)
+const HORIZONTAL = new Set(['AER-002','AER-005','AER-007','AER-015','AER-017','AER-018',
+  'ARC-004','ARC-013','ARC-014','ARC-016','ARC-017',
+  'AST-001','LND-001','LND-002','LND-003','LND-006','LND-008','LND-009','LND-010',
+  'LND-011','LND-014','LND-016','LND-017','LND-018','LND-020',
+  'SEA-003','SEA-004','WLD-003','WLD-004','WLD-006','WLD-007','WLD-009','WLD-010']);
+
+function initData() {
+  photos = JSON.parse(JSON.stringify(PHOTOS));
+  sizes  = JSON.parse(JSON.stringify(SIZES));
+  lePremium = LE_PREMIUM;
+  heroPhotos = [...HERO_PHOTOS];
+}
+
+// ── Tabs ──
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ── Dirty state ──
+function markDirty() {
+  dirty = true;
+  document.getElementById('export-bar').classList.add('visible');
+}
+
+
+
+// ── Toast ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── Category filter ──
+const CATS = [
+  { id:'all', label:'Todas' },
+  { id:'aerial', label:'Aerial' },
+  { id:'landscape', label:'Paisaje' },
+  { id:'seascape', label:'Mar' },
+  { id:'architecture', label:'Arquitectura' },
+  { id:'wildlife', label:'Fauna' },
+  { id:'street', label:'Street' },
+  { id:'astro', label:'Astro' },
+];
+let activeCat = 'all';
+
+function renderCatFilter() {
+  const el = document.getElementById('cat-filter');
+  el.innerHTML = '';
+  CATS.forEach(c => {
+    const btn = document.createElement('button');
+    btn.textContent = c.label + (c.id !== 'all' ? ` (${photos.filter(p=>p.category===c.id).length})` : ` (${photos.length})`);
+    if (c.id === activeCat) btn.classList.add('active');
+    btn.addEventListener('click', () => { activeCat = c.id; renderCatFilter(); renderPhotos(c.id); });
+    el.appendChild(btn);
+  });
+}
+
+// ── Photo table ──
+function renderPhotos(cat) {
+  const tbody = document.getElementById('photo-tbody');
+  tbody.innerHTML = '';
+  const filtered = cat === 'all' ? photos : photos.filter(p => p.category === cat);
+
+  filtered.forEach((p, _i) => {
+    const idx = photos.indexOf(p);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><img class="thumb" src="${p.src}" alt=""></td>
+      <td><span class="code-badge">${p.code}</span></td>
+      <td><input class="editable" value="${esc(p.title)}" data-field="title" data-idx="${idx}"></td>
+      <td><input class="editable" value="${esc(p.location)}" data-field="location" data-idx="${idx}"></td>
+      <td>
+        <select class="editable" data-field="category" data-idx="${idx}">
+          ${CATS.filter(c=>c.id!=='all').map(c=>`<option value="${c.id}"${p.category===c.id?' selected':''}>${c.label}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <input type="checkbox" ${p.limitedEdition?'checked':''} data-field="limitedEdition" data-idx="${idx}">
+      </td>
+      <td>
+        <input class="editable edition-input" value="${esc(p.edition||'')}" placeholder="ej: 1/10" data-field="edition" data-idx="${idx}" ${!p.limitedEdition?'style="opacity:.3"':''}>
+      </td>
+      <td>
+        <input type="checkbox" ${p.available!==false?'checked':''} data-field="available" data-idx="${idx}">
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // listeners
+  tbody.querySelectorAll('[data-field]').forEach(el => {
+    const field = el.dataset.field;
+    const idx   = parseInt(el.dataset.idx);
+    const evName = (el.type === 'checkbox') ? 'change' : 'input';
+    el.addEventListener(evName, () => {
+      if (el.type === 'checkbox') {
+        photos[idx][field] = el.checked;
+        if (field === 'limitedEdition') {
+          const row = el.closest('tr');
+          const edInput = row.querySelector('[data-field="edition"]');
+          if (edInput) edInput.style.opacity = el.checked ? '1' : '0.3';
+        }
+      } else {
+        photos[idx][field] = el.value;
+      }
+      markDirty();
+    });
+  });
+}
+
+// ── Prices ──
+function renderPrices() {
+  const grid = document.getElementById('prices-grid');
+  grid.innerHTML = '';
+  sizes.forEach((sz, si) => {
+    const card = document.createElement('div');
+    card.className = 'price-card';
+    card.innerHTML = `
+      <h3>${sz.label}</h3>
+      <div class="price-row">
+        <label>Sin enmarcar</label>
+        <input class="price-input" type="number" value="${sz.prices.sin}" data-si="${si}" data-frame="sin">
+      </div>
+      <div class="price-row">
+        <label>Con marco</label>
+        <input class="price-input" type="number" value="${sz.prices.marco}" data-si="${si}" data-frame="marco">
+      </div>
+      <div class="price-row">
+        <label>Con paspartú</label>
+        <input class="price-input" type="number" value="${sz.prices.passe}" data-si="${si}" data-frame="passe">
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // LE factor
+  const leCard = document.createElement('div');
+  leCard.className = 'price-card';
+  leCard.innerHTML = `
+    <h3>Factor Ed. Limitada</h3>
+    <div class="price-row">
+      <label>Multiplicador</label>
+      <input class="price-input" type="number" step="0.01" value="${lePremium}" id="le-factor-input">
+    </div>
+    <p class="le-note">Ejemplo: 1.3 = 30% más caro que precio base. Se aplica automáticamente a todas las fotos marcadas como Edición Limitada.</p>
+  `;
+  grid.appendChild(leCard);
+
+  grid.querySelectorAll('.price-input[data-si]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      sizes[inp.dataset.si].prices[inp.dataset.frame] = parseInt(inp.value) || 0;
+      markDirty();
+    });
+  });
+
+  document.getElementById('le-factor-input')?.addEventListener('input', e => {
+    lePremium = parseFloat(e.target.value) || 1;
+    markDirty();
+  });
+}
+
+// ── Hero slider ──
+function renderHeroOrder() {
+  const el = document.getElementById('hero-order');
+  el.innerHTML = '';
+  if (heroPhotos.length === 0) {
+    el.innerHTML = '<span style="color:var(--muted);font-size:0.8rem">No hay fotos seleccionadas</span>';
+    return;
+  }
+  heroPhotos.forEach((code, i) => {
+    const p = photos.find(x => x.code === code);
+    if (!p) return;
+    const div = document.createElement('div');
+    div.className = 'hero-order-item';
+    div.innerHTML = `
+      <div class="hero-order-num">${i + 1}</div>
+      <img src="${p.src}" alt="${p.title}">
+      <div class="hero-order-controls">
+        <button title="Mover izquierda" ${i === 0 ? 'disabled style="opacity:.3"' : ''} data-action="left" data-i="${i}">←</button>
+        <button class="remove-btn" title="Quitar" data-action="remove" data-i="${i}">✕</button>
+        <button title="Mover derecha" ${i === heroPhotos.length - 1 ? 'disabled style="opacity:.3"' : ''} data-action="right" data-i="${i}">→</button>
+      </div>
+    `;
+    div.querySelectorAll('button[data-action]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const idx = parseInt(btn.dataset.i);
+        if (btn.dataset.action === 'remove') {
+          heroPhotos.splice(idx, 1);
+        } else if (btn.dataset.action === 'left' && idx > 0) {
+          [heroPhotos[idx-1], heroPhotos[idx]] = [heroPhotos[idx], heroPhotos[idx-1]];
+        } else if (btn.dataset.action === 'right' && idx < heroPhotos.length - 1) {
+          [heroPhotos[idx], heroPhotos[idx+1]] = [heroPhotos[idx+1], heroPhotos[idx]];
+        }
+        markDirty();
+        renderHeroOrder();
+        renderHeroGrid();
+      });
+    });
+    el.appendChild(div);
+  });
+}
+
+function renderHeroGrid() {
+  const grid = document.getElementById('hero-grid');
+  grid.innerHTML = '';
+  photos.forEach(p => {
+    const isH = HORIZONTAL.has(p.code);
+    const orderIdx = heroPhotos.indexOf(p.code);
+    const selected = orderIdx !== -1;
+    const div = document.createElement('div');
+    div.className = 'hero-thumb-wrap' + (selected ? ' selected' : '');
+    div.innerHTML = `
+      ${selected ? `<div class="hero-thumb-order">${orderIdx + 1}</div>` : ''}
+      <span class="hero-orientation ${isH ? 'h' : ''}">${isH ? 'H' : 'V'}</span>
+      <img src="${p.src}" alt="${p.title}" loading="lazy">
+      <div class="hero-thumb-label">${p.title}</div>
+    `;
+    div.addEventListener('click', () => {
+      if (selected) {
+        heroPhotos.splice(heroPhotos.indexOf(p.code), 1);
+      } else {
+        heroPhotos.push(p.code);
+      }
+      markDirty();
+      renderHeroOrder();
+      renderHeroGrid();
+    });
+    grid.appendChild(div);
+  });
+}
+
+// ── Save to localStorage ──
+function saveChanges() {
+  localStorage.setItem('gw-admin-data', JSON.stringify({
+    photos, sizes, lePremium, heroPhotos
+  }));
+  dirty = false;
+  document.getElementById('export-bar').classList.remove('visible');
+  showToast('¡Guardado! Recarga el sitio para ver los cambios.');
+}
+
+function discardChanges() {
+  if (!confirm('¿Descartar todos los cambios?')) return;
+  initData();
+  dirty = false;
+  document.getElementById('export-bar').classList.remove('visible');
+  renderCatFilter();
+  renderPhotos(activeCat);
+  renderHeroOrder();
+  renderHeroGrid();
+  renderPrices();
+}
+
+// ── Export data.js (backup) ──
+function exportDataJs() {
+  const lines = [];
+  lines.push('const PHOTOS = [');
+  photos.forEach((p, i) => {
+    const comma = i < photos.length - 1 ? ',' : '';
+    const fields = [
+      `code:${q(p.code)}`,
+      `title:${q(p.title)}`,
+      `location:${q(p.location)}`,
+      `category:${q(p.category)}`,
+      `src:${q(p.src)}`,
+    ];
+    if (p.mockup)  fields.push(`mockup:${q(p.mockup)}`);
+    if (p.mockup2) fields.push(`mockup2:${q(p.mockup2)}`);
+    fields.push(`available:${p.available !== false}`);
+    fields.push(`limitedEdition:${!!p.limitedEdition}`);
+    if (p.edition) fields.push(`edition:${q(p.edition)}`);
+    if (p.suggestedFrame) fields.push(`suggestedFrame:${q(p.suggestedFrame)}`);
+    lines.push(`  { ${fields.join(', ')} }${comma}`);
+  });
+  lines.push('];\n');
+
+  lines.push('const SIZES = [');
+  sizes.forEach((sz, i) => {
+    const comma = i < sizes.length - 1 ? ',' : '';
+    lines.push(`  { id:${q(sz.id)}, label:${q(sz.label)}, prices:{ sin:${sz.prices.sin}, passe:${sz.prices.passe}, marco:${sz.prices.marco} } }${comma}`);
+  });
+  lines.push('];\n');
+
+  lines.push(`const LE_PREMIUM = ${lePremium};\n`);
+  lines.push(`const HERO_PHOTOS = ${JSON.stringify(heroPhotos)};\n`);
+  lines.push('const CATEGORIES = [');
+  CATEGORIES.forEach((c, i) => {
+    const comma = i < CATEGORIES.length - 1 ? ',' : '';
+    lines.push(`  { id:${q(c.id)}, label:${q(c.label)} }${comma}`);
+  });
+  lines.push('];\n');
+
+  const content = lines.join('\n');
+  const blob = new Blob([content], { type: 'text/javascript' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'data.js';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('data.js descargado. Reemplaza el archivo en website/js/');
+  dirty = false;
+  document.getElementById('export-bar').classList.remove('visible');
+}
+
+// ── Helpers ──
+function q(s) { return `'${String(s||'').replace(/'/g, "\\'")}'`; }
+function esc(s) { return String(s||'').replace(/"/g,'&quot;'); }
+
+// ── Init ──
+function initAdmin() {
+  initData();
+  renderCatFilter();
+  renderPhotos('all');
+  renderHeroOrder();
+  renderHeroGrid();
+  renderPrices();
+}
+
+if (document.getElementById('admin-screen').style.display === 'block') {
+  initAdmin();
+}
+</script>
+</body>
+</html>
