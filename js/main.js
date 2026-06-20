@@ -369,7 +369,7 @@ document.getElementById('contact-form')?.addEventListener('submit', e => {
   const data = Object.fromEntries(new FormData(form));
   const subject = encodeURIComponent(`[German Weber Photo] ${data.asunto || 'Consulta'}`);
   const body = encodeURIComponent(
-    `Nombre: ${data.nombre}\nEmail: ${data.email}\n\n${data.mensaje}`
+    `Nombre: ${data.nombre}\nEmail: ${data.email}${data.telefono ? '\nTeléfono: ' + data.telefono : ''}\n\n${data.mensaje}`
   );
   window.location.href = `mailto:germanicolas@gmail.com?subject=${subject}&body=${body}`;
   document.getElementById('form-success').style.display = 'block';
