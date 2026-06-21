@@ -1050,8 +1050,11 @@ footer {
     max-width: 100%;
     object-fit: contain;
   }
-  .pm-visual.framed { padding: 0.6rem; }
-  .pm-visual.framed img { max-height: 26vh; }
+  .pm-visual.framed {
+    padding: 0.6rem;
+    max-height: none;
+  }
+  .pm-visual.framed img { max-height: 34vh; }
   .pm-mat.show-passe { padding: 12px; }
   .pm-frame-wrap.show-marco,
   .pm-frame-wrap.show-passe { padding: 8px; }
