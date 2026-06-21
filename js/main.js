@@ -169,7 +169,23 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
     });
   }
 
-  mixed.forEach(p => grid.appendChild(makeCard(p)));
+  // En mobile: patrón V+V / H (ancho completo) / V+V / H ...
+  const isMobile = window.innerWidth < 768;
+  if (isMobile && typeof HORIZONTAL !== 'undefined') {
+    const verticals   = mixed.filter(p => !HORIZONTAL.has(p.code));
+    const horizontals = mixed.filter(p =>  HORIZONTAL.has(p.code));
+    let vi = 0, hi = 0;
+    while (vi < verticals.length || hi < horizontals.length) {
+      const card1 = vi < verticals.length   ? makeCard(verticals[vi++])   : null;
+      const card2 = vi < verticals.length   ? makeCard(verticals[vi++])   : null;
+      const cardH = hi < horizontals.length ? makeCard(horizontals[hi++]) : null;
+      if (card1) grid.appendChild(card1);
+      if (card2) grid.appendChild(card2);
+      if (cardH) { cardH.style.gridColumn = 'span 2'; grid.appendChild(cardH); }
+    }
+  } else {
+    mixed.forEach(p => grid.appendChild(makeCard(p)));
+  }
 
   // Filters
   CATEGORIES.forEach(cat => {
