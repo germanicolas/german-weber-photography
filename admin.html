@@ -629,7 +629,7 @@ function renderHeroGrid() {
 // ── Save to localStorage ──
 function saveChanges() {
   localStorage.setItem('gw-admin-data', JSON.stringify({
-    photos, sizes, lePremium, heroPhotos
+    version: 2, photos, sizes, lePremium, heroPhotos
   }));
   dirty = false;
   document.getElementById('export-bar').classList.remove('visible');

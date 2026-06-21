@@ -98,6 +98,8 @@ var SIZES = [
 
 var LE_PREMIUM = 1.3;
 
+var DATA_VERSION = 2;
+
 var HERO_PHOTOS = ['LND-006','AER-018','SEA-003','WLD-003','LND-009'];
 
 var CATEGORIES = [
@@ -117,6 +119,14 @@ var CATEGORIES = [
     var saved = localStorage.getItem('gw-admin-data');
     if (!saved) return;
     var d = JSON.parse(saved);
+    // Si la versión no coincide, ignorar precios/lePremium guardados y limpiar
+    var versionOk = d.version === DATA_VERSION;
+    if (!versionOk) {
+      delete d.sizes;
+      delete d.lePremium;
+      d.version = DATA_VERSION;
+      localStorage.setItem('gw-admin-data', JSON.stringify(d));
+    }
     if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }
     if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }
     if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }
