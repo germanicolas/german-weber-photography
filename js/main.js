@@ -124,8 +124,6 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
 
     const img = document.createElement('img');
     img.alt = p.title;
-    img.loading = 'lazy';
-    // Use mockup as thumbnail if available (adds variety), else raw photo
     img.src = p.mockup || p.src;
 
     const overlay = document.createElement('div');
