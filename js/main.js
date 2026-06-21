@@ -124,6 +124,9 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
     item.className = 'gallery-item' + (p.limitedEdition ? ' le' : '');
     item.dataset.category = p.category;
     item.dataset.code = p.code;
+    if (typeof HORIZONTAL !== 'undefined' && HORIZONTAL.has(p.code)) {
+      item.dataset.orientation = 'h';
+    }
 
     const img = document.createElement('img');
     img.alt = p.title;
