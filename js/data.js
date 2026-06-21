@@ -89,6 +89,8 @@ var DATA_VERSION = 4;
 
 var HERO_PHOTOS = ["LND-001","SEA-003","WLD-004","AER-002"];
 
+var HERO_PHOTOS_MOBILE = ['AER-001','WLD-002','ARC-003','STR-001','LND-007'];
+
 var CATEGORIES = [
   { id:'all', label:'Todos' },
   { id:'aerial', label:'Aerial' },
@@ -115,9 +117,10 @@ var DATA_VERSION = 2;
       d.version = DATA_VERSION;
       localStorage.setItem('gw-admin-data', JSON.stringify(d));
     }
-    if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }
-    if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }
-    if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }
+    if (d.photos)            { PHOTOS.length = 0;             d.photos.forEach(function(p){ PHOTOS.push(p); }); }
+    if (d.sizes)             { SIZES.length = 0;              d.sizes.forEach(function(s){ SIZES.push(s); }); }
+    if (d.heroPhotos)        { HERO_PHOTOS.length = 0;        d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }
+    if (d.heroPhotosMobile)  { HERO_PHOTOS_MOBILE.length = 0; d.heroPhotosMobile.forEach(function(c){ HERO_PHOTOS_MOBILE.push(c); }); }
     if (d.lePremium !== undefined) LE_PREMIUM = d.lePremium;
   } catch(e) {}
 })();

@@ -81,7 +81,10 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
 
 /* ── Hero slideshow ── */
 (function () {
-  const heroPics = PHOTOS.filter(p => HERO_PHOTOS.includes(p.code));
+  const isMobile = window.innerWidth < 768;
+  const heroList = (isMobile && HERO_PHOTOS_MOBILE.length > 0) ? HERO_PHOTOS_MOBILE : HERO_PHOTOS;
+  const heroPics = PHOTOS.filter(p => heroList.includes(p.code))
+    .sort((a, b) => heroList.indexOf(a.code) - heroList.indexOf(b.code));
   const slidesEl = document.querySelector('.hero-slides');
   const dotsEl   = document.querySelector('.hero-dots');
   if (!slidesEl) return;

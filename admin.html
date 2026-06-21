@@ -302,24 +302,39 @@
 
     <!-- ── Tab: Inicio ── -->
     <div class="tab-panel" id="tab-inicio">
+
+      <!-- Desktop -->
       <div class="section-header">
         <div>
-          <h2>Fotos del slider de inicio</h2>
-          <p>Selecciona y ordena las fotos que aparecen en el hero. Recomendado: fotos horizontales.</p>
+          <h2>Slider Desktop</h2>
+          <p>Fotos horizontales recomendadas — se muestran en pantallas anchas.</p>
         </div>
       </div>
-
-      <!-- Selected order -->
       <div style="margin-bottom:2rem">
-        <div style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem">Orden actual del slider</div>
+        <div style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem">Orden actual</div>
         <div id="hero-order" style="display:flex;gap:0.75rem;flex-wrap:wrap;min-height:80px;align-items:flex-start"></div>
       </div>
-
-      <!-- Photo grid -->
       <div style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem">
-        Todas las fotografías — haz clic para agregar/quitar del slider
+        Haz clic para agregar/quitar — <span style="color:#7ab87a">H</span> = horizontal, <span style="color:#c9a96e">V</span> = vertical
       </div>
-      <div id="hero-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.75rem"></div>
+      <div id="hero-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.75rem;margin-bottom:3rem"></div>
+
+      <!-- Mobile -->
+      <div class="section-header" style="border-top:1px solid var(--border);padding-top:2rem;margin-top:1rem">
+        <div>
+          <h2>Slider Mobile <span style="font-size:0.75rem;color:var(--muted);font-family:var(--font-sans)">— pantallas angostas</span></h2>
+          <p>Fotos verticales recomendadas — se muestran en teléfonos. Si está vacío, usa el slider desktop.</p>
+        </div>
+      </div>
+      <div style="margin-bottom:2rem">
+        <div style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem">Orden actual mobile</div>
+        <div id="hero-order-mobile" style="display:flex;gap:0.75rem;flex-wrap:wrap;min-height:80px;align-items:flex-start"></div>
+      </div>
+      <div style="font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem">
+        Haz clic para agregar/quitar del slider mobile
+      </div>
+      <div id="hero-grid-mobile" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.75rem"></div>
+
     </div>
 
     <!-- ── Tab: Precios ── -->
@@ -390,7 +405,7 @@ if (sessionStorage.getItem('gw-admin') === '1') {
 }
 
 // ── Data (deep copy to edit) ──
-let photos, sizes, lePremium, heroPhotos;
+let photos, sizes, lePremium, heroPhotos, heroPhotosMobile;
 let dirty = false;
 
 // Horizontal photo codes (pre-computed from sips)
@@ -405,6 +420,7 @@ function initData() {
   sizes  = JSON.parse(JSON.stringify(SIZES));
   lePremium = LE_PREMIUM;
   heroPhotos = [...HERO_PHOTOS];
+  heroPhotosMobile = [...HERO_PHOTOS_MOBILE];
 }
 
 // ── Tabs ──
@@ -633,10 +649,80 @@ function renderHeroGrid() {
   });
 }
 
+function renderHeroOrderMobile() {
+  const el = document.getElementById('hero-order-mobile');
+  el.innerHTML = '';
+  if (heroPhotosMobile.length === 0) {
+    el.innerHTML = '<span style="color:var(--muted);font-size:0.8rem">No hay fotos — se usará el slider desktop</span>';
+    return;
+  }
+  heroPhotosMobile.forEach((code, i) => {
+    const p = photos.find(x => x.code === code);
+    if (!p) return;
+    const div = document.createElement('div');
+    div.className = 'hero-order-item';
+    div.innerHTML = `
+      <div class="hero-order-num">${i + 1}</div>
+      <img src="${p.src}" alt="${p.title}">
+      <div class="hero-order-controls">
+        <button title="Mover izquierda" ${i === 0 ? 'disabled style="opacity:.3"' : ''} data-action="left" data-i="${i}">←</button>
+        <button class="remove-btn" title="Quitar" data-action="remove" data-i="${i}">✕</button>
+        <button title="Mover derecha" ${i === heroPhotosMobile.length - 1 ? 'disabled style="opacity:.3"' : ''} data-action="right" data-i="${i}">→</button>
+      </div>
+    `;
+    div.querySelectorAll('button[data-action]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const idx = parseInt(btn.dataset.i);
+        if (btn.dataset.action === 'remove') {
+          heroPhotosMobile.splice(idx, 1);
+        } else if (btn.dataset.action === 'left' && idx > 0) {
+          [heroPhotosMobile[idx-1], heroPhotosMobile[idx]] = [heroPhotosMobile[idx], heroPhotosMobile[idx-1]];
+        } else if (btn.dataset.action === 'right' && idx < heroPhotosMobile.length - 1) {
+          [heroPhotosMobile[idx], heroPhotosMobile[idx+1]] = [heroPhotosMobile[idx+1], heroPhotosMobile[idx]];
+        }
+        markDirty();
+        renderHeroOrderMobile();
+        renderHeroGridMobile();
+      });
+    });
+    el.appendChild(div);
+  });
+}
+
+function renderHeroGridMobile() {
+  const grid = document.getElementById('hero-grid-mobile');
+  grid.innerHTML = '';
+  photos.forEach(p => {
+    const isH = HORIZONTAL.has(p.code);
+    const orderIdx = heroPhotosMobile.indexOf(p.code);
+    const selected = orderIdx !== -1;
+    const div = document.createElement('div');
+    div.className = 'hero-thumb-wrap' + (selected ? ' selected' : '');
+    div.innerHTML = `
+      ${selected ? `<div class="hero-thumb-order">${orderIdx + 1}</div>` : ''}
+      <span class="hero-orientation ${isH ? 'h' : ''}">${isH ? 'H' : 'V'}</span>
+      <img src="${p.src}" alt="${p.title}" loading="lazy">
+      <div class="hero-thumb-label">${p.title}</div>
+    `;
+    div.addEventListener('click', () => {
+      if (selected) {
+        heroPhotosMobile.splice(heroPhotosMobile.indexOf(p.code), 1);
+      } else {
+        heroPhotosMobile.push(p.code);
+      }
+      markDirty();
+      renderHeroOrderMobile();
+      renderHeroGridMobile();
+    });
+    grid.appendChild(div);
+  });
+}
+
 // ── Save to localStorage ──
 function saveChanges() {
   localStorage.setItem('gw-admin-data', JSON.stringify({
-    version: 3, photos, sizes, lePremium, heroPhotos
+    version: 3, photos, sizes, lePremium, heroPhotos, heroPhotosMobile
   }));
   dirty = false;
   document.getElementById('export-bar').classList.remove('visible');
@@ -664,7 +750,8 @@ function generateDataJs() {
 
   const cats = `[\n  { id:'all', label:'Todos' },\n  { id:'aerial', label:'Aerial' },\n  { id:'landscape', label:'Paisaje' },\n  { id:'seascape', label:'Mar' },\n  { id:'architecture', label:'Arquitectura' },\n  { id:'wildlife', label:'Fauna' },\n  { id:'street', label:'Street' },\n  { id:'astro', label:'Astro' },\n]`;
 
-  return `var PHOTOS = [\n${photosJs}\n];\n\nvar SIZES = [\n${sizesJs}\n];\n\nvar LE_PREMIUM = ${lePremium};\n\nvar HERO_PHOTOS = ${heroJs};\n\nvar CATEGORIES = ${cats};\n\nvar DATA_VERSION = 3;\n\n// Admin overrides from localStorage\n(function() {\n  try {\n    var saved = localStorage.getItem('gw-admin-data');\n    if (!saved) return;\n    var d = JSON.parse(saved);\n    var versionOk = d.version === DATA_VERSION;\n    if (!versionOk) {\n      delete d.sizes;\n      delete d.lePremium;\n      d.version = DATA_VERSION;\n      localStorage.setItem('gw-admin-data', JSON.stringify(d));\n    }\n    if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }\n    if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }\n    if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }\n    if (d.lePremium !== undefined) LE_PREMIUM = d.lePremium;\n  } catch(e) {}\n})();\n`;
+  const heroMobileJs = JSON.stringify(heroPhotosMobile);
+  return `var PHOTOS = [\n${photosJs}\n];\n\nvar SIZES = [\n${sizesJs}\n];\n\nvar LE_PREMIUM = ${lePremium};\n\nvar HERO_PHOTOS = ${heroJs};\n\nvar HERO_PHOTOS_MOBILE = ${heroMobileJs};\n\nvar CATEGORIES = ${cats};\n\nvar DATA_VERSION = 4;\n\n// Admin overrides from localStorage\n(function() {\n  try {\n    var saved = localStorage.getItem('gw-admin-data');\n    if (!saved) return;\n    var d = JSON.parse(saved);\n    var versionOk = d.version === DATA_VERSION;\n    if (!versionOk) {\n      delete d.sizes;\n      delete d.lePremium;\n      d.version = DATA_VERSION;\n      localStorage.setItem('gw-admin-data', JSON.stringify(d));\n    }\n    if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }\n    if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }\n    if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }\n    if (d.lePremium !== undefined) LE_PREMIUM = d.lePremium;\n  } catch(e) {}\n})();\n`;
 }
 
 // ── Publicar en GitHub ──
@@ -731,6 +818,8 @@ function discardChanges() {
   renderPhotos(activeCat);
   renderHeroOrder();
   renderHeroGrid();
+  renderHeroOrderMobile();
+  renderHeroGridMobile();
   renderPrices();
 }
 
