@@ -56,7 +56,7 @@ var PHOTOS = [
   { code:'ARC-012', title:"Rose", location:"París, Francia", category:'architecture', src:'images/web/ARC-012.jpg', available:true, limitedEdition:false },
   { code:'ARC-013', title:"El Panteón", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-013.jpg', available:true, limitedEdition:true, edition:"2/10" },
   { code:'ARC-014', title:"Coliseo", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-014.jpg', available:true, limitedEdition:false },
-  { code:'ARC-015', title:"Columnata", location:"Melbourne, Australia", category:'architecture', src:'images/web/ARC-015.jpg', available:true, limitedEdition:false },
+  { code:'ARC-015', title:"Duoro", location:"Porto, Portugal", category:'architecture', src:'images/web/ARC-015.jpg', available:true, limitedEdition:false },
   { code:'ARC-016', title:"Melbourne Nocturno", location:"Melbourne, Australia", category:'architecture', src:'images/web/ARC-016.jpg', available:true, limitedEdition:false },
   { code:'ARC-017', title:"Melbourne Amanecer", location:"Melbourne, Australia", category:'architecture', src:'images/web/ARC-017.jpg', available:true, limitedEdition:false },
   { code:'WLD-001', title:"Chincol", location:"Chile", category:'wildlife', src:'images/web/WLD-001.jpg', available:true, limitedEdition:false },
