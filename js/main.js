@@ -178,9 +178,13 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
     let vi = 0, hi = 0, gi = 0;
     while (vi < verticals.length || hi < horizontals.length) {
       const count = vGroups[gi++ % vGroups.length];
+      const vCards = [];
       for (let i = 0; i < count && vi < verticals.length; i++) {
-        grid.appendChild(makeCard(verticals[vi++]));
+        vCards.push(makeCard(verticals[vi++]));
       }
+      // Si es 1 sola, que ocupe todo el ancho
+      if (vCards.length === 1) vCards[0].style.gridColumn = 'span 2';
+      vCards.forEach(c => grid.appendChild(c));
       if (hi < horizontals.length) {
         const cardH = makeCard(horizontals[hi++]);
         cardH.style.gridColumn = 'span 2';
