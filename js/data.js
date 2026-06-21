@@ -85,7 +85,7 @@ var SIZES = [
 
 var LE_PREMIUM = 1.3;
 
-var HERO_PHOTOS = ["LND-001","SEA-003","LND-008","WLD-004","AER-002"];
+var HERO_PHOTOS = ["LND-001","SEA-003","WLD-004","AER-002"];
 
 var CATEGORIES = [
   { id:'all', label:'Todos' },
