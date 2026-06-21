@@ -308,6 +308,17 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   .gallery-item[data-orientation="h"] { grid-column: span 2; }
 }
 
+/* Desktop: crop centrado para alturas consistentes en el grid */
+@media (min-width: 768px) {
+  .gallery-item img {
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+  .gallery-item:not([data-orientation="h"]) { aspect-ratio: 2/3; }
+  .gallery-item[data-orientation="h"]       { aspect-ratio: 3/2; }
+}
+
 .gallery-item {
   position: relative;
   overflow: hidden;
@@ -321,7 +332,6 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   height: auto;
   display: block;
   transition: transform 0.5s ease;
-  aspect-ratio: 3/2;
 }
 .gallery-item img[src] {
   aspect-ratio: auto;
