@@ -91,9 +91,9 @@ var PHOTOS = [
 ];
 
 var SIZES = [
-  { id:'s', label:'20 × 30 cm', prices:{ sin:25000, passe:38000, marco:55000 } },
-  { id:'m', label:'40 × 60 cm', prices:{ sin:45000, passe:65000, marco:90000 } },
-  { id:'l', label:'60 × 90 cm', prices:{ sin:75000, passe:105000, marco:145000 } },
+  { id:'s', label:'20 × 30 cm', prices:{ sin:45000, passe:65000, marco:90000 } },
+  { id:'m', label:'40 × 60 cm', prices:{ sin:85000, passe:125000, marco:180000 } },
+  { id:'l', label:'60 × 90 cm', prices:{ sin:130000, passe:195000, marco:270000 } },
 ];
 
 var LE_PREMIUM = 1.3;
