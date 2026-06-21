@@ -338,6 +338,7 @@
   <div class="export-btns">
     <button class="btn btn-outline" onclick="discardChanges()">Descartar</button>
     <button class="btn btn-gold" onclick="saveChanges()">Guardar cambios</button>
+    <button class="btn btn-gold" onclick="publicarEnGitHub()" style="background:#2ea44f;border-color:#2ea44f">⬆ Publicar en sitio</button>
   </div>
 </div>
 
@@ -636,6 +637,85 @@ function saveChanges() {
   dirty = false;
   document.getElementById('export-bar').classList.remove('visible');
   showToast('¡Guardado! Recarga el sitio para ver los cambios.');
+}
+
+// ── Generar data.js ──
+function generateDataJs() {
+  const photosJs = photos.map(p => {
+    let line = `  { code:'${p.code}', title:${JSON.stringify(p.title)}, location:${JSON.stringify(p.location)}, category:'${p.category}', src:'${p.src}'`;
+    if (p.mockup)  line += `, mockup:${JSON.stringify(p.mockup)}`;
+    if (p.mockup2) line += `, mockup2:${JSON.stringify(p.mockup2)}`;
+    line += `, available:${p.available}, limitedEdition:${p.limitedEdition}`;
+    if (p.edition) line += `, edition:${JSON.stringify(p.edition)}`;
+    if (p.suggestedFrame) line += `, suggestedFrame:'${p.suggestedFrame}'`;
+    line += ' }';
+    return line;
+  }).join(',\n');
+
+  const sizesJs = sizes.map(s =>
+    `  { id:'${s.id}', label:${JSON.stringify(s.label)}, prices:{ sin:${s.prices.sin}, passe:${s.prices.passe}, marco:${s.prices.marco} } }`
+  ).join(',\n');
+
+  const heroJs = JSON.stringify(heroPhotos);
+
+  const cats = `[\n  { id:'all', label:'Todos' },\n  { id:'aerial', label:'Aerial' },\n  { id:'landscape', label:'Paisaje' },\n  { id:'seascape', label:'Mar' },\n  { id:'architecture', label:'Arquitectura' },\n  { id:'wildlife', label:'Fauna' },\n  { id:'street', label:'Street' },\n  { id:'astro', label:'Astro' },\n]`;
+
+  return `var PHOTOS = [\n${photosJs}\n];\n\nvar SIZES = [\n${sizesJs}\n];\n\nvar LE_PREMIUM = ${lePremium};\n\nvar HERO_PHOTOS = ${heroJs};\n\nvar CATEGORIES = ${cats};\n\nvar DATA_VERSION = 2;\n\n// Admin overrides from localStorage\n(function() {\n  try {\n    var saved = localStorage.getItem('gw-admin-data');\n    if (!saved) return;\n    var d = JSON.parse(saved);\n    var versionOk = d.version === DATA_VERSION;\n    if (!versionOk) {\n      delete d.sizes;\n      delete d.lePremium;\n      d.version = DATA_VERSION;\n      localStorage.setItem('gw-admin-data', JSON.stringify(d));\n    }\n    if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }\n    if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }\n    if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }\n    if (d.lePremium !== undefined) LE_PREMIUM = d.lePremium;\n  } catch(e) {}\n})();\n`;
+}
+
+// ── Publicar en GitHub ──
+async function publicarEnGitHub() {
+  let token = localStorage.getItem('gw-gh-token');
+  if (!token) {
+    token = prompt('Pega tu GitHub token (se guarda solo en este browser):');
+    if (!token) return;
+    localStorage.setItem('gw-gh-token', token.trim());
+    token = token.trim();
+  }
+
+  const REPO = 'germanicolas/german-weber-photography';
+  const FILE = 'js/data.js';
+
+  showToast('Publicando...');
+
+  try {
+    // Obtener SHA actual del archivo
+    const getResp = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!getResp.ok) throw new Error('No se pudo conectar con GitHub. Verifica el token.');
+    const fileData = await getResp.json();
+
+    // Generar nuevo contenido
+    const newContent = generateDataJs();
+    const encoded = btoa(unescape(encodeURIComponent(newContent)));
+
+    // Subir archivo
+    const putResp = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: 'Actualización desde admin',
+        content: encoded,
+        sha: fileData.sha
+      })
+    });
+
+    if (putResp.ok) {
+      saveChanges();
+      showToast('¡Publicado en GitHub! Visible en 1-2 minutos.');
+    } else {
+      const err = await putResp.json();
+      throw new Error(err.message || 'Error al publicar');
+    }
+  } catch(e) {
+    showToast('Error: ' + e.message);
+    if (e.message.includes('token')) localStorage.removeItem('gw-gh-token');
+  }
 }
 
 function discardChanges() {
