@@ -77,7 +77,7 @@
     }
     .admin-logout:hover { border-color: var(--red); color: var(--red); }
 
-    .admin-content { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+    .admin-content { padding: 2rem; padding-bottom: 6rem; max-width: 1400px; margin: 0 auto; }
 
     /* ── Tabs ── */
     .tab-panel { display: none; }
@@ -263,7 +263,11 @@
       <button class="tab-btn" data-tab="inicio">Inicio</button>
       <button class="tab-btn" data-tab="precios">Precios</button>
     </div>
-    <button class="admin-logout" onclick="logout()">Salir</button>
+    <div style="display:flex;gap:0.6rem;align-items:center">
+      <button class="btn btn-gold" onclick="saveChanges()" style="padding:0.4rem 1rem;font-size:0.72rem">Guardar</button>
+      <button onclick="publicarEnGitHub()" style="padding:0.4rem 1rem;font-size:0.72rem;background:#2ea44f;color:#fff;border:none;cursor:pointer;font-family:inherit;letter-spacing:0.05em">⬆ Publicar</button>
+      <button class="admin-logout" onclick="logout()">Salir</button>
+    </div>
   </nav>
 
   <div class="admin-content">
@@ -632,7 +636,7 @@ function renderHeroGrid() {
 // ── Save to localStorage ──
 function saveChanges() {
   localStorage.setItem('gw-admin-data', JSON.stringify({
-    version: 2, photos, sizes, lePremium, heroPhotos
+    version: 3, photos, sizes, lePremium, heroPhotos
   }));
   dirty = false;
   document.getElementById('export-bar').classList.remove('visible');
@@ -660,7 +664,7 @@ function generateDataJs() {
 
   const cats = `[\n  { id:'all', label:'Todos' },\n  { id:'aerial', label:'Aerial' },\n  { id:'landscape', label:'Paisaje' },\n  { id:'seascape', label:'Mar' },\n  { id:'architecture', label:'Arquitectura' },\n  { id:'wildlife', label:'Fauna' },\n  { id:'street', label:'Street' },\n  { id:'astro', label:'Astro' },\n]`;
 
-  return `var PHOTOS = [\n${photosJs}\n];\n\nvar SIZES = [\n${sizesJs}\n];\n\nvar LE_PREMIUM = ${lePremium};\n\nvar HERO_PHOTOS = ${heroJs};\n\nvar CATEGORIES = ${cats};\n\nvar DATA_VERSION = 2;\n\n// Admin overrides from localStorage\n(function() {\n  try {\n    var saved = localStorage.getItem('gw-admin-data');\n    if (!saved) return;\n    var d = JSON.parse(saved);\n    var versionOk = d.version === DATA_VERSION;\n    if (!versionOk) {\n      delete d.sizes;\n      delete d.lePremium;\n      d.version = DATA_VERSION;\n      localStorage.setItem('gw-admin-data', JSON.stringify(d));\n    }\n    if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }\n    if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }\n    if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }\n    if (d.lePremium !== undefined) LE_PREMIUM = d.lePremium;\n  } catch(e) {}\n})();\n`;
+  return `var PHOTOS = [\n${photosJs}\n];\n\nvar SIZES = [\n${sizesJs}\n];\n\nvar LE_PREMIUM = ${lePremium};\n\nvar HERO_PHOTOS = ${heroJs};\n\nvar CATEGORIES = ${cats};\n\nvar DATA_VERSION = 3;\n\n// Admin overrides from localStorage\n(function() {\n  try {\n    var saved = localStorage.getItem('gw-admin-data');\n    if (!saved) return;\n    var d = JSON.parse(saved);\n    var versionOk = d.version === DATA_VERSION;\n    if (!versionOk) {\n      delete d.sizes;\n      delete d.lePremium;\n      d.version = DATA_VERSION;\n      localStorage.setItem('gw-admin-data', JSON.stringify(d));\n    }\n    if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }\n    if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }\n    if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }\n    if (d.lePremium !== undefined) LE_PREMIUM = d.lePremium;\n  } catch(e) {}\n})();\n`;
 }
 
 // ── Publicar en GitHub ──

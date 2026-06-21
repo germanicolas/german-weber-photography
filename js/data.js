@@ -91,14 +91,14 @@ var PHOTOS = [
 ];
 
 var SIZES = [
-  { id:'s', label:'20 × 30 cm', prices:{ sin:45000, passe:65000, marco:90000 } },
-  { id:'m', label:'40 × 60 cm', prices:{ sin:85000, passe:125000, marco:180000 } },
-  { id:'l', label:'60 × 90 cm', prices:{ sin:130000, passe:195000, marco:270000 } },
+  { id:'s', label:'20 × 30 cm', prices:{ sin:45000, marco:65000, passe:90000 } },
+  { id:'m', label:'40 × 60 cm', prices:{ sin:85000, marco:125000, passe:180000 } },
+  { id:'l', label:'60 × 90 cm', prices:{ sin:130000, marco:195000, passe:270000 } },
 ];
 
 var LE_PREMIUM = 1.3;
 
-var DATA_VERSION = 2;
+var DATA_VERSION = 3;
 
 var HERO_PHOTOS = ['LND-006','AER-018','SEA-003','WLD-003','LND-009'];
 
