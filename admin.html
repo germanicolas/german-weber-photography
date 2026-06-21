@@ -346,17 +346,19 @@
 <script src="js/data.js"></script>
 <script>
 // ── Auth ──
-const HASH = '99e17671dbffd1fba3460506a2a4cba5f39d931e545930ce8ddeaa4cf46973a6';
-
-async function sha256(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+function simpleHash(str) {
+  var h = 0x811c9dc5;
+  for (var i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = (h * 0x01000193) >>> 0;
+  }
+  return h.toString(16);
 }
+const HASH = simpleHash('fotosgerman');
 
-async function checkLogin() {
+function checkLogin() {
   const pw = document.getElementById('pw-input').value;
-  const hash = await sha256(pw);
-  if (hash === HASH) {
+  if (simpleHash(pw) === HASH) {
     sessionStorage.setItem('gw-admin', '1');
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-screen').style.display = 'block';
