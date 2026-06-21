@@ -420,7 +420,7 @@ function initData() {
   sizes  = JSON.parse(JSON.stringify(SIZES));
   lePremium = LE_PREMIUM;
   heroPhotos = [...HERO_PHOTOS];
-  heroPhotosMobile = [...HERO_PHOTOS_MOBILE];
+  heroPhotosMobile = typeof HERO_PHOTOS_MOBILE !== 'undefined' ? [...HERO_PHOTOS_MOBILE] : [];
 }
 
 // ── Tabs ──
