@@ -78,18 +78,16 @@ var PHOTOS = [
 ];
 
 var SIZES = [
-  { id:'s', label:'20 × 30 cm', prices:{ sin:45000, marco:65000, passe:85000 } },
-  { id:'m', label:'40 × 60 cm', prices:{ sin:85000, marco:125000, passe:150000 } },
-  { id:'l', label:'60 × 90 cm', prices:{ sin:130000, marco:195000, passe:225000 } },
+  { id:'s', label:"20 × 30 cm", prices:{ sin:45000, passe:65000, marco:90000 } },
+  { id:'m', label:"40 × 60 cm", prices:{ sin:85000, passe:125000, marco:180000 } },
+  { id:'l', label:"60 × 90 cm", prices:{ sin:130000, passe:195000, marco:270000 } }
 ];
 
 var LE_PREMIUM = 1.3;
 
-var DATA_VERSION = 4;
-
 var HERO_PHOTOS = ["LND-001","SEA-003","WLD-004","AER-002"];
 
-var HERO_PHOTOS_MOBILE = ['AER-001','WLD-002','ARC-003','STR-001','LND-007'];
+var HERO_PHOTOS_MOBILE = ["AER-004","AER-016","LND-013","ARC-015"];
 
 var CATEGORIES = [
   { id:'all', label:'Todos' },
@@ -102,7 +100,7 @@ var CATEGORIES = [
   { id:'astro', label:'Astro' },
 ];
 
-var DATA_VERSION = 2;
+var DATA_VERSION = 4;
 
 // Admin overrides from localStorage
 (function() {
@@ -117,10 +115,9 @@ var DATA_VERSION = 2;
       d.version = DATA_VERSION;
       localStorage.setItem('gw-admin-data', JSON.stringify(d));
     }
-    if (d.photos)            { PHOTOS.length = 0;             d.photos.forEach(function(p){ PHOTOS.push(p); }); }
-    if (d.sizes)             { SIZES.length = 0;              d.sizes.forEach(function(s){ SIZES.push(s); }); }
-    if (d.heroPhotos)        { HERO_PHOTOS.length = 0;        d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }
-    if (d.heroPhotosMobile)  { HERO_PHOTOS_MOBILE.length = 0; d.heroPhotosMobile.forEach(function(c){ HERO_PHOTOS_MOBILE.push(c); }); }
+    if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }
+    if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }
+    if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }
     if (d.lePremium !== undefined) LE_PREMIUM = d.lePremium;
   } catch(e) {}
 })();
