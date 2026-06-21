@@ -1038,8 +1038,21 @@ footer {
     overflow-y: auto;
     border-radius: 0;
   }
-  .pm-visual { min-height: 240px; }
-  .pm-body { padding: 1.5rem; }
+  .pm-visual {
+    min-height: 0;
+    max-height: 42vh;
+    padding: 1rem;
+    background: #0d0d0d;
+  }
+  .pm-visual img {
+    max-height: 40vh;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+  }
+  .pm-visual.framed { padding: 1rem; }
+  .pm-visual.framed img { max-height: 36vh; }
+  .pm-body { padding: 1.2rem; }
 
   /* About: stack vertical */
   #about { grid-template-columns: 1fr; }
