@@ -109,6 +109,8 @@ var TEXTS = {
 
 var DATA_VERSION = 4;
 
+var HORIZONTAL = new Set(['AER-002','AER-005','AER-007','AER-015','AER-017','AER-018','ARC-004','ARC-013','ARC-014','ARC-016','ARC-017','AST-001','LND-001','LND-002','LND-003','LND-006','LND-008','LND-009','LND-010','LND-011','LND-014','LND-016','LND-017','LND-018','LND-020','SEA-003','SEA-004','WLD-003','WLD-004','WLD-006','WLD-007','WLD-009','WLD-010']);
+
 // Admin overrides from localStorage
 (function() {
   try {
