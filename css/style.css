@@ -296,7 +296,7 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     grid-auto-flow: dense;
-    align-items: start;
+    align-items: center;
   }
   .gallery-item[data-orientation="h"] { grid-column: span 2; }
 }
