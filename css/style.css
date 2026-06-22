@@ -316,7 +316,7 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
     object-position: center center;
   }
   .gallery-item:not([data-orientation="h"]) { aspect-ratio: 2/3; }
-  .gallery-item[data-orientation="h"]       { aspect-ratio: 3/2; }
+  .gallery-item[data-orientation="h"]       { aspect-ratio: 4/3; }
 }
 
 .gallery-item {
