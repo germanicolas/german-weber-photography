@@ -101,6 +101,8 @@
     .btn-gold:hover { background: #e0c48a; }
     .btn-outline { background: none; border: 1px solid var(--border); color: var(--muted); }
     .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .delete-btn { background: none; border: none; color: #664; font-size: 0.85rem; cursor: pointer; padding: 0.2rem 0.5rem; border-radius: 2px; transition: all 0.2s; }
+    .delete-btn:hover { background: rgba(200,60,60,0.15); color: #e05555; }
 
     /* ── Filters ── */
     .filter-bar { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
@@ -294,6 +296,7 @@
             <th>Ed. Limitada</th>
             <th>Edición</th>
             <th>Disponible</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="photo-tbody"></tbody>
@@ -489,11 +492,27 @@ function renderPhotos(cat) {
       <td>
         <input type="checkbox" ${p.available!==false?'checked':''} data-field="available" data-idx="${idx}">
       </td>
+      <td>
+        <button class="delete-btn" data-idx="${idx}" title="Eliminar foto">✕</button>
+      </td>
     `;
     tbody.appendChild(tr);
   });
 
-  // listeners
+  // delete listeners
+  tbody.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      const p = photos[idx];
+      if (!confirm(`¿Eliminar "${p.title}" (${p.code})? Esta acción no se puede deshacer.`)) return;
+      photos.splice(idx, 1);
+      markDirty();
+      renderCatFilter();
+      renderPhotos(activeCat);
+    });
+  });
+
+  // field listeners
   tbody.querySelectorAll('[data-field]').forEach(el => {
     const field = el.dataset.field;
     const idx   = parseInt(el.dataset.idx);
