@@ -6,14 +6,25 @@
     'text-about-p1':     { el: document.getElementById('text-about-p1'),     html: TEXTS.aboutP1 },
     'text-about-p2':     { el: document.getElementById('text-about-p2'),     html: TEXTS.aboutP2 },
     'text-about-p3':     { el: document.getElementById('text-about-p3'),     html: TEXTS.aboutP3 },
-    'stat-img':          { el: document.getElementById('stat-img'),          html: TEXTS.statImg },
-    'stat-paises':       { el: document.getElementById('stat-paises'),       html: TEXTS.statPaises },
-    'stat-le':           { el: document.getElementById('stat-le'),           html: TEXTS.statLE },
     'text-contact-desc': { el: document.getElementById('text-contact-desc'), html: TEXTS.contactDesc },
   };
   Object.values(map).forEach(function(entry) {
     if (entry.el && entry.html !== undefined) entry.el.innerHTML = entry.html;
   });
+
+  // Stats calculados automáticamente desde PHOTOS
+  var statImgEl    = document.getElementById('stat-img');
+  var statPaisesEl = document.getElementById('stat-paises');
+  var statLeEl     = document.getElementById('stat-le');
+  if (statImgEl)    statImgEl.textContent    = PHOTOS.filter(function(p){ return p.available; }).length;
+  if (statLeEl)     statLeEl.textContent     = PHOTOS.filter(function(p){ return p.limitedEdition; }).length;
+  if (statPaisesEl) {
+    var paises = new Set(PHOTOS.map(function(p) {
+      var parts = p.location.split(',');
+      return parts[parts.length - 1].trim();
+    }));
+    statPaisesEl.textContent = paises.size;
+  }
 })();
 
 /* ── Nav scroll + hero logo migration ── */

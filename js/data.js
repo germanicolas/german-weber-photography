@@ -105,9 +105,6 @@ var TEXTS = {
   aboutP1: 'Soy <strong>German Weber</strong>, fotógrafo basado en <strong>Concón, Chile</strong>. Mi trabajo explora la tensión entre lo monumental y lo íntimo — desde paisajes patagónicos y ecosistemas costeros hasta la geometría de las ciudades que he recorrido en Sudamérica, Europa y Oceanía.',
   aboutP2: 'Trabajo principalmente con drone y cámara en mano, buscando perspectivas que revelen lo extraordinario en lo cotidiano. Cada imagen es una edición cuidadosa, no un disparo de azar.',
   aboutP3: 'Las impresiones se producen en colaboración con una galería fine art en Concón, asegurando calidad y permanencia en cada papel.',
-  statImg: '76',
-  statPaises: '8',
-  statLE: '10',
   contactDesc: 'Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas.'
 };
 

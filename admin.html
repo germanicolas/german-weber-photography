@@ -913,9 +913,6 @@ function renderTexts() {
     '=== Sobre mí - Párrafo 3 ===',
     texts.aboutP3 || '',
     '',
-    '=== Stats: imágenes | países | ed. limitadas ===',
-    (texts.statImg || '76') + ' | ' + (texts.statPaises || '8') + ' | ' + (texts.statLE || '10'),
-    '',
     '=== Contacto ===',
     texts.contactDesc || '',
   ].join('\n');
@@ -943,13 +940,6 @@ function collectTexts() {
   if (sections['Sobre mí - Párrafo 2']               !== undefined) texts.aboutP2     = sections['Sobre mí - Párrafo 2'];
   if (sections['Sobre mí - Párrafo 3']               !== undefined) texts.aboutP3     = sections['Sobre mí - Párrafo 3'];
   if (sections['Contacto']                            !== undefined) texts.contactDesc = sections['Contacto'];
-  var statsLine = sections['Stats: imágenes | países | ed. limitadas'];
-  if (statsLine !== undefined) {
-    var parts = statsLine.split('|').map(function(s) { return s.trim(); });
-    if (parts[0]) texts.statImg    = parts[0];
-    if (parts[1]) texts.statPaises = parts[1];
-    if (parts[2]) texts.statLE     = parts[2];
-  }
 }
 
 function initAdmin() {
