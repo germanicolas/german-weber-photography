@@ -1,3 +1,21 @@
+/* ── Apply editable texts ── */
+(function () {
+  if (typeof TEXTS === 'undefined') return;
+  var map = {
+    'text-tienda-desc':  { el: document.getElementById('text-tienda-desc'),  html: TEXTS.tiendaDesc },
+    'text-about-p1':     { el: document.getElementById('text-about-p1'),     html: TEXTS.aboutP1 },
+    'text-about-p2':     { el: document.getElementById('text-about-p2'),     html: TEXTS.aboutP2 },
+    'text-about-p3':     { el: document.getElementById('text-about-p3'),     html: TEXTS.aboutP3 },
+    'stat-img':          { el: document.getElementById('stat-img'),          html: TEXTS.statImg },
+    'stat-paises':       { el: document.getElementById('stat-paises'),       html: TEXTS.statPaises },
+    'stat-le':           { el: document.getElementById('stat-le'),           html: TEXTS.statLE },
+    'text-contact-desc': { el: document.getElementById('text-contact-desc'), html: TEXTS.contactDesc },
+  };
+  Object.values(map).forEach(function(entry) {
+    if (entry.el && entry.html !== undefined) entry.el.innerHTML = entry.html;
+  });
+})();
+
 /* ── Nav scroll + hero logo migration ── */
 const nav = document.getElementById('nav');
 const heroEl = document.getElementById('hero');

@@ -100,6 +100,17 @@ var CATEGORIES = [
   { id:'astro', label:'Astro' },
 ];
 
+var TEXTS = {
+  tiendaDesc: 'Cada imagen está disponible como impresión fine art de alta calidad, producida en conjunto con una galería especializada en Concón, Chile. Disponible en múltiples tamaños, con o sin marco o paspartú.',
+  aboutP1: 'Soy <strong>German Weber</strong>, fotógrafo basado en <strong>Concón, Chile</strong>. Mi trabajo explora la tensión entre lo monumental y lo íntimo — desde paisajes patagónicos y ecosistemas costeros hasta la geometría de las ciudades que he recorrido en Sudamérica, Europa y Oceanía.',
+  aboutP2: 'Trabajo principalmente con drone y cámara en mano, buscando perspectivas que revelen lo extraordinario en lo cotidiano. Cada imagen es una edición cuidadosa, no un disparo de azar.',
+  aboutP3: 'Las impresiones se producen en colaboración con una galería fine art en Concón, asegurando calidad y permanencia en cada papel.',
+  statImg: '76',
+  statPaises: '8',
+  statLE: '10',
+  contactDesc: 'Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas.'
+};
+
 var DATA_VERSION = 4;
 
 var HORIZONTAL = new Set(['AER-002','AER-005','AER-007','AER-015','AER-017','AER-018',
@@ -124,6 +135,8 @@ var HORIZONTAL = new Set(['AER-002','AER-005','AER-007','AER-015','AER-017','AER
     if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }
     if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }
     if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }
+    if (d.heroPhotosMobile) { HERO_PHOTOS_MOBILE.length = 0; d.heroPhotosMobile.forEach(function(c){ HERO_PHOTOS_MOBILE.push(c); }); }
     if (d.lePremium !== undefined) LE_PREMIUM = d.lePremium;
+    if (d.texts) { Object.assign(TEXTS, d.texts); }
   } catch(e) {}
 })();

@@ -264,6 +264,7 @@
       <button class="tab-btn active" data-tab="fotos">Fotografías</button>
       <button class="tab-btn" data-tab="inicio">Inicio</button>
       <button class="tab-btn" data-tab="precios">Precios</button>
+      <button class="tab-btn" data-tab="textos">Textos</button>
     </div>
     <div style="display:flex;gap:0.6rem;align-items:center">
       <button class="btn btn-gold" onclick="saveChanges()" style="padding:0.4rem 1rem;font-size:0.72rem">Guardar</button>
@@ -338,6 +339,60 @@
       <div class="prices-grid" id="prices-grid"></div>
     </div>
 
+    <!-- ── Tab: Textos ── -->
+    <div class="tab-panel" id="tab-textos">
+      <div class="section-header">
+        <div>
+          <h2>Textos del sitio</h2>
+          <p>Edita los textos que aparecen en la página principal. Guarda y publica para que se apliquen.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2rem;max-width:780px">
+
+        <div>
+          <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Descripción de tienda (bajo "Fine Art Prints")</label>
+          <textarea id="txt-tienda-desc" rows="3" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:0.9rem;font-family:inherit;resize:vertical;outline:none"></textarea>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Sobre mí — Párrafo 1</label>
+          <textarea id="txt-about-p1" rows="4" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:0.9rem;font-family:inherit;resize:vertical;outline:none"></textarea>
+          <p style="color:var(--muted);font-size:0.75rem;margin-top:0.3rem">Puedes usar &lt;strong&gt;texto&lt;/strong&gt; para negritas.</p>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Sobre mí — Párrafo 2</label>
+          <textarea id="txt-about-p2" rows="3" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:0.9rem;font-family:inherit;resize:vertical;outline:none"></textarea>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Sobre mí — Párrafo 3</label>
+          <textarea id="txt-about-p3" rows="3" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:0.9rem;font-family:inherit;resize:vertical;outline:none"></textarea>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+          <div>
+            <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Stat: Imágenes</label>
+            <input id="txt-stat-img" type="text" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:1.1rem;font-family:inherit;outline:none;text-align:center">
+          </div>
+          <div>
+            <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Stat: Países</label>
+            <input id="txt-stat-paises" type="text" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:1.1rem;font-family:inherit;outline:none;text-align:center">
+          </div>
+          <div>
+            <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Stat: Ed. limitadas</label>
+            <input id="txt-stat-le" type="text" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:1.1rem;font-family:inherit;outline:none;text-align:center">
+          </div>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Contacto — Descripción</label>
+          <textarea id="txt-contact-desc" rows="3" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:0.9rem;font-family:inherit;resize:vertical;outline:none"></textarea>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -395,15 +450,9 @@ if (sessionStorage.getItem('gw-admin') === '1') {
 }
 
 // ── Data (deep copy to edit) ──
-let photos, sizes, lePremium, heroPhotos, heroPhotosMobile;
+let photos, sizes, lePremium, heroPhotos, heroPhotosMobile, texts;
 let dirty = false;
 
-// Horizontal photo codes (pre-computed from sips)
-const HORIZONTAL = new Set(['AER-002','AER-005','AER-007','AER-015','AER-017','AER-018',
-  'ARC-004','ARC-013','ARC-014','ARC-016','ARC-017',
-  'AST-001','LND-001','LND-002','LND-003','LND-006','LND-008','LND-009','LND-010',
-  'LND-011','LND-014','LND-016','LND-017','LND-018','LND-020',
-  'SEA-003','SEA-004','WLD-003','WLD-004','WLD-006','WLD-007','WLD-009','WLD-010']);
 
 function initData() {
   photos = JSON.parse(JSON.stringify(PHOTOS));
@@ -411,6 +460,7 @@ function initData() {
   lePremium = LE_PREMIUM;
   heroPhotos = [...HERO_PHOTOS];
   heroPhotosMobile = typeof HERO_PHOTOS_MOBILE !== 'undefined' ? [...HERO_PHOTOS_MOBILE] : [];
+  texts = typeof TEXTS !== 'undefined' ? Object.assign({}, TEXTS) : {};
 }
 
 // ── Tabs ──
@@ -730,8 +780,9 @@ function renderHeroGridMobile() {
 
 // ── Save to localStorage ──
 function saveChanges() {
+  collectTexts();
   localStorage.setItem('gw-admin-data', JSON.stringify({
-    version: 3, photos, sizes, lePremium, heroPhotos, heroPhotosMobile
+    version: 4, photos, sizes, lePremium, heroPhotos, heroPhotosMobile, texts
   }));
   dirty = false;
   document.getElementById('export-bar').classList.remove('visible');
@@ -759,8 +810,10 @@ function generateDataJs() {
 
   const cats = `[\n  { id:'all', label:'Todos' },\n  { id:'aerial', label:'Aerial' },\n  { id:'landscape', label:'Paisaje' },\n  { id:'seascape', label:'Mar' },\n  { id:'architecture', label:'Arquitectura' },\n  { id:'wildlife', label:'Fauna' },\n  { id:'street', label:'Street' },\n  { id:'astro', label:'Astro' },\n]`;
 
+  collectTexts();
   const heroMobileJs = JSON.stringify(heroPhotosMobile);
-  return `var PHOTOS = [\n${photosJs}\n];\n\nvar SIZES = [\n${sizesJs}\n];\n\nvar LE_PREMIUM = ${lePremium};\n\nvar HERO_PHOTOS = ${heroJs};\n\nvar HERO_PHOTOS_MOBILE = ${heroMobileJs};\n\nvar CATEGORIES = ${cats};\n\nvar DATA_VERSION = 4;\n\n// Admin overrides from localStorage\n(function() {\n  try {\n    var saved = localStorage.getItem('gw-admin-data');\n    if (!saved) return;\n    var d = JSON.parse(saved);\n    var versionOk = d.version === DATA_VERSION;\n    if (!versionOk) {\n      delete d.sizes;\n      delete d.lePremium;\n      d.version = DATA_VERSION;\n      localStorage.setItem('gw-admin-data', JSON.stringify(d));\n    }\n    if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }\n    if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }\n    if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }\n    if (d.lePremium !== undefined) LE_PREMIUM = d.lePremium;\n  } catch(e) {}\n})();\n`;
+  const textsJs = JSON.stringify(texts, null, 2);
+  return `var PHOTOS = [\n${photosJs}\n];\n\nvar SIZES = [\n${sizesJs}\n];\n\nvar LE_PREMIUM = ${lePremium};\n\nvar HERO_PHOTOS = ${heroJs};\n\nvar HERO_PHOTOS_MOBILE = ${heroMobileJs};\n\nvar CATEGORIES = ${cats};\n\nvar TEXTS = ${textsJs};\n\nvar DATA_VERSION = 4;\n\n// Admin overrides from localStorage\n(function() {\n  try {\n    var saved = localStorage.getItem('gw-admin-data');\n    if (!saved) return;\n    var d = JSON.parse(saved);\n    var versionOk = d.version === DATA_VERSION;\n    if (!versionOk) {\n      delete d.sizes;\n      delete d.lePremium;\n      d.version = DATA_VERSION;\n      localStorage.setItem('gw-admin-data', JSON.stringify(d));\n    }\n    if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }\n    if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }\n    if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }\n    if (d.heroPhotosMobile) { HERO_PHOTOS_MOBILE.length = 0; d.heroPhotosMobile.forEach(function(c){ HERO_PHOTOS_MOBILE.push(c); }); }\n    if (d.lePremium !== undefined) LE_PREMIUM = d.lePremium;\n    if (d.texts) { Object.assign(TEXTS, d.texts); }\n  } catch(e) {}\n})();\n`;
 }
 
 // ── Publicar en GitHub ──
@@ -889,6 +942,28 @@ function q(s) { return `'${String(s||'').replace(/'/g, "\\'")}'`; }
 function esc(s) { return String(s||'').replace(/"/g,'&quot;'); }
 
 // ── Init ──
+function renderTexts() {
+  document.getElementById('txt-tienda-desc').value  = texts.tiendaDesc  || '';
+  document.getElementById('txt-about-p1').value     = texts.aboutP1     || '';
+  document.getElementById('txt-about-p2').value     = texts.aboutP2     || '';
+  document.getElementById('txt-about-p3').value     = texts.aboutP3     || '';
+  document.getElementById('txt-stat-img').value     = texts.statImg     || '';
+  document.getElementById('txt-stat-paises').value  = texts.statPaises  || '';
+  document.getElementById('txt-stat-le').value      = texts.statLE      || '';
+  document.getElementById('txt-contact-desc').value = texts.contactDesc || '';
+}
+
+function collectTexts() {
+  texts.tiendaDesc  = document.getElementById('txt-tienda-desc').value;
+  texts.aboutP1     = document.getElementById('txt-about-p1').value;
+  texts.aboutP2     = document.getElementById('txt-about-p2').value;
+  texts.aboutP3     = document.getElementById('txt-about-p3').value;
+  texts.statImg     = document.getElementById('txt-stat-img').value;
+  texts.statPaises  = document.getElementById('txt-stat-paises').value;
+  texts.statLE      = document.getElementById('txt-stat-le').value;
+  texts.contactDesc = document.getElementById('txt-contact-desc').value;
+}
+
 function initAdmin() {
   initData();
   renderCatFilter();
@@ -898,6 +973,7 @@ function initAdmin() {
   renderHeroOrderMobile();
   renderHeroGridMobile();
   renderPrices();
+  renderTexts();
 }
 
 if (document.getElementById('admin-screen').style.display === 'block') {
