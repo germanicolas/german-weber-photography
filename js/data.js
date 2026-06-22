@@ -1,7 +1,7 @@
 var PHOTOS = [
   { code:'AER-001', title:"Caburgua", location:"Chile", category:'aerial', src:'images/web/AER-001.jpg', mockup:"images/mockups/caburgua.jpg", mockup2:"images/mockups/caburgua 2.jpg", available:true, limitedEdition:false, suggestedFrame:'natural' },
   { code:'AER-002', title:"Salto El Palguin", location:"Chile", category:'aerial', src:'images/web/AER-002.jpg', available:true, limitedEdition:false },
-  { code:'AER-003', title:"Mar Verde", location:"Chile", category:'aerial', src:'images/web/AER-003.jpg', available:true, limitedEdition:false },
+  { code:'AER-003', title:"Copas", location:"Chile", category:'aerial', src:'images/web/AER-003.jpg', available:true, limitedEdition:false },
   { code:'AER-004', title:"1000 Steps", location:"Melbourne, Australia", category:'aerial', src:'images/web/AER-004.jpg', available:true, limitedEdition:false },
   { code:'AER-005', title:"Río Loa", location:"Calama, Chile", category:'aerial', src:'images/web/AER-005.jpg', available:true, limitedEdition:false },
   { code:'AER-006', title:"Salinas", location:"Chile", category:'aerial', src:'images/web/AER-006.jpg', available:true, limitedEdition:false },
@@ -11,18 +11,19 @@ var PHOTOS = [
   { code:'AER-010', title:"Hipódromo", location:"Melbourne, Australia", category:'aerial', src:'images/web/AER-010.jpg', available:true, limitedEdition:false },
   { code:'AER-011', title:"UAI", location:"Santiago, Chile", category:'aerial', src:'images/web/AER-011.jpg', available:true, limitedEdition:false },
   { code:'AER-012', title:"Muelle Vergara", location:"Viña del Mar, Chile", category:'aerial', src:'images/web/AER-012.jpg', available:true, limitedEdition:false },
-  { code:'AER-013', title:"Casino", location:"Viña del Mar, Chile", category:'aerial', src:'images/web/AER-013.jpg', available:true, limitedEdition:false },
-  { code:'AER-014', title:"Vta Vergara", location:"Viña del Mar, Chile", category:'aerial', src:'images/web/AER-014.jpg', available:true, limitedEdition:false },
+  { code:'AER-013', title:"Enjoy", location:"Viña del Mar, Chile", category:'aerial', src:'images/web/AER-013.jpg', available:true, limitedEdition:false },
+  { code:'AER-014', title:"Vta Vergara", location:"Santiago, Chile", category:'aerial', src:'images/web/AER-014.jpg', available:true, limitedEdition:false },
   { code:'AER-015', title:"The Pass", location:"Byron Bay, Australia", category:'aerial', src:'images/web/AER-015.jpg', available:true, limitedEdition:false },
   { code:'AER-016', title:"The Pass II", location:"Byron Bay, Australia", category:'aerial', src:'images/web/AER-016.jpg', available:true, limitedEdition:false },
   { code:'AER-017', title:"Río Aconcagua", location:"Chile", category:'aerial', src:'images/web/AER-017.jpg', available:true, limitedEdition:false },
-  { code:'AER-018', title:"Entre Nubes", location:"Pinilla, Chile", category:'aerial', src:'images/web/AER-018.jpg', available:true, limitedEdition:false },
+  { code:'AER-018', title:"Pinilla", location:"Pinilla, Chile", category:'aerial', src:'images/web/AER-018.jpg', available:true, limitedEdition:false },
   { code:'AER-019', title:"Pukaki", location:"Nueva Zelanda", category:'aerial', src:'images/web/AER-019.jpg', mockup:"images/mockups/pukaki.jpg", mockup2:"images/mockups/pukaki 2.jpg", available:true, limitedEdition:false, suggestedFrame:'negro' },
   { code:'LND-001', title:"Laguna Pinilla I", location:"Pinilla, Chile", category:'landscape', src:'images/web/LND-001.jpg', available:true, limitedEdition:false },
   { code:'LND-002', title:"Laguna Pinilla II", location:"Pinilla, Chile", category:'landscape', src:'images/web/LND-002.jpg', mockup:"images/mockups/pinilla.jpg", mockup2:"images/mockups/pinilla 2.jpg", available:true, limitedEdition:false, suggestedFrame:'natural' },
   { code:'LND-003', title:"Laguna Pinilla III", location:"Pinilla, Chile", category:'landscape', src:'images/web/LND-003.jpg', available:true, limitedEdition:false },
   { code:'LND-004', title:"Arroyo Pinilla", location:"Pinilla, Chile", category:'landscape', src:'images/web/LND-004.jpg', available:true, limitedEdition:false },
   { code:'LND-005', title:"Conguillío", location:"Araucanía, Chile", category:'landscape', src:'images/web/LND-005.jpg', available:true, limitedEdition:false },
+  { code:'LND-006', title:"Amanecer Conguillío", location:"Araucanía, Chile", category:'landscape', src:'images/web/LND-006.jpg', available:true, limitedEdition:true, edition:"1/10" },
   { code:'LND-007', title:"Araucarias", location:"Araucanía, Chile", category:'landscape', src:'images/web/LND-007.jpg', available:true, limitedEdition:false },
   { code:'LND-008', title:"Aoraki", location:"Nueva Zelanda", category:'landscape', src:'images/web/LND-008.jpg', available:true, limitedEdition:false },
   { code:'LND-009', title:"Wanaka", location:"Nueva Zelanda", category:'landscape', src:'images/web/LND-009.jpg', available:true, limitedEdition:true, edition:"1/10" },
@@ -55,12 +56,12 @@ var PHOTOS = [
   { code:'ARC-012', title:"Rose", location:"París, Francia", category:'architecture', src:'images/web/ARC-012.jpg', available:true, limitedEdition:false },
   { code:'ARC-013', title:"El Panteón", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-013.jpg', available:true, limitedEdition:true, edition:"2/10" },
   { code:'ARC-014', title:"Coliseo", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-014.jpg', available:true, limitedEdition:false },
-  { code:'ARC-015', title:"Duoro", location:"Porto, Portugal", category:'architecture', src:'images/web/ARC-015.jpg', available:true, limitedEdition:false },
+  { code:'ARC-015', title:"Columnata", location:"Melbourne, Australia", category:'architecture', src:'images/web/ARC-015.jpg', available:true, limitedEdition:false },
   { code:'ARC-016', title:"Melbourne Nocturno", location:"Melbourne, Australia", category:'architecture', src:'images/web/ARC-016.jpg', available:true, limitedEdition:false },
-  { code:'ARC-017', title:"Melbourne Amanecer", location:"Melbourne, Australia", category:'architecture', src:'images/web/ARC-017.jpg', available:true, limitedEdition:true, edition:"1/10" },
+  { code:'ARC-017', title:"Melbourne Amanecer", location:"Melbourne, Australia", category:'architecture', src:'images/web/ARC-017.jpg', available:true, limitedEdition:false },
   { code:'WLD-001', title:"Chincol", location:"Chile", category:'wildlife', src:'images/web/WLD-001.jpg', available:true, limitedEdition:false },
-  { code:'WLD-002', title:"Gaviotín Monja", location:"Chile", category:'wildlife', src:'images/web/WLD-002.jpg', available:true, limitedEdition:false },
-  { code:'WLD-003', title:"Gaviotín Monja II", location:"Chile", category:'wildlife', src:'images/web/WLD-003.jpg', available:true, limitedEdition:false, edition:"1/10" },
+  { code:'WLD-002', title:"Yunco I", location:"Chile", category:'wildlife', src:'images/web/WLD-002.jpg', available:true, limitedEdition:false },
+  { code:'WLD-003', title:"Yunco II", location:"Chile", category:'wildlife', src:'images/web/WLD-003.jpg', available:true, limitedEdition:true, edition:"1/10" },
   { code:'WLD-004', title:"Pelícanos I", location:"Concón, Chile", category:'wildlife', src:'images/web/WLD-004.jpg', available:true, limitedEdition:false },
   { code:'WLD-005', title:"Pelícanos II", location:"Concón, Chile", category:'wildlife', src:'images/web/WLD-005.jpg', available:true, limitedEdition:false },
   { code:'WLD-006', title:"Pelícanos III", location:"Chile", category:'wildlife', src:'images/web/WLD-006.jpg', available:true, limitedEdition:false },
@@ -84,7 +85,7 @@ var SIZES = [
 
 var LE_PREMIUM = 1.3;
 
-var HERO_PHOTOS = ["LND-001","SEA-003","WLD-004","AER-002"];
+var HERO_PHOTOS = ["AER-018","SEA-003","ARC-017","WLD-010","LND-001"];
 
 var HERO_PHOTOS_MOBILE = ["AER-004","AER-016","LND-013","ARC-015"];
 
@@ -109,7 +110,7 @@ var TEXTS = {
 
 var DATA_VERSION = 4;
 
-var HORIZONTAL = new Set(['AER-002','AER-005','AER-007','AER-015','AER-017','AER-018','ARC-004','ARC-013','ARC-014','ARC-016','ARC-017','AST-001','LND-001','LND-002','LND-003','LND-006','LND-008','LND-009','LND-010','LND-011','LND-014','LND-016','LND-017','LND-018','LND-020','SEA-003','SEA-004','WLD-003','WLD-004','WLD-006','WLD-007','WLD-009','WLD-010']);
+var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","ARC-004","ARC-013","ARC-014","ARC-016","ARC-017","AST-001","LND-001","LND-002","LND-003","LND-006","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","SEA-003","SEA-004","WLD-003","WLD-004","WLD-006","WLD-007","WLD-009","WLD-010"]);
 
 // Admin overrides from localStorage
 (function() {
