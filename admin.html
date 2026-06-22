@@ -344,53 +344,10 @@
       <div class="section-header">
         <div>
           <h2>Textos del sitio</h2>
-          <p>Edita los textos que aparecen en la página principal. Guarda y publica para que se apliquen.</p>
+          <p>Edita los textos directamente. Las líneas <strong>=== ... ===</strong> son marcadores de sección — no las borres ni las cambies.</p>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:2rem;max-width:780px">
-
-        <div>
-          <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Descripción de tienda (bajo "Fine Art Prints")</label>
-          <textarea id="txt-tienda-desc" rows="3" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:0.9rem;font-family:inherit;resize:vertical;outline:none"></textarea>
-        </div>
-
-        <div>
-          <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Sobre mí — Párrafo 1</label>
-          <textarea id="txt-about-p1" rows="4" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:0.9rem;font-family:inherit;resize:vertical;outline:none"></textarea>
-          <p style="color:var(--muted);font-size:0.75rem;margin-top:0.3rem">Puedes usar &lt;strong&gt;texto&lt;/strong&gt; para negritas.</p>
-        </div>
-
-        <div>
-          <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Sobre mí — Párrafo 2</label>
-          <textarea id="txt-about-p2" rows="3" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:0.9rem;font-family:inherit;resize:vertical;outline:none"></textarea>
-        </div>
-
-        <div>
-          <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Sobre mí — Párrafo 3</label>
-          <textarea id="txt-about-p3" rows="3" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:0.9rem;font-family:inherit;resize:vertical;outline:none"></textarea>
-        </div>
-
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-          <div>
-            <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Stat: Imágenes</label>
-            <input id="txt-stat-img" type="text" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:1.1rem;font-family:inherit;outline:none;text-align:center">
-          </div>
-          <div>
-            <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Stat: Países</label>
-            <input id="txt-stat-paises" type="text" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:1.1rem;font-family:inherit;outline:none;text-align:center">
-          </div>
-          <div>
-            <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Stat: Ed. limitadas</label>
-            <input id="txt-stat-le" type="text" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:1.1rem;font-family:inherit;outline:none;text-align:center">
-          </div>
-        </div>
-
-        <div>
-          <label style="display:block;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Contacto — Descripción</label>
-          <textarea id="txt-contact-desc" rows="3" oninput="markDirty()" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.75rem;font-size:0.9rem;font-family:inherit;resize:vertical;outline:none"></textarea>
-        </div>
-
-      </div>
+      <textarea id="txt-all" rows="32" oninput="markDirty()" style="width:100%;max-width:780px;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:1rem 1.2rem;font-size:0.9rem;font-family:inherit;resize:vertical;outline:none;line-height:1.7;display:block"></textarea>
     </div>
 
   </div>
@@ -943,25 +900,56 @@ function esc(s) { return String(s||'').replace(/"/g,'&quot;'); }
 
 // ── Init ──
 function renderTexts() {
-  document.getElementById('txt-tienda-desc').value  = texts.tiendaDesc  || '';
-  document.getElementById('txt-about-p1').value     = texts.aboutP1     || '';
-  document.getElementById('txt-about-p2').value     = texts.aboutP2     || '';
-  document.getElementById('txt-about-p3').value     = texts.aboutP3     || '';
-  document.getElementById('txt-stat-img').value     = texts.statImg     || '';
-  document.getElementById('txt-stat-paises').value  = texts.statPaises  || '';
-  document.getElementById('txt-stat-le').value      = texts.statLE      || '';
-  document.getElementById('txt-contact-desc').value = texts.contactDesc || '';
+  var content = [
+    '=== Tienda ===',
+    texts.tiendaDesc || '',
+    '',
+    '=== Sobre mí - Párrafo 1 ===',
+    texts.aboutP1 || '',
+    '',
+    '=== Sobre mí - Párrafo 2 ===',
+    texts.aboutP2 || '',
+    '',
+    '=== Sobre mí - Párrafo 3 ===',
+    texts.aboutP3 || '',
+    '',
+    '=== Stats: imágenes | países | ed. limitadas ===',
+    (texts.statImg || '76') + ' | ' + (texts.statPaises || '8') + ' | ' + (texts.statLE || '10'),
+    '',
+    '=== Contacto ===',
+    texts.contactDesc || '',
+  ].join('\n');
+  document.getElementById('txt-all').value = content;
 }
 
 function collectTexts() {
-  texts.tiendaDesc  = document.getElementById('txt-tienda-desc').value;
-  texts.aboutP1     = document.getElementById('txt-about-p1').value;
-  texts.aboutP2     = document.getElementById('txt-about-p2').value;
-  texts.aboutP3     = document.getElementById('txt-about-p3').value;
-  texts.statImg     = document.getElementById('txt-stat-img').value;
-  texts.statPaises  = document.getElementById('txt-stat-paises').value;
-  texts.statLE      = document.getElementById('txt-stat-le').value;
-  texts.contactDesc = document.getElementById('txt-contact-desc').value;
+  var raw = document.getElementById('txt-all').value;
+  var sections = {};
+  var current = null;
+  var lines = [];
+  raw.split('\n').forEach(function(line) {
+    var m = line.match(/^=== (.+) ===$/);
+    if (m) {
+      if (current !== null) sections[current] = lines.join('\n').trim();
+      current = m[1]; lines = [];
+    } else {
+      if (current !== null) lines.push(line);
+    }
+  });
+  if (current !== null) sections[current] = lines.join('\n').trim();
+
+  if (sections['Tienda']                              !== undefined) texts.tiendaDesc  = sections['Tienda'];
+  if (sections['Sobre mí - Párrafo 1']               !== undefined) texts.aboutP1     = sections['Sobre mí - Párrafo 1'];
+  if (sections['Sobre mí - Párrafo 2']               !== undefined) texts.aboutP2     = sections['Sobre mí - Párrafo 2'];
+  if (sections['Sobre mí - Párrafo 3']               !== undefined) texts.aboutP3     = sections['Sobre mí - Párrafo 3'];
+  if (sections['Contacto']                            !== undefined) texts.contactDesc = sections['Contacto'];
+  var statsLine = sections['Stats: imágenes | países | ed. limitadas'];
+  if (statsLine !== undefined) {
+    var parts = statsLine.split('|').map(function(s) { return s.trim(); });
+    if (parts[0]) texts.statImg    = parts[0];
+    if (parts[1]) texts.statPaises = parts[1];
+    if (parts[2]) texts.statLE     = parts[2];
+  }
 }
 
 function initAdmin() {
