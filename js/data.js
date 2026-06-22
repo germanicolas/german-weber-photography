@@ -23,7 +23,6 @@ var PHOTOS = [
   { code:'LND-003', title:"Laguna Pinilla III", location:"Pinilla, Chile", category:'landscape', src:'images/web/LND-003.jpg', available:true, limitedEdition:false },
   { code:'LND-004', title:"Arroyo Pinilla", location:"Pinilla, Chile", category:'landscape', src:'images/web/LND-004.jpg', available:true, limitedEdition:false },
   { code:'LND-005', title:"Conguillío", location:"Araucanía, Chile", category:'landscape', src:'images/web/LND-005.jpg', available:true, limitedEdition:false },
-  { code:'LND-006', title:"Amanecer Conguillío", location:"Araucanía, Chile", category:'landscape', src:'images/web/LND-006.jpg', available:true, limitedEdition:true, edition:"1/10" },
   { code:'LND-007', title:"Araucarias", location:"Araucanía, Chile", category:'landscape', src:'images/web/LND-007.jpg', available:true, limitedEdition:false },
   { code:'LND-008', title:"Aoraki", location:"Nueva Zelanda", category:'landscape', src:'images/web/LND-008.jpg', available:true, limitedEdition:false },
   { code:'LND-009', title:"Wanaka", location:"Nueva Zelanda", category:'landscape', src:'images/web/LND-009.jpg', available:true, limitedEdition:true, edition:"1/10" },
