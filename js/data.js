@@ -101,20 +101,14 @@ var CATEGORIES = [
 ];
 
 var TEXTS = {
-  tiendaDesc: 'Cada imagen está disponible como impresión fine art de alta calidad, producida en conjunto con una galería especializada en Concón, Chile. Disponible en múltiples tamaños, con o sin marco o paspartú.',
-  aboutP1: 'Soy <strong>German Weber</strong>, fotógrafo basado en <strong>Concón, Chile</strong>. Mi trabajo explora la tensión entre lo monumental y lo íntimo — desde paisajes patagónicos y ecosistemas costeros hasta la geometría de las ciudades que he recorrido en Sudamérica, Europa y Oceanía.',
-  aboutP2: 'Trabajo principalmente con drone y cámara en mano, buscando perspectivas que revelen lo extraordinario en lo cotidiano. Cada imagen es una edición cuidadosa, no un disparo de azar.',
-  aboutP3: 'Las impresiones se producen en colaboración con una galería fine art en Concón, asegurando calidad y permanencia en cada papel.',
-  contactDesc: 'Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas.'
+  "tiendaDesc": "Cada imagen está disponible como impresión fine art de alta calidad, producida en conjunto con una galería especializada en Concón, Chile. Disponible en múltiples tamaños, con o sin marco o paspartú.",
+  "aboutP1": "Soy <strong>Germán Weber</strong>, fotógrafo basado en <strong>Concón, Chile</strong>. Trabajo entre lo grande y lo cercano: paisajes patagónicos, ecosistemas costeros y la geometría de las ciudades que he recorrido en Sudamérica, Europa y Oceanía.",
+  "aboutP2": "Trabajo principalmente con drone y cámara en mano, buscando perspectivas que revelen lo extraordinario en lo cotidiano. Cada imagen es una edición cuidadosa, no un disparo de azar.",
+  "aboutP3": "Llegué a la fotografía desde la curiosidad y la formé en Melbourne. Hoy divido mi tiempo entre encargos, proyectos personales y el trabajo audiovisual en conservación de ríos en Chile.",
+  "contactDesc": "Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas."
 };
 
 var DATA_VERSION = 4;
-
-var HORIZONTAL = new Set(['AER-002','AER-005','AER-007','AER-015','AER-017','AER-018',
-  'ARC-004','ARC-013','ARC-014','ARC-016','ARC-017',
-  'AST-001','LND-001','LND-002','LND-003','LND-006','LND-008','LND-009','LND-010',
-  'LND-011','LND-014','LND-016','LND-017','LND-018','LND-020',
-  'SEA-003','SEA-004','WLD-003','WLD-004','WLD-006','WLD-007','WLD-009','WLD-010']);
 
 // Admin overrides from localStorage
 (function() {
