@@ -98,6 +98,7 @@ var CATEGORIES = [
   { id:'wildlife', label:'Fauna' },
   { id:'street', label:'Street' },
   { id:'astro', label:'Astro' },
+  { id:'bw', label:'B&N' },
 ];
 
 var TEXTS = {

@@ -456,6 +456,7 @@ const CATS = [
   { id:'wildlife', label:'Fauna' },
   { id:'street', label:'Street' },
   { id:'astro', label:'Astro' },
+  { id:'bw', label:'B&N' },
 ];
 let activeCat = 'all';
 
@@ -765,7 +766,7 @@ function generateDataJs() {
 
   const heroJs = JSON.stringify(heroPhotos);
 
-  const cats = `[\n  { id:'all', label:'Todos' },\n  { id:'aerial', label:'Aerial' },\n  { id:'landscape', label:'Paisaje' },\n  { id:'seascape', label:'Mar' },\n  { id:'architecture', label:'Arquitectura' },\n  { id:'wildlife', label:'Fauna' },\n  { id:'street', label:'Street' },\n  { id:'astro', label:'Astro' },\n]`;
+  const cats = `[\n  { id:'all', label:'Todos' },\n  { id:'aerial', label:'Aerial' },\n  { id:'landscape', label:'Paisaje' },\n  { id:'seascape', label:'Mar' },\n  { id:'architecture', label:'Arquitectura' },\n  { id:'wildlife', label:'Fauna' },\n  { id:'street', label:'Street' },\n  { id:'astro', label:'Astro' },\n  { id:'bw', label:'B\\u0026N' },\n]`;
 
   collectTexts();
   const heroMobileJs = JSON.stringify(heroPhotosMobile);
