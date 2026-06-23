@@ -1086,7 +1086,22 @@ footer {
   .pm-mat.show-passe { padding: 12px; }
   .pm-frame-wrap.show-marco,
   .pm-frame-wrap.show-passe { padding: 8px; }
-  .pm-body { padding: 1.2rem; }
+  .pm-body { padding: 1.2rem; padding-bottom: 5rem; }
+  .pm-close {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+    height: 52px;
+    background: rgba(20,20,20,0.97);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .pm-close::after { content: ' Cerrar'; }
 
   /* About: stack vertical */
   #about { grid-template-columns: 1fr; }
