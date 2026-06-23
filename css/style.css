@@ -573,23 +573,22 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
 }
 @media (max-width: 700px) { .print-modal-inner { grid-template-columns: 1fr; } }
 .pm-visual {
-  position: relative;
-  background: var(--bg3);
-}
-.pm-visual {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg3);
+  background: #0d0d0d;
   min-height: 320px;
+  padding: 24px;
 }
 .pm-visual img {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 62vh;
+  object-fit: unset;
 }
-/* When frame is active, switch image to natural proportions */
+/* When frame is active, keep same padding/bg */
 .pm-visual.framed {
   padding: 24px;
   background: #0d0d0d;
