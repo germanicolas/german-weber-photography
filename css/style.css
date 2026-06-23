@@ -689,7 +689,7 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   transition: padding 0.35s ease, box-shadow 0.35s ease;
 }
 .pm-mat.show-passe {
-  padding: 30px;
+  padding: 42px;
   background: #ece7da;
   box-shadow:
     inset 3px 3px 10px rgba(0,0,0,0.14),
@@ -1083,7 +1083,7 @@ footer {
     max-height: none;
   }
   .pm-visual.framed img { max-height: 34vh; }
-  .pm-mat.show-passe { padding: 12px; }
+  .pm-mat.show-passe { padding: 18px; }
   .pm-frame-wrap.show-marco,
   .pm-frame-wrap.show-passe { padding: 8px; }
   .pm-body { padding: 1.2rem; padding-bottom: 5rem; }
