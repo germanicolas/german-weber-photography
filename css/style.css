@@ -563,10 +563,9 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
 .print-modal-inner {
   background: var(--bg2);
   border: 1px solid var(--border);
-  max-width: 1200px;
+  max-width: 1360px;
   width: 100%;
-  max-height: 92vh;
-  overflow-y: auto;
+  height: 86vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
   position: relative;
@@ -577,28 +576,17 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   align-items: center;
   justify-content: center;
   background: #0d0d0d;
-  min-height: 320px;
   padding: 24px;
+  height: 100%;
+  overflow: hidden;
 }
 .pm-visual img {
   display: block;
   width: auto;
   height: auto;
   max-width: 100%;
-  max-height: 62vh;
-  object-fit: unset;
-}
-/* When frame is active, keep same padding/bg */
-.pm-visual.framed {
-  padding: 24px;
-  background: #0d0d0d;
-}
-.pm-visual.framed img {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 62vh;
-  object-fit: unset;
+  max-height: 100%;
+  object-fit: contain;
 }
 .pm-frame-wrap {
   --fw: 16px;
@@ -716,6 +704,7 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  overflow-y: auto;
 }
 .pm-title {
   font-family: var(--font-serif);
