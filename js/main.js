@@ -380,7 +380,33 @@ function renderPrintModal() {
     b.classList.toggle('active', b.dataset.frame === pmFrame);
   });
 
+  renderSizeNote();
+
   document.getElementById('pm-price').textContent = formatPrice(calcPrice());
+}
+
+function renderSizeNote() {
+  const noteEl = document.getElementById('pm-size-note');
+  if (!noteEl) return;
+  const sz = SIZES.find(s => s.id === pmSize);
+  const m = sz && sz.label.match(/(\d+)\s*×\s*(\d+)/);
+  if (!m) { noteEl.textContent = ''; return; }
+  const w = parseInt(m[1], 10), h = parseInt(m[2], 10);
+  const foto = `${w} × ${h} cm`;
+
+  if (pmFrame === 'marco') {
+    // +2 cm de marco por lado
+    noteEl.innerHTML = `La fotografía impresa mide <strong>${foto}</strong>. ` +
+      `Con marco, el cuadro final mide aprox. <strong>${w + 4} × ${h + 4} cm</strong> ` +
+      `(+2 cm de marco por lado).`;
+  } else if (pmFrame === 'passe') {
+    // +5 cm de paspartú y +2 cm de marco por lado
+    noteEl.innerHTML = `La fotografía impresa mide <strong>${foto}</strong>. ` +
+      `Con paspartú, el cuadro final mide aprox. <strong>${w + 14} × ${h + 14} cm</strong> ` +
+      `(+5 cm de paspartú y +2 cm de marco por lado).`;
+  } else {
+    noteEl.innerHTML = `El tamaño corresponde a la fotografía impresa: <strong>${foto}</strong>.`;
+  }
 }
 
 document.getElementById('pm-close')?.addEventListener('click', closePrintModal);
