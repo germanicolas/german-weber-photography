@@ -78,9 +78,9 @@ var PHOTOS = [
 ];
 
 var SIZES = [
-  { id:'s', label:"20 × 30 cm", prices:{ sin:45000, marco:65000, passe:90000 } },
-  { id:'m', label:"40 × 60 cm", prices:{ sin:85000, marco:125000, passe:180000 } },
-  { id:'l', label:"60 × 90 cm", prices:{ sin:130000, marco:195000, passe:270000 } }
+  { id:'s', label:"20 × 30 cm", prices:{ sin:45000, marco:85000, passe:105000 } },
+  { id:'m', label:"40 × 60 cm", prices:{ sin:85000, marco:175000, passe:195000 } },
+  { id:'l', label:"60 × 90 cm", prices:{ sin:130000, marco:285000, passe:345000 } }
 ];
 
 var LE_PREMIUM = 1.3;
@@ -109,7 +109,7 @@ var TEXTS = {
   "contactDesc": "Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas."
 };
 
-var DATA_VERSION = 7;
+var DATA_VERSION = 8;
 
 var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","ARC-004","ARC-013","ARC-014","ARC-016","ARC-017","AST-001","LND-001","LND-002","LND-003","LND-006","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","SEA-003","SEA-004","WLD-003","WLD-004","WLD-006","WLD-007","WLD-009","WLD-010"]);
 
