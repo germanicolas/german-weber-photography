@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=12">
+  <link rel="stylesheet" href="css/style.css?v=14">
 </head>
 <body>
 
@@ -70,31 +70,13 @@
   </p>
 </section>
 
-<!-- ── Lightbox ── -->
-<div id="lightbox" role="dialog" aria-modal="true">
-  <button class="lb-close" id="lb-close" aria-label="Cerrar">✕</button>
-  <button class="lb-prev" id="lb-prev" aria-label="Anterior">‹</button>
-  <button class="lb-next" id="lb-next" aria-label="Siguiente">›</button>
-  <div class="lightbox-inner">
-    <div class="lightbox-img-wrap">
-      <img id="lb-img" src="" alt="">
-      <div class="lightbox-info">
-        <div>
-          <div class="lightbox-title" id="lb-title"></div>
-          <div class="lightbox-loc" id="lb-loc"></div>
-        </div>
-        <button class="lb-btn-print" id="lb-print" data-code="">Solicitar Impresión</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ── Print Modal ── -->
+<!-- ── Print Modal (visor + opciones) ── -->
 <div id="print-modal" role="dialog" aria-modal="true">
   <div class="print-modal-inner">
     <button class="pm-close" id="pm-close" aria-label="Cerrar">✕</button>
     <div class="pm-visual">
+      <button class="pm-prev" id="pm-prev" aria-label="Anterior">‹</button>
+      <button class="pm-next" id="pm-next" aria-label="Siguiente">›</button>
       <div class="pm-frame-wrap" id="pm-frame-wrap">
         <span class="pm-rail pm-rail-top"></span>
         <span class="pm-rail pm-rail-right"></span>
@@ -105,8 +87,16 @@
         </div>
       </div>
       <div class="pm-toggle" id="pm-toggle"></div>
+      <div class="pm-viewer-bar" id="pm-viewer-bar">
+        <div>
+          <div class="pm-vb-title" id="pm-vb-title"></div>
+          <div class="pm-vb-loc" id="pm-vb-loc"></div>
+        </div>
+        <button class="pm-vb-options" id="pm-vb-options">Ver opciones</button>
+      </div>
     </div>
     <div class="pm-body">
+      <button class="pm-back" id="pm-back">‹ Ver foto completa</button>
       <div>
         <div class="pm-title" id="pm-title"></div>
         <div class="pm-location" id="pm-loc"></div>
@@ -278,7 +268,7 @@
   </div>
 </footer>
 
-<script src="js/data.js?v=12"></script>
-<script src="js/main.js?v=12"></script>
+<script src="js/data.js?v=14"></script>
+<script src="js/main.js?v=14"></script>
 </body>
 </html>

@@ -178,7 +178,7 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
       item.appendChild(badge);
     }
 
-    item.addEventListener('click', () => openLightbox(p.code));
+    item.addEventListener('click', () => openViewer(p.code));
     return item;
   }
 
@@ -201,31 +201,63 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
     });
   }
 
-  // En mobile: patrón variado V(1 o 2) + H ancho completo
-  const isMobile = window.innerWidth < 768;
-  if (isMobile && typeof HORIZONTAL !== 'undefined') {
-    const verticals   = mixed.filter(p => !HORIZONTAL.has(p.code));
-    const horizontals = mixed.filter(p =>  HORIZONTAL.has(p.code));
-    const vGroups = [2, 1, 2, 2, 1, 2, 1, 2]; // cuántas V antes de cada H
-    let vi = 0, hi = 0, gi = 0;
-    while (vi < verticals.length || hi < horizontals.length) {
-      const count = vGroups[gi++ % vGroups.length];
-      const vCards = [];
-      for (let i = 0; i < count && vi < verticals.length; i++) {
-        vCards.push(makeCard(verticals[vi++]));
-      }
-      // Si es 1 sola, que ocupe todo el ancho
-      if (vCards.length === 1) vCards[0].style.gridColumn = 'span 2';
-      vCards.forEach(c => grid.appendChild(c));
-      if (hi < horizontals.length) {
-        const cardH = makeCard(horizontals[hi++]);
-        cardH.style.gridColumn = 'span 2';
-        grid.appendChild(cardH);
-      }
-    }
-  } else {
-    mixed.forEach(p => grid.appendChild(makeCard(p)));
+  mixed.forEach(p => grid.appendChild(makeCard(p)));
+
+  /* ── Layout de filas justificadas ──
+     Cada fila tiene altura pareja; los anchos siguen la proporción real
+     de cada foto y suman exacto el ancho del contenedor. Máx 4 por fila. */
+  function justifyGallery() {
+    const isMobile = window.innerWidth < 768;
+    const GAP = isMobile ? 14 : 44; // debe coincidir con el gap CSS de .gallery-grid
+    const TARGET_H = isMobile ? 300 : 580;
+    const MAX_PER_ROW = 4;
+    const W = Math.floor(grid.getBoundingClientRect().width) - 1;
+    if (W <= 0) return;
+
+    const items = [...grid.querySelectorAll('.gallery-item')]
+      .filter(el => el.dataset.visible !== 'false');
+
+    let row = [], aspectSum = 0;
+    const flush = (isLast) => {
+      if (!row.length) return;
+      const gaps = GAP * (row.length - 1);
+      let h = (W - gaps) / aspectSum;
+      if (isLast && h > TARGET_H) h = TARGET_H; // última fila no se estira
+      let used = 0;
+      row.forEach((r, i) => {
+        const w = (i === row.length - 1 && !isLast)
+          ? W - gaps - used                     // cierra la fila exacta
+          : Math.floor(r.aspect * h);
+        used += w;
+        r.el.style.width = w + 'px';
+        r.el.style.height = Math.floor(h) + 'px';
+      });
+      row = []; aspectSum = 0;
+    };
+    items.forEach(el => {
+      const img = el.querySelector('img');
+      const aspect = (img.naturalWidth && img.naturalHeight)
+        ? img.naturalWidth / img.naturalHeight
+        : (el.dataset.orientation === 'h' ? 1.5 : 0.667);
+      row.push({ el, aspect });
+      aspectSum += aspect;
+      if (aspectSum * TARGET_H >= W - GAP * (row.length - 1) || row.length >= MAX_PER_ROW) flush(false);
+    });
+    flush(true);
   }
+
+  // Primer layout con proporciones estimadas, luego con las reales al cargar
+  justifyGallery();
+  const gridImgs = [...grid.querySelectorAll('img')];
+  Promise.allSettled(gridImgs.map(i => i.decode ? i.decode().catch(() => {}) : Promise.resolve()))
+    .then(justifyGallery);
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(justifyGallery, 120);
+  });
+  grid._justify = justifyGallery; // para relayout al filtrar
 
   // Filters
   CATEGORIES.forEach(cat => {
@@ -239,61 +271,48 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
       document.querySelectorAll('.gallery-item').forEach(el => {
         el.dataset.visible = (cat.id === 'all' || el.dataset.category === cat.id) ? 'true' : 'false';
       });
+      justifyGallery();
     });
     filters.appendChild(btn);
   });
 })();
 
-/* ── Lightbox ── */
-let lbFiltered = [...PHOTOS];
-let lbIndex = 0;
+/* ── Visor unificado (foto grande → opciones) ── */
+let pmFiltered = [...PHOTOS];
+let pmIndex = 0;
 
-function openLightbox(code) {
+function openViewer(code) {
   const activeFilter = document.querySelector('.filter-btn.active')?.dataset.cat || 'all';
-  lbFiltered = activeFilter === 'all' ? PHOTOS : PHOTOS.filter(p => p.category === activeFilter);
-  lbIndex = lbFiltered.findIndex(p => p.code === code);
-  if (lbIndex < 0) lbIndex = 0;
-  renderLightbox();
-  document.getElementById('lightbox').classList.add('open');
+  pmFiltered = activeFilter === 'all' ? PHOTOS : PHOTOS.filter(p => p.category === activeFilter);
+  pmIndex = pmFiltered.findIndex(p => p.code === code);
+  if (pmIndex < 0) pmIndex = 0;
+  const modal = document.getElementById('print-modal');
+  modal.classList.remove('options');
+  setPmPhoto(pmFiltered[pmIndex]);
+  modal.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-  document.body.style.overflow = '';
+function setPmPhoto(p) {
+  pmPhoto = p;
+  pmSize = 's'; pmFrame = 'sin';
+  pmColor = p.suggestedFrame || 'negro';
+  renderPrintModal();
 }
 
-function renderLightbox() {
-  const p = lbFiltered[lbIndex];
-  document.getElementById('lb-img').src = p.src;
-  document.getElementById('lb-img').alt = p.title;
-  document.getElementById('lb-title').textContent = p.title;
-  document.getElementById('lb-loc').textContent = p.location;
-  document.getElementById('lb-print').dataset.code = p.code;
-}
-
-document.getElementById('lb-close')?.addEventListener('click', closeLightbox);
-document.getElementById('lb-prev')?.addEventListener('click', () => {
-  lbIndex = (lbIndex - 1 + lbFiltered.length) % lbFiltered.length;
-  renderLightbox();
+document.getElementById('pm-prev')?.addEventListener('click', () => {
+  pmIndex = (pmIndex - 1 + pmFiltered.length) % pmFiltered.length;
+  setPmPhoto(pmFiltered[pmIndex]);
 });
-document.getElementById('lb-next')?.addEventListener('click', () => {
-  lbIndex = (lbIndex + 1) % lbFiltered.length;
-  renderLightbox();
+document.getElementById('pm-next')?.addEventListener('click', () => {
+  pmIndex = (pmIndex + 1) % pmFiltered.length;
+  setPmPhoto(pmFiltered[pmIndex]);
 });
-document.getElementById('lightbox')?.addEventListener('click', e => {
-  if (e.target === document.getElementById('lightbox')) closeLightbox();
+document.getElementById('pm-vb-options')?.addEventListener('click', () => {
+  document.getElementById('print-modal').classList.add('options');
 });
-document.getElementById('lb-print')?.addEventListener('click', () => {
-  const code = document.getElementById('lb-print').dataset.code;
-  closeLightbox();
-  openPrintModal(code);
-});
-document.addEventListener('keydown', e => {
-  if (!document.getElementById('lightbox').classList.contains('open')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + lbFiltered.length) % lbFiltered.length; renderLightbox(); }
-  if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbFiltered.length; renderLightbox(); }
+document.getElementById('pm-back')?.addEventListener('click', () => {
+  document.getElementById('print-modal').classList.remove('options');
 });
 
 
@@ -310,13 +329,8 @@ const MARCO_COLORS = {
 };
 
 function openPrintModal(code) {
-  pmPhoto = PHOTOS.find(p => p.code === code);
-  if (!pmPhoto) return;
-  pmSize = 's'; pmFrame = 'sin';
-  pmColor = pmPhoto.suggestedFrame || 'negro';
-  renderPrintModal();
-  document.getElementById('print-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  openViewer(code);
+  document.getElementById('print-modal').classList.add('options');
 }
 
 function closePrintModal() {
@@ -364,6 +378,10 @@ function renderPrintModal() {
 
   document.getElementById('pm-title').textContent = pmPhoto.title;
   document.getElementById('pm-loc').textContent = pmPhoto.location;
+  const vbTitle = document.getElementById('pm-vb-title');
+  const vbLoc = document.getElementById('pm-vb-loc');
+  if (vbTitle) vbTitle.textContent = pmPhoto.title;
+  if (vbLoc) vbLoc.textContent = pmPhoto.location;
 
   const leBadge = document.getElementById('pm-le-badge');
   if (leBadge) {
@@ -409,7 +427,13 @@ document.getElementById('print-modal')?.addEventListener('click', e => {
   if (e.target === document.getElementById('print-modal')) closePrintModal();
 });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && document.getElementById('print-modal').classList.contains('open')) closePrintModal();
+  const modal = document.getElementById('print-modal');
+  if (!modal.classList.contains('open')) return;
+  if (e.key === 'Escape') closePrintModal();
+  if (!modal.classList.contains('options')) {
+    if (e.key === 'ArrowLeft')  { pmIndex = (pmIndex - 1 + pmFiltered.length) % pmFiltered.length; setPmPhoto(pmFiltered[pmIndex]); }
+    if (e.key === 'ArrowRight') { pmIndex = (pmIndex + 1) % pmFiltered.length; setPmPhoto(pmFiltered[pmIndex]); }
+  }
 });
 
 document.querySelectorAll('.pm-size').forEach(b => b.addEventListener('click', () => {
