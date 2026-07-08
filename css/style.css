@@ -1097,6 +1097,7 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   gap: clamp(2.5rem, 6vw, 5rem);
   flex-wrap: wrap;
 }
+.partners-logos a { display: block; line-height: 0; }
 .partners-logos img {
   width: auto;
   opacity: 0.55;
