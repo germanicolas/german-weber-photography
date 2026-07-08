@@ -637,6 +637,9 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
 #print-modal.options .pm-next { opacity: 0; pointer-events: none; }
 .pm-frame-wrap.show-marco { --img-max-h: calc(86vh - 80px); }
 .pm-frame-wrap.show-passe { --img-max-h: calc(86vh - 150px); }
+/* En modo visor la barra inferior ocupa 100px extra: descontarla del marco/paspartú */
+#print-modal:not(.options) .pm-frame-wrap.show-marco { --img-max-h: calc(86vh - 160px); }
+#print-modal:not(.options) .pm-frame-wrap.show-passe { --img-max-h: calc(86vh - 230px); }
 .pm-visual img {
   display: block;
   width: auto;
