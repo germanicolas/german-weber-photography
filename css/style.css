@@ -559,6 +559,7 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   --pm-gold: #c9a96e;
   --pm-gold-dark: #e0c48a;
   --pm-btn-border: #4e4e4e;
+  --pm-btn-bg: #333333;
   --pm-on-gold: #1a1a1a;
   position: fixed;
   inset: 0;
@@ -766,12 +767,23 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   text-align: center;
   transition: all var(--transition);
   white-space: nowrap;
+  background: var(--pm-btn-bg);
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.06);
 }
 @media (max-width: 768px) {
   .pm-opt { font-size: 0.62rem; padding: 0.55rem 0.2rem; letter-spacing: 0.04em; }
 }
 .pm-opt:hover { border-color: var(--pm-gold); color: var(--pm-text); }
-.pm-opt.active { border-color: var(--pm-gold); background: var(--pm-gold); color: var(--pm-on-gold); }
+.pm-opt.active {
+  border-color: var(--pm-gold);
+  background: var(--pm-gold);
+  color: var(--pm-on-gold);
+  box-shadow:
+    0 3px 10px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+}
 .pm-size-note {
   margin-top: 0.8rem;
   font-size: 0.72rem;
@@ -783,13 +795,22 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   display: flex;
   justify-content: space-between;
   gap: 1.5rem;
-  opacity: 0.7;
+  opacity: 0.55;
+  padding: 0.25rem 0.6rem;
+  border-left: 2px solid transparent;
+  transition: all var(--transition);
 }
-.pm-dim-row.active { opacity: 1; }
+.pm-dim-row.active {
+  opacity: 1;
+  background: rgba(201,169,110,0.16);
+  border-left-color: var(--pm-gold);
+}
+.pm-dim-row.active span { color: var(--pm-text); }
 .pm-dim-row strong {
   color: var(--pm-text);
   font-weight: 500;
 }
+.pm-dim-row.active strong { color: var(--pm-gold-dark); }
 .pm-price-display {
   font-family: var(--font-serif);
   font-size: 2rem;
@@ -805,6 +826,9 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   padding: 1rem 2rem;
   background: var(--pm-gold);
   color: var(--pm-on-gold);
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.3);
   font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -835,6 +859,10 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   letter-spacing: 0.08em;
   color: var(--pm-text-muted);
   transition: all var(--transition);
+  background: var(--pm-btn-bg);
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.06);
 }
 .pm-color-btn:hover { border-color: var(--pm-gold); color: var(--pm-text); }
 .pm-color-btn.active { border-color: var(--pm-gold); color: var(--pm-text); }
