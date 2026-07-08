@@ -550,15 +550,15 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
 
 /* ── Print Modal ── */
 #print-modal {
-  /* paleta grafito cálido del modal */
-  --pm-bg: #201d19;
-  --pm-border: #383329;
+  /* paleta gris oscuro neutro del modal */
+  --pm-bg: #313131;
+  --pm-border: #464646;
   --pm-text: #f0ede8;
-  --pm-text-muted: #8f887b;
-  --pm-text-dim: #6f6759;
+  --pm-text-muted: #a09c96;
+  --pm-text-dim: #7a766f;
   --pm-gold: #c9a96e;
   --pm-gold-dark: #e0c48a;
-  --pm-btn-border: #443e34;
+  --pm-btn-border: #4e4e4e;
   --pm-on-gold: #1a1a1a;
   position: fixed;
   inset: 0;
