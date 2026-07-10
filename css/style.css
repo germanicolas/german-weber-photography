@@ -1278,3 +1278,10 @@ footer {
   /* Sección padding reducido */
   section { padding: clamp(2.5rem, 6vw, 4rem) clamp(1.2rem, 4vw, 2rem); }
 }
+
+/* Disuasión de descarga: bloquea arrastre de imágenes y menú de mantener-presionado (móvil) */
+img {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+}

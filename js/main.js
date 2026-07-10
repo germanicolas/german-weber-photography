@@ -488,3 +488,15 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     }
   });
 });
+
+/* ── Disuasión de descarga de imágenes ──
+   No es protección real (el navegador ya bajó la imagen para mostrarla),
+   pero frena el clic derecho → "Guardar", el arrastre y el menú móvil. */
+(function () {
+  document.addEventListener('contextmenu', function (e) {
+    if (e.target && e.target.tagName === 'IMG') e.preventDefault();
+  });
+  document.addEventListener('dragstart', function (e) {
+    if (e.target && e.target.tagName === 'IMG') e.preventDefault();
+  });
+})();
