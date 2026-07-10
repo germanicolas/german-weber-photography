@@ -72,7 +72,22 @@ var PHOTOS = [
   { code:'STR-003', title:"Wimbledon I", location:"Londres, Reino Unido", category:'street', src:'images/web/STR-003.jpg', available:true, limitedEdition:false },
   { code:'STR-004', title:"Wimbledon II", location:"Londres, Reino Unido", category:'street', src:'images/web/STR-004.jpg', available:true, limitedEdition:false },
   { code:'AST-001', title:"Vía Láctea", location:"Chile", category:'astro', src:'images/web/AST-001.jpg', available:true, limitedEdition:true, edition:"1/10" },
-  { code:'AST-002', title:"Eclipse Solar", location:"Chile", category:'astro', src:'images/web/AST-002.jpg', available:true, limitedEdition:true, edition:"2/10" }
+  { code:'AST-002', title:"Eclipse Solar", location:"Chile", category:'astro', src:'images/web/AST-002.jpg', available:true, limitedEdition:true, edition:"2/10" },
+  { code:'ARC-018', title:"Sunset Oporto", location:"Oporto, Portugal", category:'architecture', src:'images/web/ARC-018.jpg', available:true, limitedEdition:false },
+  { code:'ARC-019', title:"Torre Eiffel", location:"París, Francia", category:'architecture', src:'images/web/ARC-019.jpg', available:true, limitedEdition:false },
+  { code:'ARC-020', title:"Coliseo", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-020.jpg', available:true, limitedEdition:false },
+  { code:'ARC-021', title:"Il Duomo", location:"Florencia, Italia", category:'bw', src:'images/web/ARC-021.jpg', available:true, limitedEdition:false },
+  { code:'ARC-022', title:"David", location:"Florencia, Italia", category:'bw', src:'images/web/ARC-022.jpg', available:true, limitedEdition:false },
+  { code:'ARC-023', title:"Venecia", location:"Venecia, Italia", category:'architecture', src:'images/web/ARC-023.jpg', available:true, limitedEdition:false },
+  { code:'ARC-024', title:"Coliseo II", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-024.jpg', available:true, limitedEdition:false },
+  { code:'ARC-025', title:"San Pedro", location:"Ciudad del Vaticano", category:'architecture', src:'images/web/ARC-025.jpg', available:true, limitedEdition:false },
+  { code:'ARC-026', title:"Persianas", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-026.jpg', available:true, limitedEdition:false },
+  { code:'ARC-027', title:"Panteón", location:"Roma, Italia", category:'bw', src:'images/web/ARC-027.jpg', available:true, limitedEdition:false },
+  { code:'SEA-005', title:"Bote", location:"Portugal", category:'seascape', src:'images/web/SEA-005.jpg', available:true, limitedEdition:false },
+  { code:'STR-005', title:"BCN", location:"Barcelona, España", category:'bw', src:'images/web/STR-005.jpg', available:true, limitedEdition:false },
+  { code:'STR-006', title:"Generalitat", location:"Barcelona, España", category:'bw', src:'images/web/STR-006.jpg', available:true, limitedEdition:false },
+  { code:'LND-021', title:"Pastos", location:"Chile", category:'landscape', src:'images/web/LND-021.jpg', available:true, limitedEdition:false },
+  { code:'LND-022', title:"Pastos II", location:"Chile", category:'landscape', src:'images/web/LND-022.jpg', available:true, limitedEdition:false }
 ];
 
 var SIZES = [
@@ -107,9 +122,9 @@ var TEXTS = {
   "contactDesc": "Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas."
 };
 
-var DATA_VERSION = 9;
+var DATA_VERSION = 10;
 
-var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","ARC-004","ARC-013","ARC-014","ARC-016","ARC-017","AST-001","LND-001","LND-002","LND-003","LND-006","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","SEA-003","SEA-004","WLD-003","WLD-004","WLD-006","WLD-007","WLD-009","WLD-010"]);
+var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","ARC-004","ARC-013","ARC-014","ARC-016","ARC-017","ARC-020","ARC-021","ARC-024","ARC-027","AST-001","LND-001","LND-002","LND-003","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","SEA-003","SEA-004","STR-005","STR-006","WLD-003","WLD-004","WLD-006","WLD-007","WLD-010"]);
 
 // Admin overrides from localStorage
 (function() {
