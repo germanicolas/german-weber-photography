@@ -126,29 +126,19 @@ var DATA_VERSION = 10;
 
 var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","ARC-004","ARC-013","ARC-014","ARC-016","ARC-017","ARC-020","ARC-021","ARC-024","ARC-027","AST-001","LND-001","LND-002","LND-003","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","SEA-003","SEA-004","STR-005","STR-006","WLD-003","WLD-004","WLD-006","WLD-007","WLD-010"]);
 
-// Admin overrides from localStorage
+// Admin overrides from localStorage.
+// El cache solo se aplica cuando su versión coincide con la del data.js publicado
+// (sirve para previsualizar cambios del admin antes de publicar). Si el data.js
+// publicado es más nuevo (otra versión), el cache está obsoleto → se descarta y
+// manda el archivo. Así nunca queda una copia vieja tapando fotos/precios nuevos.
 (function() {
   try {
     var saved = localStorage.getItem('gw-admin-data');
     if (!saved) return;
     var d = JSON.parse(saved);
-    var versionOk = d.version === DATA_VERSION;
-    if (!versionOk) {
-      if (d.photos) {
-        var freshMap = {};
-        PHOTOS.forEach(function(p) { freshMap[p.code] = p; });
-        d.photos.forEach(function(p) {
-          var f = freshMap[p.code];
-          if (!f) return;
-          p.category = f.category;
-          if (f.mockup)  p.mockup  = f.mockup;  else delete p.mockup;
-          if (f.mockup2) p.mockup2 = f.mockup2; else delete p.mockup2;
-        });
-      }
-      delete d.sizes;
-      delete d.lePremium;
-      d.version = DATA_VERSION;
-      localStorage.setItem('gw-admin-data', JSON.stringify(d));
+    if (d.version !== DATA_VERSION) {
+      localStorage.removeItem('gw-admin-data');
+      return;
     }
     if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }
     if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }
