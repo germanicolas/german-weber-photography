@@ -79,7 +79,6 @@ var PHOTOS = [
   { code:'ARC-021', title:"Il Duomo", location:"Florencia, Italia", category:'bw', src:'images/web/ARC-021.jpg', available:true, limitedEdition:false },
   { code:'ARC-022', title:"David", location:"Florencia, Italia", category:'bw', src:'images/web/ARC-022.jpg', available:true, limitedEdition:false },
   { code:'ARC-023', title:"Venecia", location:"Venecia, Italia", category:'architecture', src:'images/web/ARC-023.jpg', available:true, limitedEdition:false },
-  { code:'ARC-024', title:"Coliseo II", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-024.jpg', available:true, limitedEdition:false },
   { code:'ARC-025', title:"San Pedro", location:"Ciudad del Vaticano", category:'architecture', src:'images/web/ARC-025.jpg', available:true, limitedEdition:false },
   { code:'ARC-026', title:"Persianas", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-026.jpg', available:true, limitedEdition:false },
   { code:'ARC-027', title:"Panteón", location:"Roma, Italia", category:'bw', src:'images/web/ARC-027.jpg', available:true, limitedEdition:false },
@@ -122,9 +121,9 @@ var TEXTS = {
   "contactDesc": "Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas."
 };
 
-var DATA_VERSION = 11;
+var DATA_VERSION = 12;
 
-var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","ARC-004","ARC-013","ARC-014","ARC-016","ARC-017","ARC-020","ARC-021","ARC-024","ARC-027","AST-001","LND-001","LND-002","LND-003","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","SEA-003","SEA-004","STR-005","STR-006","WLD-003","WLD-004","WLD-006","WLD-007","WLD-010"]);
+var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","ARC-004","ARC-013","ARC-014","ARC-016","ARC-017","ARC-020","ARC-021","ARC-027","AST-001","LND-001","LND-002","LND-003","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","SEA-003","SEA-004","STR-005","STR-006","WLD-003","WLD-004","WLD-006","WLD-007","WLD-010"]);
 
 // Admin overrides from localStorage.
 // El cache solo se aplica cuando su versión coincide con la del data.js publicado
