@@ -20,8 +20,15 @@ test.describe('Galería', () => {
     await page.goto('/');
     await page.waitForSelector('.gallery-item');
     const items = page.locator('.gallery-item');
-    await expect(items).toHaveCount(await items.count());
     expect(await items.count()).toBeGreaterThan(70);
+  });
+
+  test('las filas justificadas asignan tamaño a cada foto', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.gallery-item');
+    const first = page.locator('.gallery-item').first();
+    await expect(first).toHaveAttribute('style', /width:\s*\d+px/);
+    await expect(first).toHaveAttribute('style', /height:\s*\d+px/);
   });
 
   test('filtro por categoría funciona', async ({ page }) => {
@@ -32,37 +39,60 @@ test.describe('Galería', () => {
     expect(await hidden.count()).toBeGreaterThan(0);
   });
 
-  test('click en foto abre el lightbox', async ({ page }) => {
+  test('el filtro relayouta las fotos visibles', async ({ page }) => {
     await page.goto('/');
-    await page.waitForSelector('.gallery-item');
-    await page.locator('.gallery-item').first().click();
-    await expect(page.locator('#lightbox')).toHaveClass(/open/);
-  });
-
-  test('lightbox se cierra con Escape', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForSelector('.gallery-item');
-    await page.locator('.gallery-item').first().click();
-    await page.keyboard.press('Escape');
-    await expect(page.locator('#lightbox')).not.toHaveClass(/open/);
+    await page.waitForSelector('.filter-btn');
+    await page.locator('.filter-btn', { hasText: 'Aerial' }).click();
+    const visible = page.locator('.gallery-item[data-visible="true"]').first();
+    await expect(visible).toHaveAttribute('style', /width:\s*\d+px/);
   });
 });
 
-test.describe('Modal de impresión', () => {
+test.describe('Visor', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.waitForSelector('.gallery-item');
     await page.locator('.gallery-item').first().click();
-    await page.locator('#lb-print').click();
   });
 
-  test('abre el modal', async ({ page }) => {
-    await expect(page.locator('#print-modal')).toHaveClass(/open/);
+  test('click en foto abre el visor', async ({ page }) => {
+    const modal = page.locator('#print-modal');
+    await expect(modal).toHaveClass(/open/);
+    await expect(modal).not.toHaveClass(/options/);
+    await expect(page.locator('.pm-viewer-bar')).toBeVisible();
+    await expect(page.locator('#pm-vb-options')).toBeVisible();
   });
 
   test('muestra la foto', async ({ page }) => {
+    await expect(page.locator('#pm-img')).toHaveAttribute('src', /.+/);
+  });
+
+  test('navega a la siguiente y anterior foto', async ({ page }) => {
     const img = page.locator('#pm-img');
-    await expect(img).toHaveAttribute('src', /.+/);
+    const srcInicial = await img.getAttribute('src');
+    await page.locator('#pm-next').click();
+    await expect(img).not.toHaveAttribute('src', srcInicial);
+    await page.locator('#pm-prev').click();
+    await expect(img).toHaveAttribute('src', srcInicial);
+  });
+
+  test('se cierra con Escape', async ({ page }) => {
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#print-modal')).not.toHaveClass(/open/);
+  });
+});
+
+test.describe('Panel de opciones', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.gallery-item');
+    await page.locator('.gallery-item').first().click();
+    await page.locator('#pm-vb-options').click();
+  });
+
+  test('"Ver opciones" muestra el panel', async ({ page }) => {
+    await expect(page.locator('#print-modal')).toHaveClass(/options/);
+    await expect(page.locator('#pm-price')).toBeVisible();
   });
 
   test('cambia de tamaño y actualiza precio', async ({ page }) => {
@@ -75,6 +105,13 @@ test.describe('Modal de impresión', () => {
   test('activa marco y muestra selector de color', async ({ page }) => {
     await page.locator('.pm-frame[data-frame="marco"]').click();
     await expect(page.locator('#pm-color-section')).toBeVisible();
+  });
+
+  test('"Ver foto completa" vuelve al visor', async ({ page }) => {
+    await page.locator('#pm-back').click();
+    const modal = page.locator('#print-modal');
+    await expect(modal).not.toHaveClass(/options/);
+    await expect(modal).toHaveClass(/open/);
   });
 
   test('se cierra con Escape', async ({ page }) => {

@@ -30,11 +30,11 @@ var PHOTOS = [
   { code:'LND-011', title:"Milford Sound", location:"Nueva Zelanda", category:'landscape', src:'images/web/LND-011.jpg', available:true, limitedEdition:false },
   { code:'LND-012', title:"Río Futaleufú", location:"Patagonia, Chile", category:'landscape', src:'images/web/LND-012.jpg', mockup:"images/mockups/futa.jpg", mockup2:"images/mockups/futa 2.jpg", available:true, limitedEdition:false, suggestedFrame:'natural' },
   { code:'LND-013', title:"Valle California", location:"Chile", category:'landscape', src:'images/web/LND-013.jpg', available:true, limitedEdition:false },
-  { code:'LND-014', title:"Montserrat", location:"España", category:'bw', src:'images/web/LND-014.jpg', available:true, limitedEdition:false },
+  { code:'LND-014', title:"Montserrat", location:"España", category:'landscape', categories:['landscape','bw'], src:'images/web/LND-014.jpg', available:true, limitedEdition:false },
   { code:'LND-015', title:"Calma", location:"Chile", category:'landscape', src:'images/web/LND-015.jpg', available:true, limitedEdition:false },
   { code:'LND-016', title:"Porto", location:"Portugal", category:'landscape', src:'images/web/LND-016.jpg', available:true, limitedEdition:false },
   { code:'LND-017', title:"Montmartre", location:"París, Francia", category:'landscape', src:'images/web/LND-017.jpg', available:true, limitedEdition:false },
-  { code:'LND-018', title:"Seven Sisters I", location:"Sussex, Reino Unido", category:'bw', src:'images/web/LND-018.jpg', mockup:"images/mockups/7 sisters .jpg", available:true, limitedEdition:false, suggestedFrame:'blanco' },
+  { code:'LND-018', title:"Seven Sisters I", location:"Sussex, Reino Unido", category:'landscape', categories:['landscape','bw'], src:'images/web/LND-018.jpg', mockup:"images/mockups/7 sisters .jpg", available:true, limitedEdition:false, suggestedFrame:'blanco' },
   { code:'LND-019', title:"Seven Sisters II", location:"Sussex, Reino Unido", category:'landscape', src:'images/web/LND-019.jpg', available:true, limitedEdition:false, suggestedFrame:'blanco' },
   { code:'LND-020', title:"Seven Sisters III", location:"Sussex, Reino Unido", category:'landscape', src:'images/web/LND-020.jpg', mockup:"images/mockups/sisters.jpg", mockup2:"images/mockups/sisters 2.jpg", available:true, limitedEdition:false },
   { code:'SEA-001', title:"Olas", location:"Concón, Chile", category:'seascape', src:'images/web/SEA-001.jpg', mockup:"images/mockups/waves.jpg", mockup2:"images/mockups/waves 2.jpg", available:true, limitedEdition:true, edition:"2/10", suggestedFrame:'negro' },
@@ -44,7 +44,7 @@ var PHOTOS = [
   { code:'ARC-001', title:"Grid", location:"Londres, Reino Unido", category:'architecture', src:'images/web/ARC-001.jpg', available:true, limitedEdition:false },
   { code:'ARC-002', title:"St Paul's", location:"Londres, Reino Unido", category:'architecture', src:'images/web/ARC-002.jpg', available:true, limitedEdition:false },
   { code:'ARC-003', title:"Big Ben", location:"Londres, Reino Unido", category:'architecture', src:'images/web/ARC-003.jpg', available:true, limitedEdition:false },
-  { code:'ARC-004', title:"Westminster", location:"Londres, Reino Unido", category:'bw', src:'images/web/ARC-004.jpg', available:true, limitedEdition:false },
+  { code:'ARC-004', title:"Westminster", location:"Londres, Reino Unido", category:'architecture', categories:['architecture','bw'], src:'images/web/ARC-004.jpg', available:true, limitedEdition:false },
   { code:'ARC-005', title:"London Eye", location:"Londres, Reino Unido", category:'architecture', src:'images/web/ARC-005.jpg', available:true, limitedEdition:false },
   { code:'ARC-006', title:"King's College", location:"Cambridge, Reino Unido", category:'architecture', src:'images/web/ARC-006.jpg', mockup:"images/mockups/cambridge.jpg", mockup2:"images/mockups/cambridge 2.jpg", available:true, limitedEdition:false, suggestedFrame:'blanco' },
   { code:'ARC-007', title:"Natural History", location:"Londres, Reino Unido", category:'architecture', src:'images/web/ARC-007.jpg', available:true, limitedEdition:false },
@@ -53,7 +53,7 @@ var PHOTOS = [
   { code:'ARC-010', title:"RMIT II", location:"Melbourne, Australia", category:'architecture', src:'images/web/ARC-010.jpg', available:true, limitedEdition:false },
   { code:'ARC-011', title:"Montmartre II", location:"París, Francia", category:'architecture', src:'images/web/ARC-011.jpg', available:true, limitedEdition:false },
   { code:'ARC-012', title:"Rose", location:"París, Francia", category:'architecture', src:'images/web/ARC-012.jpg', available:true, limitedEdition:false },
-  { code:'ARC-013', title:"El Panteón", location:"Roma, Italia", category:'bw', src:'images/web/ARC-013.jpg', available:true, limitedEdition:true, edition:"2/10" },
+  { code:'ARC-013', title:"El Panteón", location:"Roma, Italia", category:'architecture', categories:['architecture','bw'], src:'images/web/ARC-013.jpg', available:true, limitedEdition:true, edition:"2/10" },
   { code:'ARC-014', title:"Coliseo", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-014.jpg', available:true, limitedEdition:false },
   { code:'ARC-015', title:"Duoro", location:"Porto, Portugal", category:'architecture', src:'images/web/ARC-015.jpg', available:true, limitedEdition:false },
   { code:'ARC-016', title:"Melbourne Nocturno", location:"Melbourne, Australia", category:'architecture', src:'images/web/ARC-016.jpg', available:true, limitedEdition:false },
@@ -66,8 +66,8 @@ var PHOTOS = [
   { code:'WLD-006', title:"Pelícanos III", location:"Chile", category:'wildlife', src:'images/web/WLD-006.jpg', available:true, limitedEdition:false },
   { code:'WLD-007', title:"Pelícano IV", location:"Chile", category:'wildlife', src:'images/web/WLD-007.jpg', available:true, limitedEdition:false },
   { code:'WLD-008', title:"Pelícano V", location:"Chile", category:'wildlife', src:'images/web/WLD-008.jpg', available:true, limitedEdition:false },
-  { code:'WLD-010', title:"Caballos", location:"Chile", category:'bw', src:'images/web/WLD-010.jpg', mockup:"images/mockups/horses.jpg", mockup2:"images/mockups/caballos gigantes pared.jpg", available:true, limitedEdition:true, edition:"1/10", suggestedFrame:'natural' },
-  { code:'STR-001', title:"Wine Bar", location:"Londres, Reino Unido", category:'bw', src:'images/web/STR-001.jpg', available:true, limitedEdition:false },
+  { code:'WLD-010', title:"Caballos", location:"Chile", category:'wildlife', categories:['wildlife','bw'], src:'images/web/WLD-010.jpg', mockup:"images/mockups/horses.jpg", mockup2:"images/mockups/caballos gigantes pared.jpg", available:true, limitedEdition:true, edition:"1/10", suggestedFrame:'natural' },
+  { code:'STR-001', title:"Wine Bar", location:"Londres, Reino Unido", category:'street', categories:['street','bw'], src:'images/web/STR-001.jpg', available:true, limitedEdition:false },
   { code:'STR-002', title:"London Street", location:"Londres, Reino Unido", category:'street', src:'images/web/STR-002.jpg', mockup:"images/mockups/walking past.jpg", mockup2:"images/mockups/walking past 2.jpg", available:true, limitedEdition:false, suggestedFrame:'negro' },
   { code:'STR-003', title:"Wimbledon I", location:"Londres, Reino Unido", category:'street', src:'images/web/STR-003.jpg', available:true, limitedEdition:false },
   { code:'STR-004', title:"Wimbledon II", location:"Londres, Reino Unido", category:'street', src:'images/web/STR-004.jpg', available:true, limitedEdition:false },
@@ -76,23 +76,30 @@ var PHOTOS = [
   { code:'ARC-018', title:"Sunset Oporto", location:"Oporto, Portugal", category:'architecture', src:'images/web/ARC-018.jpg', available:true, limitedEdition:false },
   { code:'ARC-019', title:"Torre Eiffel", location:"París, Francia", category:'architecture', src:'images/web/ARC-019.jpg', available:true, limitedEdition:false },
   { code:'ARC-020', title:"Coliseo", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-020.jpg', available:true, limitedEdition:false },
-  { code:'ARC-021', title:"Il Duomo", location:"Florencia, Italia", category:'bw', src:'images/web/ARC-021.jpg', available:true, limitedEdition:false },
-  { code:'ARC-022', title:"David", location:"Florencia, Italia", category:'bw', src:'images/web/ARC-022.jpg', available:true, limitedEdition:false },
+  { code:'ARC-021', title:"Il Duomo", location:"Florencia, Italia", category:'architecture', categories:['architecture','bw'], src:'images/web/ARC-021.jpg', available:true, limitedEdition:false },
+  { code:'ARC-022', title:"David", location:"Florencia, Italia", category:'architecture', categories:['architecture','bw'], src:'images/web/ARC-022.jpg', available:true, limitedEdition:false },
   { code:'ARC-023', title:"Venecia", location:"Venecia, Italia", category:'architecture', src:'images/web/ARC-023.jpg', available:true, limitedEdition:false },
   { code:'ARC-025', title:"San Pedro", location:"Ciudad del Vaticano", category:'architecture', src:'images/web/ARC-025.jpg', available:true, limitedEdition:false },
   { code:'ARC-026', title:"Persianas", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-026.jpg', available:true, limitedEdition:false },
-  { code:'ARC-027', title:"Panteón", location:"Roma, Italia", category:'bw', src:'images/web/ARC-027.jpg', available:true, limitedEdition:false },
-  { code:'SEA-005', title:"Bote", location:"Portugal", category:'seascape', src:'images/web/SEA-005.jpg', available:true, limitedEdition:false },
-  { code:'STR-005', title:"BCN", location:"Barcelona, España", category:'bw', src:'images/web/STR-005.jpg', available:true, limitedEdition:false },
-  { code:'STR-006', title:"Generalitat", location:"Barcelona, España", category:'bw', src:'images/web/STR-006.jpg', available:true, limitedEdition:false },
+  { code:'ARC-027', title:"Panteón", location:"Roma, Italia", category:'architecture', categories:['architecture','bw'], src:'images/web/ARC-027.jpg', available:true, limitedEdition:false },
+  { code:'SEA-006', title:"Marea baja", location:"Chile", category:'seascape', categories:['seascape','bw'], ratio:'1:1', src:'images/web/SEA-006.jpg', available:true, limitedEdition:false },
+  { code:'SEA-007', title:"Rock", location:"Chile", category:'seascape', categories:['seascape','bw'], ratio:'1:1', src:'images/web/SEA-007.jpg', available:true, limitedEdition:false },
+  { code:'SEA-008', title:"Lonely", location:"Chile", category:'seascape', categories:['seascape','bw'], ratio:'1:1', src:'images/web/SEA-008.jpg', available:true, limitedEdition:false },
+  { code:'STR-005', title:"BCN", location:"Barcelona, España", category:'street', categories:['street','bw'], src:'images/web/STR-005.jpg', available:true, limitedEdition:false },
+  { code:'STR-006', title:"Generalitat", location:"Barcelona, España", category:'street', categories:['street','bw'], src:'images/web/STR-006.jpg', available:true, limitedEdition:false },
   { code:'LND-021', title:"Pastos", location:"Chile", category:'landscape', src:'images/web/LND-021.jpg', available:true, limitedEdition:false },
   { code:'LND-022', title:"Pastos II", location:"Chile", category:'landscape', src:'images/web/LND-022.jpg', available:true, limitedEdition:false }
 ];
 
 var SIZES = [
-  { id:'s', label:"20 × 30 cm", prices:{ sin:45000, passe:105000, marco:85000 } },
-  { id:'m', label:"40 × 60 cm", prices:{ sin:85000, passe:195000, marco:175000 } },
-  { id:'l', label:"60 × 90 cm", prices:{ sin:130000, passe:345000, marco:285000 } }
+  { id:'s', ratio:'2:3', label:"20 × 30 cm", prices:{ sin:45000, passe:105000, marco:85000 } },
+  { id:'m', ratio:'2:3', label:"40 × 60 cm", prices:{ sin:85000, passe:195000, marco:175000 } },
+  { id:'l', ratio:'2:3', label:"60 × 90 cm", prices:{ sin:130000, passe:345000, marco:285000 } },
+  // Formato cuadrado. PRECIOS PROVISORIOS: estimados por área (obra) y por
+  // metro lineal de moldura (enmarcado). Confirmar con Eseâ y con Artprice.
+  { id:'sq-s', ratio:'1:1', label:"30 × 30 cm", prices:{ sin:50000,  passe:115000, marco:100000 } },
+  { id:'sq-m', ratio:'1:1', label:"45 × 45 cm", prices:{ sin:80000,  passe:180000, marco:160000 } },
+  { id:'sq-l', ratio:'1:1', label:"60 × 60 cm", prices:{ sin:105000, passe:240000, marco:220000 } }
 ];
 
 var LE_PREMIUM = 1.3;
@@ -100,6 +107,19 @@ var LE_PREMIUM = 1.3;
 var HERO_PHOTOS = ["LND-001","SEA-003","WLD-004","AER-002"];
 
 var HERO_PHOTOS_MOBILE = ["AER-004","AER-016","LND-013","ARC-015"];
+
+/* Categorías de una foto. `categories` (lista) manda; si no está, se usa
+   `category` sola. Así una foto puede vivir en su categoría nativa y en B&N. */
+function photoCats(p) {
+  return (p && p.categories && p.categories.length) ? p.categories : [p.category];
+}
+
+/* Tamaños disponibles para una foto: los cuadrados solo para fotos 1:1,
+   los 2:3 para el resto. */
+function sizesFor(p) {
+  var r = (p && p.ratio) || '2:3';
+  return SIZES.filter(function (s) { return (s.ratio || '2:3') === r; });
+}
 
 var CATEGORIES = [
   { id:'all', label:'Todos' },
@@ -121,7 +141,7 @@ var TEXTS = {
   "contactDesc": "Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas."
 };
 
-var DATA_VERSION = 12;
+var DATA_VERSION = 13;
 
 var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","ARC-004","ARC-013","ARC-014","ARC-016","ARC-017","ARC-020","ARC-021","ARC-027","AST-001","LND-001","LND-002","LND-003","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","SEA-003","SEA-004","STR-005","STR-006","WLD-003","WLD-004","WLD-006","WLD-007","WLD-010"]);
 

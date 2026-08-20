@@ -125,6 +125,14 @@
     .photo-table tr:hover td { background: rgba(255,255,255,0.02); }
 
     .thumb { width: 52px; height: 40px; object-fit: cover; display: block; }
+.cat-chips { display: flex; flex-wrap: wrap; gap: 4px; max-width: 230px; }
+    .cat-chip {
+      font-size: 0.68rem; padding: 3px 8px; border-radius: 12px; cursor: pointer;
+      border: 1px solid var(--border, #444); color: var(--muted, #999);
+      user-select: none; white-space: nowrap; line-height: 1.4;
+    }
+    .cat-chip input { display: none; }
+    .cat-chip.on { border-color: #c9a96e; color: #c9a96e; background: rgba(201,169,110,.13); font-weight: 600; }
     .code-badge { font-size: 0.65rem; color: var(--muted); font-family: monospace; }
 
     .editable {
@@ -465,7 +473,7 @@ function renderCatFilter() {
   el.innerHTML = '';
   CATS.forEach(c => {
     const btn = document.createElement('button');
-    btn.textContent = c.label + (c.id !== 'all' ? ` (${photos.filter(p=>p.category===c.id).length})` : ` (${photos.length})`);
+    btn.textContent = c.label + (c.id !== 'all' ? ` (${photos.filter(p=>photoCats(p).includes(c.id)).length})` : ` (${photos.length})`);
     if (c.id === activeCat) btn.classList.add('active');
     btn.addEventListener('click', () => { activeCat = c.id; renderCatFilter(); renderPhotos(c.id); });
     el.appendChild(btn);
@@ -476,7 +484,7 @@ function renderCatFilter() {
 function renderPhotos(cat) {
   const tbody = document.getElementById('photo-tbody');
   tbody.innerHTML = '';
-  const filtered = cat === 'all' ? photos : photos.filter(p => p.category === cat);
+  const filtered = cat === 'all' ? photos : photos.filter(p => photoCats(p).includes(cat));
 
   filtered.forEach((p, _i) => {
     const idx = photos.indexOf(p);
@@ -487,9 +495,9 @@ function renderPhotos(cat) {
       <td><input class="editable" value="${esc(p.title)}" data-field="title" data-idx="${idx}"></td>
       <td><input class="editable" value="${esc(p.location)}" data-field="location" data-idx="${idx}"></td>
       <td>
-        <select class="editable" data-field="category" data-idx="${idx}">
-          ${CATS.filter(c=>c.id!=='all').map(c=>`<option value="${c.id}"${p.category===c.id?' selected':''}>${c.label}</option>`).join('')}
-        </select>
+        <div class="cat-chips" data-cat-idx="${idx}">
+          ${CATS.filter(c=>c.id!=='all').map(c=>`<label class="cat-chip${photoCats(p).includes(c.id)?' on':''}"><input type="checkbox" value="${c.id}"${photoCats(p).includes(c.id)?' checked':''}>${c.label}</label>`).join('')}
+        </div>
       </td>
       <td>
         <input type="checkbox" ${p.limitedEdition?'checked':''} data-field="limitedEdition" data-idx="${idx}">
@@ -537,6 +545,25 @@ function renderPhotos(cat) {
         photos[idx][field] = el.value;
       }
       markDirty();
+    });
+  });
+
+  // Categorías: varias por foto. La primera que no sea B&N queda como principal.
+  tbody.querySelectorAll('.cat-chips').forEach(cont => {
+    const idx = parseInt(cont.dataset.catIdx);
+    cont.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        cb.closest('.cat-chip').classList.toggle('on', cb.checked);
+        const sel = [...cont.querySelectorAll('input:checked')].map(x => x.value);
+        if (!sel.length) {                    // no dejamos una foto sin categoría
+          cb.checked = true;
+          cb.closest('.cat-chip').classList.add('on');
+          return;
+        }
+        photos[idx].categories = sel;
+        photos[idx].category   = sel.find(c => c !== 'bw') || sel[0];
+        markDirty();
+      });
     });
   });
 }
@@ -740,7 +767,7 @@ function renderHeroGridMobile() {
 function saveChanges() {
   collectTexts();
   localStorage.setItem('gw-admin-data', JSON.stringify({
-    version: 12, photos, sizes, lePremium, heroPhotos, heroPhotosMobile, texts
+    version: 13, photos, sizes, lePremium, heroPhotos, heroPhotosMobile, texts
   }));
   dirty = false;
   document.getElementById('export-bar').classList.remove('visible');
@@ -750,7 +777,11 @@ function saveChanges() {
 // ── Generar data.js ──
 function generateDataJs() {
   const photosJs = photos.map(p => {
-    let line = `  { code:'${p.code}', title:${JSON.stringify(p.title)}, location:${JSON.stringify(p.location)}, category:'${p.category}', src:'${p.src}'`;
+    let line = `  { code:'${p.code}', title:${JSON.stringify(p.title)}, location:${JSON.stringify(p.location)}, category:'${p.category}'`;
+    const cats = photoCats(p);
+    if (cats.length > 1) line += `, categories:[${cats.map(c=>`'${c}'`).join(',')}]`;
+    if (p.ratio) line += `, ratio:'${p.ratio}'`;
+    line += `, src:'${p.src}'`;
     if (p.mockup)  line += `, mockup:${JSON.stringify(p.mockup)}`;
     if (p.mockup2) line += `, mockup2:${JSON.stringify(p.mockup2)}`;
     line += `, available:${p.available}, limitedEdition:${p.limitedEdition}`;
@@ -761,7 +792,7 @@ function generateDataJs() {
   }).join(',\n');
 
   const sizesJs = sizes.map(s =>
-    `  { id:'${s.id}', label:${JSON.stringify(s.label)}, prices:{ sin:${s.prices.sin}, passe:${s.prices.passe}, marco:${s.prices.marco} } }`
+    `  { id:'${s.id}', ratio:'${s.ratio || '2:3'}', label:${JSON.stringify(s.label)}, prices:{ sin:${s.prices.sin}, passe:${s.prices.passe}, marco:${s.prices.marco} } }`
   ).join(',\n');
 
   const heroJs = JSON.stringify(heroPhotos);
@@ -772,7 +803,7 @@ function generateDataJs() {
   const heroMobileJs = JSON.stringify(heroPhotosMobile);
   const textsJs = JSON.stringify(texts, null, 2);
   const horizontalJs = JSON.stringify([...HORIZONTAL]);
-  return `var PHOTOS = [\n${photosJs}\n];\n\nvar SIZES = [\n${sizesJs}\n];\n\nvar LE_PREMIUM = ${lePremium};\n\nvar HERO_PHOTOS = ${heroJs};\n\nvar HERO_PHOTOS_MOBILE = ${heroMobileJs};\n\nvar CATEGORIES = ${cats};\n\nvar TEXTS = ${textsJs};\n\nvar DATA_VERSION = 12;\n\nvar HORIZONTAL = new Set(${horizontalJs});\n\n// Admin overrides from localStorage\n(function() {\n  try {\n    var saved = localStorage.getItem('gw-admin-data');\n    if (!saved) return;\n    var d = JSON.parse(saved);\n    if (d.version !== DATA_VERSION) {\n      localStorage.removeItem('gw-admin-data');\n      return;\n    }\n    if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }\n    if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }\n    if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }\n    if (d.heroPhotosMobile) { HERO_PHOTOS_MOBILE.length = 0; d.heroPhotosMobile.forEach(function(c){ HERO_PHOTOS_MOBILE.push(c); }); }\n    if (d.lePremium !== undefined) LE_PREMIUM = d.lePremium;\n    if (d.texts) { Object.assign(TEXTS, d.texts); }\n  } catch(e) {}\n})();\n`;
+  return `var PHOTOS = [\n${photosJs}\n];\n\nvar SIZES = [\n${sizesJs}\n];\n\nvar LE_PREMIUM = ${lePremium};\n\nvar HERO_PHOTOS = ${heroJs};\n\nvar HERO_PHOTOS_MOBILE = ${heroMobileJs};\n\nvar CATEGORIES = ${cats};\n\n/* Categorías de una foto. `categories` (lista) manda; si no está, se usa\n   `category` sola. Así una foto puede vivir en su categoría nativa y en B&N. */\nfunction photoCats(p) {\n  return (p && p.categories && p.categories.length) ? p.categories : [p.category];\n}\n\n/* Tamaños disponibles para una foto: los cuadrados solo para fotos 1:1,\n   los 2:3 para el resto. */\nfunction sizesFor(p) {\n  var r = (p && p.ratio) || '2:3';\n  return SIZES.filter(function (s) { return (s.ratio || '2:3') === r; });\n}\n\nvar TEXTS = ${textsJs};\n\nvar DATA_VERSION = 13;\n\nvar HORIZONTAL = new Set(${horizontalJs});\n\n// Admin overrides from localStorage\n(function() {\n  try {\n    var saved = localStorage.getItem('gw-admin-data');\n    if (!saved) return;\n    var d = JSON.parse(saved);\n    if (d.version !== DATA_VERSION) {\n      localStorage.removeItem('gw-admin-data');\n      return;\n    }\n    if (d.photos)     { PHOTOS.length = 0;     d.photos.forEach(function(p){ PHOTOS.push(p); }); }\n    if (d.sizes)      { SIZES.length = 0;       d.sizes.forEach(function(s){ SIZES.push(s); }); }\n    if (d.heroPhotos) { HERO_PHOTOS.length = 0; d.heroPhotos.forEach(function(c){ HERO_PHOTOS.push(c); }); }\n    if (d.heroPhotosMobile) { HERO_PHOTOS_MOBILE.length = 0; d.heroPhotosMobile.forEach(function(c){ HERO_PHOTOS_MOBILE.push(c); }); }\n    if (d.lePremium !== undefined) LE_PREMIUM = d.lePremium;\n    if (d.texts) { Object.assign(TEXTS, d.texts); }\n  } catch(e) {}\n})();\n`;
 }
 
 // ── Publicar en GitHub ──
@@ -855,8 +886,11 @@ function exportDataJs() {
       `title:${q(p.title)}`,
       `location:${q(p.location)}`,
       `category:${q(p.category)}`,
-      `src:${q(p.src)}`,
     ];
+    const cats = photoCats(p);
+    if (cats.length > 1) fields.push(`categories:[${cats.map(c=>q(c)).join(',')}]`);
+    if (p.ratio) fields.push(`ratio:${q(p.ratio)}`);
+    fields.push(`src:${q(p.src)}`);
     if (p.mockup)  fields.push(`mockup:${q(p.mockup)}`);
     if (p.mockup2) fields.push(`mockup2:${q(p.mockup2)}`);
     fields.push(`available:${p.available !== false}`);
@@ -870,7 +904,7 @@ function exportDataJs() {
   lines.push('const SIZES = [');
   sizes.forEach((sz, i) => {
     const comma = i < sizes.length - 1 ? ',' : '';
-    lines.push(`  { id:${q(sz.id)}, label:${q(sz.label)}, prices:{ sin:${sz.prices.sin}, passe:${sz.prices.passe}, marco:${sz.prices.marco} } }${comma}`);
+    lines.push(`  { id:${q(sz.id)}, ratio:${q(sz.ratio || '2:3')}, label:${q(sz.label)}, prices:{ sin:${sz.prices.sin}, passe:${sz.prices.passe}, marco:${sz.prices.marco} } }${comma}`);
   });
   lines.push('];\n');
 

@@ -151,7 +151,7 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
   function makeCard(p) {
     const item = document.createElement('div');
     item.className = 'gallery-item' + (p.limitedEdition ? ' le' : '');
-    item.dataset.category = p.category;
+    item.dataset.category = photoCats(p).join(' ');
     item.dataset.code = p.code;
     if (typeof HORIZONTAL !== 'undefined' && HORIZONTAL.has(p.code)) {
       item.dataset.orientation = 'h';
@@ -185,7 +185,7 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
   // Interleave photos by category for visual variety
   const catIds = CATEGORIES.filter(c => c.id !== 'all').map(c => c.id);
   const byCat  = {};
-  catIds.forEach(id => { byCat[id] = PHOTOS.filter(p => p.category === id); });
+  catIds.forEach(id => { byCat[id] = PHOTOS.filter(p => photoCats(p).includes(id)); });
   const catIdx = {};
   catIds.forEach(id => { catIdx[id] = 0; });
 
@@ -201,7 +201,13 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
     });
   }
 
-  mixed.forEach(p => grid.appendChild(makeCard(p)));
+  // Una foto en dos categorías entra dos veces al mezclar: dejamos la primera.
+  const vistos = new Set();
+  mixed.forEach(p => {
+    if (vistos.has(p.code)) return;
+    vistos.add(p.code);
+    grid.appendChild(makeCard(p));
+  });
 
   /* ── Layout de filas justificadas ──
      Cada fila tiene altura pareja; los anchos siguen la proporción real
@@ -269,7 +275,8 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
       filters.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       document.querySelectorAll('.gallery-item').forEach(el => {
-        el.dataset.visible = (cat.id === 'all' || el.dataset.category === cat.id) ? 'true' : 'false';
+        const cats = el.dataset.category.split(' ');
+        el.dataset.visible = (cat.id === 'all' || cats.includes(cat.id)) ? 'true' : 'false';
       });
       justifyGallery();
     });
@@ -283,7 +290,7 @@ let pmIndex = 0;
 
 function openViewer(code) {
   const activeFilter = document.querySelector('.filter-btn.active')?.dataset.cat || 'all';
-  pmFiltered = activeFilter === 'all' ? PHOTOS : PHOTOS.filter(p => p.category === activeFilter);
+  pmFiltered = activeFilter === 'all' ? PHOTOS : PHOTOS.filter(p => photoCats(p).includes(activeFilter));
   pmIndex = pmFiltered.findIndex(p => p.code === code);
   if (pmIndex < 0) pmIndex = 0;
   const modal = document.getElementById('print-modal');
@@ -295,9 +302,28 @@ function openViewer(code) {
 
 function setPmPhoto(p) {
   pmPhoto = p;
-  pmSize = 's'; pmFrame = 'sin';
+  renderSizeButtons(p);
+  pmFrame = 'sin';
   pmColor = p.suggestedFrame || 'negro';
   renderPrintModal();
+}
+
+/* Los tamaños dependen de la proporción de la foto: una cuadrada no se
+   ofrece en 20×30. Rearmamos los botones y dejamos el más chico activo. */
+function renderSizeButtons(p) {
+  const row = document.getElementById('pm-size-row');
+  if (!row) return;
+  const opciones = sizesFor(p);
+  pmSize = opciones.length ? opciones[0].id : 's';
+  row.innerHTML = '';
+  opciones.forEach(s => {
+    const b = document.createElement('button');
+    b.className = 'pm-opt pm-size' + (s.id === pmSize ? ' active' : '');
+    b.dataset.size = s.id;
+    b.textContent = s.label;
+    b.addEventListener('click', () => { pmSize = s.id; renderPrintModal(); });
+    row.appendChild(b);
+  });
 }
 
 document.getElementById('pm-prev')?.addEventListener('click', () => {
@@ -436,9 +462,6 @@ document.addEventListener('keydown', e => {
   }
 });
 
-document.querySelectorAll('.pm-size').forEach(b => b.addEventListener('click', () => {
-  pmSize = b.dataset.size; renderPrintModal();
-}));
 document.querySelectorAll('.pm-frame').forEach(b => b.addEventListener('click', () => {
   pmFrame = b.dataset.frame; renderPrintModal();
 }));
