@@ -96,6 +96,10 @@ test.describe('Panel de opciones', () => {
   });
 
   test('cambia de tamaño y actualiza precio', async ({ page }) => {
+    // Abrimos una foto 2:3 a propósito: la primera de la grilla podría ser
+    // cuadrada, y entonces no existiría el tamaño 'l'.
+    await page.evaluate(() => { openViewer('LND-001'); });
+    await page.locator('#pm-vb-options').click();
     const precioInicial = await page.locator('#pm-price').textContent();
     await page.locator('.pm-size[data-size="l"]').click();
     const precioNuevo = await page.locator('#pm-price').textContent();
@@ -147,5 +151,124 @@ test.describe('Formulario de contacto', () => {
     page.on('dialog', d => d.dismiss());
     await page.locator('.form-submit').click();
     await expect(page.locator('#form-success')).toBeVisible();
+  });
+});
+
+test.describe('Categorías múltiples', () => {
+  test('una foto en dos categorías aparece en ambos filtros', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.filter-btn');
+    const generalitat = page.locator('.gallery-item[data-code="STR-006"]');
+
+    await page.locator('.filter-btn', { hasText: 'Street' }).click();
+    await expect(generalitat).toHaveAttribute('data-visible', 'true');
+
+    await page.locator('.filter-btn', { hasText: 'B&N' }).click();
+    await expect(generalitat).toHaveAttribute('data-visible', 'true');
+  });
+
+  test('una foto en dos categorías aparece una sola vez en la grilla', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.gallery-item');
+    const repetidos = await page.evaluate(() => {
+      const codes = [...document.querySelectorAll('.gallery-item')].map(e => e.dataset.code);
+      return codes.filter((c, i) => codes.indexOf(c) !== i);
+    });
+    expect(repetidos).toEqual([]);
+  });
+
+  test('la grilla tiene tantas fotos como PHOTOS', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.gallery-item');
+    const { enGrilla, enDatos } = await page.evaluate(() => ({
+      enGrilla: document.querySelectorAll('.gallery-item').length,
+      enDatos:  PHOTOS.length,
+    }));
+    expect(enGrilla).toBe(enDatos);
+  });
+
+  test('el filtro B&N incluye fotos de varias categorías nativas', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.gallery-item');
+    const nativas = await page.evaluate(() =>
+      [...new Set(PHOTOS.filter(p => photoCats(p).includes('bw'))
+                        .map(p => photoCats(p).find(c => c !== 'bw')))].filter(Boolean)
+    );
+    expect(nativas.length).toBeGreaterThan(1);
+  });
+});
+
+test.describe('Formato cuadrado', () => {
+  test('una foto cuadrada solo ofrece tamaños cuadrados', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.gallery-item');
+    await page.evaluate(() => { openViewer('SEA-006'); });
+    await page.locator('#pm-vb-options').click();
+
+    const labels = await page.locator('.pm-size').allTextContents();
+    expect(labels).toEqual(['30 × 30 cm', '45 × 45 cm', '60 × 60 cm']);
+  });
+
+  test('una foto 2:3 ofrece los tamaños de siempre', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.gallery-item');
+    await page.evaluate(() => { openViewer('LND-001'); });
+    await page.locator('#pm-vb-options').click();
+
+    const labels = await page.locator('.pm-size').allTextContents();
+    expect(labels).toEqual(['20 × 30 cm', '40 × 60 cm', '60 × 90 cm']);
+  });
+
+  test('al cambiar de foto los tamaños se rearman', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.gallery-item');
+    await page.evaluate(() => { openViewer('SEA-006'); });
+    await page.locator('#pm-vb-options').click();
+    await expect(page.locator('.pm-size').first()).toHaveText('30 × 30 cm');
+
+    await page.evaluate(() => { setPmPhoto(PHOTOS.find(p => p.code === 'LND-001')); });
+    await expect(page.locator('.pm-size').first()).toHaveText('20 × 30 cm');
+  });
+
+  test('la nota de medidas usa el tamaño cuadrado', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.gallery-item');
+    await page.evaluate(() => { openViewer('SEA-006'); });
+    await page.locator('#pm-vb-options').click();
+    // 30×30 + 2 cm de marco por lado
+    await expect(page.locator('#pm-size-note')).toContainText('34 × 34 cm');
+  });
+});
+
+test.describe('Admin', () => {
+  // Entramos por sessionStorage para no dejar la contraseña escrita en el repo.
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => sessionStorage.setItem('gw-admin', '1'));
+    await page.goto('/admin.html');
+    await page.waitForFunction(() => typeof photos !== 'undefined' && photos.length > 0);
+  });
+
+  test('el data.js que genera conserva categories y ratio', async ({ page }) => {
+    const generado = await page.evaluate(() => generateDataJs());
+    expect(generado).toContain("categories:['seascape','bw']");
+    expect(generado).toContain("ratio:'1:1'");
+  });
+
+  test('el data.js que genera incluye los helpers', async ({ page }) => {
+    const generado = await page.evaluate(() => generateDataJs());
+    expect(generado).toContain('function photoCats');
+    expect(generado).toContain('function sizesFor');
+  });
+
+  test('el data.js que genera conserva el ratio de los tamaños', async ({ page }) => {
+    const generado = await page.evaluate(() => generateDataJs());
+    expect(generado).toContain("ratio:'2:3'");
+    expect(generado).toMatch(/id:'sq-s'[^}]*ratio:'1:1'/);
+  });
+
+  test('las categorías se editan como selección múltiple', async ({ page }) => {
+    const chips = page.locator('.cat-chips').first();
+    await expect(chips).toBeVisible();
+    expect(await chips.locator('input[type="checkbox"]').count()).toBeGreaterThan(1);
   });
 });
