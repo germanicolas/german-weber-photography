@@ -20,19 +20,9 @@
       <image:caption>Mar Verde — Chile. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://germanweber.cl/images/web/AER-004.jpg</image:loc>
-      <image:title>1000 Steps</image:title>
-      <image:caption>1000 Steps — Melbourne, Australia. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
       <image:loc>https://germanweber.cl/images/web/AER-005.jpg</image:loc>
       <image:title>Río Loa</image:title>
       <image:caption>Río Loa — Calama, Chile. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>https://germanweber.cl/images/web/AER-006.jpg</image:loc>
-      <image:title>Salinas</image:title>
-      <image:caption>Salinas — Chile. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://germanweber.cl/images/web/AER-007.jpg</image:loc>
@@ -65,11 +55,6 @@
       <image:caption>Muelle Vergara — Viña del Mar, Chile. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://germanweber.cl/images/web/AER-013.jpg</image:loc>
-      <image:title>Casino</image:title>
-      <image:caption>Casino — Viña del Mar, Chile. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
       <image:loc>https://germanweber.cl/images/web/AER-014.jpg</image:loc>
       <image:title>Vta Vergara</image:title>
       <image:caption>Vta Vergara — Viña del Mar, Chile. Fotografía de German Weber</image:caption>
@@ -100,6 +85,26 @@
       <image:caption>Pukaki — Nueva Zelanda. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
+      <image:loc>https://germanweber.cl/images/web/AER-020.jpg</image:loc>
+      <image:title>Cordillera Nevada</image:title>
+      <image:caption>Cordillera Nevada — Calama, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/AER-021.jpg</image:loc>
+      <image:title>Rayo de Luz</image:title>
+      <image:caption>Rayo de Luz — Calama, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/AER-022.jpg</image:loc>
+      <image:title>Desierto al Atardecer</image:title>
+      <image:caption>Desierto al Atardecer — Calama, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/AER-024.jpg</image:loc>
+      <image:title>Relieve</image:title>
+      <image:caption>Relieve — Calama, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
       <image:loc>https://germanweber.cl/images/web/LND-001.jpg</image:loc>
       <image:title>Laguna Pinilla I</image:title>
       <image:caption>Laguna Pinilla I — Pinilla, Chile. Fotografía de German Weber</image:caption>
@@ -113,11 +118,6 @@
       <image:loc>https://germanweber.cl/images/web/LND-003.jpg</image:loc>
       <image:title>Laguna Pinilla III</image:title>
       <image:caption>Laguna Pinilla III — Pinilla, Chile. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>https://germanweber.cl/images/web/LND-004.jpg</image:loc>
-      <image:title>Arroyo Pinilla</image:title>
-      <image:caption>Arroyo Pinilla — Pinilla, Chile. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://germanweber.cl/images/web/LND-005.jpg</image:loc>
@@ -225,11 +225,6 @@
       <image:caption>St Paul's — Londres, Reino Unido. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://germanweber.cl/images/web/ARC-003.jpg</image:loc>
-      <image:title>Big Ben</image:title>
-      <image:caption>Big Ben — Londres, Reino Unido. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
       <image:loc>https://germanweber.cl/images/web/ARC-004.jpg</image:loc>
       <image:title>Westminster</image:title>
       <image:caption>Westminster — Londres, Reino Unido. Fotografía de German Weber</image:caption>
@@ -290,11 +285,6 @@
       <image:caption>Duoro — Porto, Portugal. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://germanweber.cl/images/web/ARC-016.jpg</image:loc>
-      <image:title>Melbourne Nocturno</image:title>
-      <image:caption>Melbourne Nocturno — Melbourne, Australia. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
       <image:loc>https://germanweber.cl/images/web/ARC-017.jpg</image:loc>
       <image:title>Melbourne Amanecer</image:title>
       <image:caption>Melbourne Amanecer — Melbourne, Australia. Fotografía de German Weber</image:caption>
@@ -303,16 +293,6 @@
       <image:loc>https://germanweber.cl/images/web/WLD-001.jpg</image:loc>
       <image:title>Chincol</image:title>
       <image:caption>Chincol — Chile. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>https://germanweber.cl/images/web/WLD-002.jpg</image:loc>
-      <image:title>Gaviotín Monja</image:title>
-      <image:caption>Gaviotín Monja — Chile. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>https://germanweber.cl/images/web/WLD-003.jpg</image:loc>
-      <image:title>Gaviotín Monja II</image:title>
-      <image:caption>Gaviotín Monja II — Chile. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://germanweber.cl/images/web/WLD-004.jpg</image:loc>
@@ -345,6 +325,31 @@
       <image:caption>Caballos — Chile. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
+      <image:loc>https://germanweber.cl/images/web/WLD-014.jpg</image:loc>
+      <image:title>Siete Colores I</image:title>
+      <image:caption>Siete Colores I — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/WLD-015.jpg</image:loc>
+      <image:title>Siete Colores II</image:title>
+      <image:caption>Siete Colores II — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/WLD-017.jpg</image:loc>
+      <image:title>Siete Colores III</image:title>
+      <image:caption>Siete Colores III — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/WLD-018.jpg</image:loc>
+      <image:title>Guanaco</image:title>
+      <image:caption>Guanaco — Torres del Paine, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/WLD-019.jpg</image:loc>
+      <image:title>Guanacos</image:title>
+      <image:caption>Guanacos — Torres del Paine, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
       <image:loc>https://germanweber.cl/images/web/STR-001.jpg</image:loc>
       <image:title>Wine Bar</image:title>
       <image:caption>Wine Bar — Londres, Reino Unido. Fotografía de German Weber</image:caption>
@@ -365,11 +370,6 @@
       <image:caption>Wimbledon II — Londres, Reino Unido. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://germanweber.cl/images/web/AST-001.jpg</image:loc>
-      <image:title>Vía Láctea</image:title>
-      <image:caption>Vía Láctea — Chile. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
       <image:loc>https://germanweber.cl/images/web/AST-002.jpg</image:loc>
       <image:title>Eclipse Solar</image:title>
       <image:caption>Eclipse Solar — Chile. Fotografía de German Weber</image:caption>
@@ -378,11 +378,6 @@
       <image:loc>https://germanweber.cl/images/web/ARC-018.jpg</image:loc>
       <image:title>Sunset Oporto</image:title>
       <image:caption>Sunset Oporto — Oporto, Portugal. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>https://germanweber.cl/images/web/ARC-019.jpg</image:loc>
-      <image:title>Torre Eiffel</image:title>
-      <image:caption>Torre Eiffel — París, Francia. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://germanweber.cl/images/web/ARC-020.jpg</image:loc>
@@ -400,19 +395,9 @@
       <image:caption>David — Florencia, Italia. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://germanweber.cl/images/web/ARC-023.jpg</image:loc>
-      <image:title>Venecia</image:title>
-      <image:caption>Venecia — Venecia, Italia. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
       <image:loc>https://germanweber.cl/images/web/ARC-025.jpg</image:loc>
       <image:title>San Pedro</image:title>
       <image:caption>San Pedro — Ciudad del Vaticano. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>https://germanweber.cl/images/web/ARC-026.jpg</image:loc>
-      <image:title>Persianas</image:title>
-      <image:caption>Persianas — Roma, Italia. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://germanweber.cl/images/web/ARC-027.jpg</image:loc>
@@ -453,6 +438,81 @@
       <image:loc>https://germanweber.cl/images/web/LND-022.jpg</image:loc>
       <image:title>Pastos II</image:title>
       <image:caption>Pastos II — Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-023.jpg</image:loc>
+      <image:title>Torres al Alba</image:title>
+      <image:caption>Torres al Alba — Torres del Paine, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-024.jpg</image:loc>
+      <image:title>Torres del Paine</image:title>
+      <image:caption>Torres del Paine — Torres del Paine, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-025.jpg</image:loc>
+      <image:title>Reflejo</image:title>
+      <image:caption>Reflejo — Torres del Paine, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-026.jpg</image:loc>
+      <image:title>Piedras</image:title>
+      <image:caption>Piedras — Torres del Paine, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-027.jpg</image:loc>
+      <image:title>Bosque en Niebla</image:title>
+      <image:caption>Bosque en Niebla — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-028.jpg</image:loc>
+      <image:title>Niebla sobre el Humedal I</image:title>
+      <image:caption>Niebla sobre el Humedal I — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-029.jpg</image:loc>
+      <image:title>Niebla sobre el Humedal II</image:title>
+      <image:caption>Niebla sobre el Humedal II — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-031.jpg</image:loc>
+      <image:title>Lluvia</image:title>
+      <image:caption>Lluvia — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-032.jpg</image:loc>
+      <image:title>Juncos en Movimiento</image:title>
+      <image:caption>Juncos en Movimiento — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-033.jpg</image:loc>
+      <image:title>Orilla</image:title>
+      <image:caption>Orilla — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-036.jpg</image:loc>
+      <image:title>Corriente</image:title>
+      <image:caption>Corriente — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-039.jpg</image:loc>
+      <image:title>Flor de Ciruelo</image:title>
+      <image:caption>Flor de Ciruelo — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-040.jpg</image:loc>
+      <image:title>Botón de Camelia</image:title>
+      <image:caption>Botón de Camelia — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-041.jpg</image:loc>
+      <image:title>Camelia</image:title>
+      <image:caption>Camelia — Valdivia, Chile. Fotografía de German Weber</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://germanweber.cl/images/web/LND-042.jpg</image:loc>
+      <image:title>Ciprés</image:title>
+      <image:caption>Ciprés — Valdivia, Chile. Fotografía de German Weber</image:caption>
     </image:image>
   </url>
 </urlset>

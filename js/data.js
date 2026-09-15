@@ -2,26 +2,26 @@ var PHOTOS = [
   { code:'AER-001', title:"Caburgua", location:"Chile", category:'aerial', src:'images/web/AER-001.jpg', mockup:"images/mockups/caburgua.jpg", mockup2:"images/mockups/caburgua 2.jpg", available:true, limitedEdition:false, suggestedFrame:'natural' },
   { code:'AER-002', title:"Salto El Palguin", location:"Chile", category:'aerial', src:'images/web/AER-002.jpg', available:true, limitedEdition:false },
   { code:'AER-003', title:"Mar Verde", location:"Chile", category:'aerial', src:'images/web/AER-003.jpg', available:true, limitedEdition:false },
-  { code:'AER-004', title:"1000 Steps", location:"Melbourne, Australia", category:'aerial', src:'images/web/AER-004.jpg', available:true, limitedEdition:false },
   { code:'AER-005', title:"Río Loa", location:"Calama, Chile", category:'aerial', src:'images/web/AER-005.jpg', available:true, limitedEdition:false },
-  { code:'AER-006', title:"Salinas", location:"Chile", category:'aerial', src:'images/web/AER-006.jpg', available:true, limitedEdition:false },
   { code:'AER-007', title:"Reñaca", location:"Reñaca, Chile", category:'aerial', src:'images/web/AER-007.jpg', available:true, limitedEdition:false },
   { code:'AER-008', title:"Puente & Niebla", location:"Chile", category:'aerial', src:'images/web/AER-008.jpg', available:true, limitedEdition:false },
   { code:'AER-009', title:"Peñuelas", location:"Valparaíso, Chile", category:'aerial', src:'images/web/AER-009.jpg', available:true, limitedEdition:false },
   { code:'AER-010', title:"Hipódromo", location:"Melbourne, Australia", category:'aerial', src:'images/web/AER-010.jpg', available:true, limitedEdition:false },
   { code:'AER-011', title:"UAI", location:"Santiago, Chile", category:'aerial', src:'images/web/AER-011.jpg', available:true, limitedEdition:false },
   { code:'AER-012', title:"Muelle Vergara", location:"Viña del Mar, Chile", category:'aerial', src:'images/web/AER-012.jpg', available:true, limitedEdition:false },
-  { code:'AER-013', title:"Casino", location:"Viña del Mar, Chile", category:'aerial', src:'images/web/AER-013.jpg', available:true, limitedEdition:false },
   { code:'AER-014', title:"Vta Vergara", location:"Viña del Mar, Chile", category:'aerial', src:'images/web/AER-014.jpg', available:true, limitedEdition:false },
   { code:'AER-015', title:"The Pass", location:"Byron Bay, Australia", category:'aerial', src:'images/web/AER-015.jpg', available:true, limitedEdition:false },
   { code:'AER-016', title:"The Pass II", location:"Byron Bay, Australia", category:'aerial', src:'images/web/AER-016.jpg', available:true, limitedEdition:false },
   { code:'AER-017', title:"Río Aconcagua", location:"Chile", category:'aerial', src:'images/web/AER-017.jpg', available:true, limitedEdition:false },
   { code:'AER-018', title:"Entre Nubes", location:"Pinilla, Chile", category:'aerial', src:'images/web/AER-018.jpg', available:true, limitedEdition:false },
   { code:'AER-019', title:"Pukaki", location:"Nueva Zelanda", category:'aerial', src:'images/web/AER-019.jpg', mockup:"images/mockups/pukaki.jpg", mockup2:"images/mockups/pukaki 2.jpg", available:true, limitedEdition:false, suggestedFrame:'negro' },
+  { code:'AER-020', title:"Cordillera Nevada", location:"Calama, Chile", category:'aerial', src:'images/web/AER-020.jpg', available:true, limitedEdition:false },
+  { code:'AER-021', title:"Rayo de Luz", location:"Calama, Chile", category:'aerial', src:'images/web/AER-021.jpg', available:true, limitedEdition:false },
+  { code:'AER-022', title:"Desierto al Atardecer", location:"Calama, Chile", category:'aerial', src:'images/web/AER-022.jpg', available:true, limitedEdition:false },
+  { code:'AER-024', title:"Relieve", location:"Calama, Chile", category:'aerial', src:'images/web/AER-024.jpg', available:true, limitedEdition:false },
   { code:'LND-001', title:"Laguna Pinilla I", location:"Pinilla, Chile", category:'landscape', src:'images/web/LND-001.jpg', available:true, limitedEdition:false },
   { code:'LND-002', title:"Laguna Pinilla II", location:"Pinilla, Chile", category:'landscape', src:'images/web/LND-002.jpg', mockup:"images/mockups/pinilla.jpg", mockup2:"images/mockups/pinilla 2.jpg", available:true, limitedEdition:false, suggestedFrame:'natural' },
   { code:'LND-003', title:"Laguna Pinilla III", location:"Pinilla, Chile", category:'landscape', src:'images/web/LND-003.jpg', available:true, limitedEdition:false },
-  { code:'LND-004', title:"Arroyo Pinilla", location:"Pinilla, Chile", category:'landscape', src:'images/web/LND-004.jpg', available:true, limitedEdition:false },
   { code:'LND-005', title:"Conguillío", location:"Araucanía, Chile", category:'landscape', src:'images/web/LND-005.jpg', available:true, limitedEdition:false },
   { code:'LND-007', title:"Araucarias", location:"Araucanía, Chile", category:'landscape', src:'images/web/LND-007.jpg', available:true, limitedEdition:false },
   { code:'LND-008', title:"Aoraki", location:"Nueva Zelanda", category:'landscape', src:'images/web/LND-008.jpg', available:true, limitedEdition:false },
@@ -43,7 +43,6 @@ var PHOTOS = [
   { code:'SEA-004', title:"St Kilda", location:"Melbourne, Australia", category:'seascape', src:'images/web/SEA-004.jpg', available:true, limitedEdition:false },
   { code:'ARC-001', title:"Grid", location:"Londres, Reino Unido", category:'architecture', src:'images/web/ARC-001.jpg', available:true, limitedEdition:false },
   { code:'ARC-002', title:"St Paul's", location:"Londres, Reino Unido", category:'architecture', src:'images/web/ARC-002.jpg', available:true, limitedEdition:false },
-  { code:'ARC-003', title:"Big Ben", location:"Londres, Reino Unido", category:'architecture', src:'images/web/ARC-003.jpg', available:true, limitedEdition:false },
   { code:'ARC-004', title:"Westminster", location:"Londres, Reino Unido", category:'architecture', categories:['architecture','bw'], src:'images/web/ARC-004.jpg', available:true, limitedEdition:false },
   { code:'ARC-005', title:"London Eye", location:"Londres, Reino Unido", category:'architecture', src:'images/web/ARC-005.jpg', available:true, limitedEdition:false },
   { code:'ARC-006', title:"King's College", location:"Cambridge, Reino Unido", category:'architecture', src:'images/web/ARC-006.jpg', mockup:"images/mockups/cambridge.jpg", mockup2:"images/mockups/cambridge 2.jpg", available:true, limitedEdition:false, suggestedFrame:'blanco' },
@@ -56,31 +55,29 @@ var PHOTOS = [
   { code:'ARC-013', title:"El Panteón", location:"Roma, Italia", category:'architecture', categories:['architecture','bw'], src:'images/web/ARC-013.jpg', available:true, limitedEdition:true, edition:"2/10" },
   { code:'ARC-014', title:"Coliseo", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-014.jpg', available:true, limitedEdition:false },
   { code:'ARC-015', title:"Duoro", location:"Porto, Portugal", category:'architecture', src:'images/web/ARC-015.jpg', available:true, limitedEdition:false },
-  { code:'ARC-016', title:"Melbourne Nocturno", location:"Melbourne, Australia", category:'architecture', src:'images/web/ARC-016.jpg', available:true, limitedEdition:false },
   { code:'ARC-017', title:"Melbourne Amanecer", location:"Melbourne, Australia", category:'architecture', src:'images/web/ARC-017.jpg', available:true, limitedEdition:true, edition:"1/10" },
   { code:'WLD-001', title:"Chincol", location:"Chile", category:'wildlife', src:'images/web/WLD-001.jpg', available:true, limitedEdition:false },
-  { code:'WLD-002', title:"Gaviotín Monja", location:"Chile", category:'wildlife', src:'images/web/WLD-002.jpg', available:true, limitedEdition:false },
-  { code:'WLD-003', title:"Gaviotín Monja II", location:"Chile", category:'wildlife', src:'images/web/WLD-003.jpg', available:true, limitedEdition:false, edition:"1/10" },
   { code:'WLD-004', title:"Pelícanos I", location:"Concón, Chile", category:'wildlife', src:'images/web/WLD-004.jpg', available:true, limitedEdition:false },
   { code:'WLD-005', title:"Pelícanos II", location:"Concón, Chile", category:'wildlife', src:'images/web/WLD-005.jpg', available:true, limitedEdition:false },
   { code:'WLD-006', title:"Pelícanos III", location:"Chile", category:'wildlife', src:'images/web/WLD-006.jpg', available:true, limitedEdition:false },
   { code:'WLD-007', title:"Pelícano IV", location:"Chile", category:'wildlife', src:'images/web/WLD-007.jpg', available:true, limitedEdition:false },
   { code:'WLD-008', title:"Pelícano V", location:"Chile", category:'wildlife', src:'images/web/WLD-008.jpg', available:true, limitedEdition:false },
   { code:'WLD-010', title:"Caballos", location:"Chile", category:'wildlife', categories:['wildlife','bw'], src:'images/web/WLD-010.jpg', mockup:"images/mockups/horses.jpg", mockup2:"images/mockups/caballos gigantes pared.jpg", available:true, limitedEdition:true, edition:"1/10", suggestedFrame:'natural' },
+  { code:'WLD-014', title:"Siete Colores I", location:"Valdivia, Chile", category:'wildlife', src:'images/web/WLD-014.jpg', available:true, limitedEdition:false },
+  { code:'WLD-015', title:"Siete Colores II", location:"Valdivia, Chile", category:'wildlife', src:'images/web/WLD-015.jpg', available:true, limitedEdition:false },
+  { code:'WLD-017', title:"Siete Colores III", location:"Valdivia, Chile", category:'wildlife', src:'images/web/WLD-017.jpg', available:true, limitedEdition:false },
+  { code:'WLD-018', title:"Guanaco", location:"Torres del Paine, Chile", category:'wildlife', src:'images/web/WLD-018.jpg', available:true, limitedEdition:false },
+  { code:'WLD-019', title:"Guanacos", location:"Torres del Paine, Chile", category:'wildlife', src:'images/web/WLD-019.jpg', available:true, limitedEdition:false },
   { code:'STR-001', title:"Wine Bar", location:"Londres, Reino Unido", category:'street', categories:['street','bw'], src:'images/web/STR-001.jpg', available:true, limitedEdition:false },
   { code:'STR-002', title:"London Street", location:"Londres, Reino Unido", category:'street', src:'images/web/STR-002.jpg', mockup:"images/mockups/walking past.jpg", mockup2:"images/mockups/walking past 2.jpg", available:true, limitedEdition:false, suggestedFrame:'negro' },
   { code:'STR-003', title:"Wimbledon I", location:"Londres, Reino Unido", category:'street', src:'images/web/STR-003.jpg', available:true, limitedEdition:false },
   { code:'STR-004', title:"Wimbledon II", location:"Londres, Reino Unido", category:'street', src:'images/web/STR-004.jpg', available:true, limitedEdition:false },
-  { code:'AST-001', title:"Vía Láctea", location:"Chile", category:'astro', src:'images/web/AST-001.jpg', available:true, limitedEdition:true, edition:"1/10" },
   { code:'AST-002', title:"Eclipse Solar", location:"Chile", category:'astro', src:'images/web/AST-002.jpg', available:true, limitedEdition:true, edition:"2/10" },
   { code:'ARC-018', title:"Sunset Oporto", location:"Oporto, Portugal", category:'architecture', src:'images/web/ARC-018.jpg', available:true, limitedEdition:false },
-  { code:'ARC-019', title:"Torre Eiffel", location:"París, Francia", category:'architecture', src:'images/web/ARC-019.jpg', available:true, limitedEdition:false },
   { code:'ARC-020', title:"Coliseo", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-020.jpg', available:true, limitedEdition:false },
   { code:'ARC-021', title:"Il Duomo", location:"Florencia, Italia", category:'architecture', categories:['architecture','bw'], src:'images/web/ARC-021.jpg', available:true, limitedEdition:false },
   { code:'ARC-022', title:"David", location:"Florencia, Italia", category:'architecture', categories:['architecture','bw'], src:'images/web/ARC-022.jpg', available:true, limitedEdition:false },
-  { code:'ARC-023', title:"Venecia", location:"Venecia, Italia", category:'architecture', src:'images/web/ARC-023.jpg', available:true, limitedEdition:false },
   { code:'ARC-025', title:"San Pedro", location:"Ciudad del Vaticano", category:'architecture', src:'images/web/ARC-025.jpg', available:true, limitedEdition:false },
-  { code:'ARC-026', title:"Persianas", location:"Roma, Italia", category:'architecture', src:'images/web/ARC-026.jpg', available:true, limitedEdition:false },
   { code:'ARC-027', title:"Panteón", location:"Roma, Italia", category:'architecture', categories:['architecture','bw'], src:'images/web/ARC-027.jpg', available:true, limitedEdition:false },
   { code:'SEA-006', title:"Marea baja", location:"Chile", category:'seascape', categories:['seascape','bw'], ratio:'1:1', src:'images/web/SEA-006.jpg', available:true, limitedEdition:false },
   { code:'SEA-007', title:"Rock", location:"Chile", category:'seascape', categories:['seascape','bw'], ratio:'1:1', src:'images/web/SEA-007.jpg', available:true, limitedEdition:false },
@@ -88,7 +85,22 @@ var PHOTOS = [
   { code:'STR-005', title:"BCN", location:"Barcelona, España", category:'street', categories:['street','bw'], src:'images/web/STR-005.jpg', available:true, limitedEdition:false },
   { code:'STR-006', title:"Generalitat", location:"Barcelona, España", category:'street', categories:['street','bw'], src:'images/web/STR-006.jpg', available:true, limitedEdition:false },
   { code:'LND-021', title:"Pastos", location:"Chile", category:'landscape', src:'images/web/LND-021.jpg', available:true, limitedEdition:false },
-  { code:'LND-022', title:"Pastos II", location:"Chile", category:'landscape', src:'images/web/LND-022.jpg', available:true, limitedEdition:false }
+  { code:'LND-022', title:"Pastos II", location:"Chile", category:'landscape', src:'images/web/LND-022.jpg', available:true, limitedEdition:false },
+  { code:'LND-023', title:"Torres al Alba", location:"Torres del Paine, Chile", category:'landscape', src:'images/web/LND-023.jpg', available:true, limitedEdition:false },
+  { code:'LND-024', title:"Torres del Paine", location:"Torres del Paine, Chile", category:'landscape', src:'images/web/LND-024.jpg', available:true, limitedEdition:false },
+  { code:'LND-025', title:"Reflejo", location:"Torres del Paine, Chile", category:'landscape', src:'images/web/LND-025.jpg', available:true, limitedEdition:false },
+  { code:'LND-026', title:"Piedras", location:"Torres del Paine, Chile", category:'landscape', src:'images/web/LND-026.jpg', available:true, limitedEdition:false },
+  { code:'LND-027', title:"Bosque en Niebla", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-027.jpg', available:true, limitedEdition:false },
+  { code:'LND-028', title:"Niebla sobre el Humedal I", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-028.jpg', available:true, limitedEdition:false },
+  { code:'LND-029', title:"Niebla sobre el Humedal II", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-029.jpg', available:true, limitedEdition:false },
+  { code:'LND-031', title:"Lluvia", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-031.jpg', available:true, limitedEdition:false },
+  { code:'LND-032', title:"Juncos en Movimiento", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-032.jpg', available:true, limitedEdition:false },
+  { code:'LND-033', title:"Orilla", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-033.jpg', available:true, limitedEdition:false },
+  { code:'LND-036', title:"Corriente", location:"Valdivia, Chile", category:'landscape', categories:['landscape','bw'], src:'images/web/LND-036.jpg', available:true, limitedEdition:false },
+  { code:'LND-039', title:"Flor de Ciruelo", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-039.jpg', available:true, limitedEdition:false },
+  { code:'LND-040', title:"Botón de Camelia", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-040.jpg', available:true, limitedEdition:false },
+  { code:'LND-041', title:"Camelia", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-041.jpg', available:true, limitedEdition:false },
+  { code:'LND-042', title:"Ciprés", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-042.jpg', available:true, limitedEdition:false }
 ];
 
 var SIZES = [
@@ -106,7 +118,7 @@ var LE_PREMIUM = 1.3;
 
 var HERO_PHOTOS = ["LND-001","SEA-003","WLD-004","AER-002"];
 
-var HERO_PHOTOS_MOBILE = ["AER-004","AER-016","LND-013","ARC-015"];
+var HERO_PHOTOS_MOBILE = ["AER-024","AER-016","LND-013","ARC-015"];
 
 /* Categorías de una foto. `categories` (lista) manda; si no está, se usa
    `category` sola. Así una foto puede vivir en su categoría nativa y en B&N. */
@@ -141,9 +153,9 @@ var TEXTS = {
   "contactDesc": "Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas."
 };
 
-var DATA_VERSION = 13;
+var DATA_VERSION = 14;
 
-var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","ARC-004","ARC-013","ARC-014","ARC-016","ARC-017","ARC-020","ARC-021","ARC-027","AST-001","LND-001","LND-002","LND-003","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","SEA-003","SEA-004","STR-005","STR-006","WLD-003","WLD-004","WLD-006","WLD-007","WLD-010"]);
+var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","AER-020","AER-022","ARC-004","ARC-013","ARC-014","ARC-017","ARC-020","ARC-021","ARC-027","LND-001","LND-002","LND-003","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","LND-023","LND-029","LND-031","LND-032","LND-033","LND-036","SEA-003","SEA-004","STR-005","STR-006","WLD-004","WLD-006","WLD-007","WLD-010","WLD-015","WLD-017","WLD-018"]);
 
 // Admin overrides from localStorage.
 // El cache solo se aplica cuando su versión coincide con la del data.js publicado
