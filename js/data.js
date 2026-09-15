@@ -147,13 +147,13 @@ var CATEGORIES = [
 
 var TEXTS = {
   "tiendaDesc": "Cada imagen está disponible como impresión fine art de alta calidad, producida en conjunto con una galería especializada en Concón, Chile. Disponible en múltiples tamaños, con o sin marco o paspartú.",
-  "aboutP1": "Soy <strong>Germán Weber</strong>, fotógrafo basado en <strong>Concón, Chile</strong>. Trabajo entre lo grande y lo cercano: paisajes patagónicos, ecosistemas costeros y la geometría de las ciudades que he recorrido en Sudamérica, Europa y Oceanía.",
-  "aboutP2": "Trabajo principalmente con drone y cámara en mano, buscando perspectivas que revelen lo extraordinario en lo cotidiano. Cada imagen es una edición cuidadosa, no un disparo de azar.",
-  "aboutP3": "Llegué a la fotografía desde la curiosidad y la formé en Melbourne. Hoy divido mi tiempo entre encargos, proyectos personales y el trabajo audiovisual en conservación de ríos en Chile.",
+  "aboutP1": "Soy <strong>Germán Weber</strong>, fotógrafo en <strong>Concón, Chile</strong>. Fotografío paisajes patagónicos, ecosistemas costeros y ciudades que he recorrido en Sudamérica, Europa y Oceanía.",
+  "aboutP2": "Con el tiempo me he dado cuenta de que la fotografía es algo muy personal, tanto para el que la toma como para el que la mira. No hay una forma correcta de ver una imagen, ni una forma correcta de tomarla. Yo fotografío lo que a mí me interesa, como a mí me nace hacerlo. Si te gusta lo que ves, ahí está el punto de todo esto.",
+  "aboutP3": "Hoy reparto mi tiempo entre encargos, proyectos personales y trabajo audiovisual en conservación de ríos en Chile.",
   "contactDesc": "Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas."
 };
 
-var DATA_VERSION = 14;
+var DATA_VERSION = 15;
 
 var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","AER-020","AER-022","ARC-004","ARC-013","ARC-014","ARC-017","ARC-020","ARC-021","ARC-027","LND-001","LND-002","LND-003","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","LND-023","LND-029","LND-031","LND-032","LND-033","LND-036","SEA-003","SEA-004","STR-005","STR-006","WLD-004","WLD-006","WLD-007","WLD-010","WLD-015","WLD-017","WLD-018"]);
 
