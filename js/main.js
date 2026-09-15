@@ -121,7 +121,7 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
   heroPics.forEach((p, i) => {
     const slide = document.createElement('div');
     slide.className = 'hero-slide' + (i === 0 ? ' active' : '');
-    slide.style.backgroundImage = `url('${p.src}')`;
+    slide.dataset.bg = p.src;
     slidesEl.appendChild(slide);
 
     const dot = document.createElement('div');
@@ -129,18 +129,38 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
     dotsEl.appendChild(dot);
   });
 
+  // Cada foto del hero se descarga recién cuando le toca ser la siguiente,
+  // en vez de bajar todas al abrir la página.
+  const slides = slidesEl.querySelectorAll('.hero-slide');
+  function loadSlide(i) {
+    const s = slides[i];
+    if (s && !s.style.backgroundImage) s.style.backgroundImage = `url('${s.dataset.bg}')`;
+  }
+  loadSlide(0);
+  loadSlide(1);
+
   let cur = 0;
   function next() {
-    const slides = slidesEl.querySelectorAll('.hero-slide');
-    const dots   = dotsEl.querySelectorAll('.hero-dot');
+    const dots = dotsEl.querySelectorAll('.hero-dot');
     slides[cur].classList.remove('active');
     dots[cur].classList.remove('active');
     cur = (cur + 1) % slides.length;
+    loadSlide(cur);
     slides[cur].classList.add('active');
     dots[cur].classList.add('active');
+    loadSlide((cur + 1) % slides.length);
   }
   setInterval(next, 5000);
 })();
+
+/* ── Miniaturas (generadas por tools/miniaturas.py) ── */
+const THUMB_SIZES = { sm: 700, md: 1400 }; // lado mayor en px, igual que en el script
+function thumbPath(src, size) {
+  return src.replace(/^images\//, `images/thumbs/${size}/`);
+}
+function imgDims(src) {
+  return (typeof IMG_DIMS !== 'undefined' && src && IMG_DIMS[src]) || null;
+}
 
 /* ── Gallery ── */
 (function () {
@@ -159,7 +179,26 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
 
     const img = document.createElement('img');
     img.alt = p.title;
-    img.src = p.mockup || p.src;
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    const full = p.mockup || p.src;
+    img.setAttribute('data-full', full);
+    const dims = imgDims(full);
+    if (dims) {
+      // Miniaturas de tools/miniaturas.py; el navegador elige según el ancho
+      // que le asigna justifyGallery (img.sizes). Si falta una, cae al original.
+      img.sizes = '25vw';
+      img.srcset = Object.entries(THUMB_SIZES).map(([name, lado]) => {
+        const w = Math.round(dims[0] * Math.min(1, lado / Math.max(dims[0], dims[1])));
+        return `${encodeURI(thumbPath(full, name))} ${w}w`;
+      }).join(', ');
+      img.src = thumbPath(full, 'md');
+      img.addEventListener('error', () => {
+        if (img.src.includes('/thumbs/')) { img.removeAttribute('srcset'); img.src = full; }
+      });
+    } else {
+      img.src = full; // foto nueva sin miniatura todavía
+    }
 
     const overlay = document.createElement('div');
     overlay.className = 'gallery-item-overlay';
@@ -237,28 +276,35 @@ mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
         used += w;
         r.el.style.width = w + 'px';
         r.el.style.height = Math.floor(h) + 'px';
+        r.img.sizes = w + 'px';
       });
       row = []; aspectSum = 0;
     };
     items.forEach(el => {
       const img = el.querySelector('img');
-      const aspect = (img.naturalWidth && img.naturalHeight)
-        ? img.naturalWidth / img.naturalHeight
+      const dims = imgDims(img.getAttribute('data-full'));
+      const aspect = dims ? dims[0] / dims[1]
+        : (img.naturalWidth && img.naturalHeight) ? img.naturalWidth / img.naturalHeight
         : (el.dataset.orientation === 'h' ? 1.5 : 0.667);
-      row.push({ el, aspect });
+      row.push({ el, img, aspect });
       aspectSum += aspect;
       if (aspectSum * TARGET_H >= W - GAP * (row.length - 1) || row.length >= MAX_PER_ROW) flush(false);
     });
     flush(true);
   }
 
-  // Primer layout con proporciones estimadas, luego con las reales al cargar
+  // Las proporciones vienen de js/thumbs.js, así el layout sale bien de inmediato.
+  // Solo las fotos sin medidas (nuevas, sin miniatura) relayoutan al cargar.
   justifyGallery();
-  const gridImgs = [...grid.querySelectorAll('img')];
-  Promise.allSettled(gridImgs.map(i => i.decode ? i.decode().catch(() => {}) : Promise.resolve()))
-    .then(justifyGallery);
-
   let resizeTimer;
+  grid.querySelectorAll('img').forEach(img => {
+    if (imgDims(img.getAttribute('data-full'))) return;
+    img.addEventListener('load', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(justifyGallery, 120);
+    }, { once: true });
+  });
+
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(justifyGallery, 120);

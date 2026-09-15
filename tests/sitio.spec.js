@@ -48,6 +48,62 @@ test.describe('Galería', () => {
   });
 });
 
+test.describe('Velocidad de carga', () => {
+  test('la galería usa miniaturas con carga diferida', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.gallery-item');
+    const img = page.locator('.gallery-item img').first();
+    await expect(img).toHaveAttribute('loading', 'lazy');
+    await expect(img).toHaveAttribute('srcset', /images\/thumbs\/sm\/.+ \d+w, images\/thumbs\/md\/.+ \d+w/);
+  });
+
+  test('al abrir la página no se descargan todas las fotos', async ({ page }) => {
+    const pedidas = new Set();
+    page.on('request', r => { if (/\.(jpe?g|png)(\?|$)/i.test(r.url())) pedidas.add(r.url()); });
+    await page.goto('/');
+    await page.waitForLoadState('load');
+    const total = await page.evaluate(() => PHOTOS.length);
+    expect(pedidas.size).toBeLessThan(total / 2);
+    // Ninguna foto de 2000 px de la galería se pide para la grilla
+    const originalesGrilla = [...pedidas].filter(u => /images\/mockups\//.test(u));
+    expect(originalesGrilla).toEqual([]);
+  });
+
+  test('las miniaturas existen para las fotos visibles', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.gallery-item');
+    await page.locator('.gallery-item img').first().scrollIntoViewIfNeeded();
+    await expect.poll(() => page.locator('.gallery-item img').first()
+      .evaluate(i => i.complete && i.naturalWidth > 0 && i.currentSrc.includes('/thumbs/'))).toBe(true);
+  });
+
+  test('el hero no descarga todas sus fotos de entrada', async ({ page }) => {
+    await page.goto('/');
+    const conFondo = await page.evaluate(() =>
+      [...document.querySelectorAll('.hero-slide')].filter(s => s.style.backgroundImage).length);
+    const total = await page.locator('.hero-slide').count();
+    expect(conFondo).toBeLessThanOrEqual(Math.min(2, total));
+  });
+});
+
+test.describe('Archivos no publicados', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const raiz = path.join(__dirname, '..');
+
+  test('_config.yml deja fuera el admin y los archivos de desarrollo', async () => {
+    const cfg = fs.readFileSync(path.join(raiz, '_config.yml'), 'utf8');
+    for (const f of ['admin.html', 'tests', 'tools', 'node_modules', 'package.json']) {
+      expect(cfg).toContain(`- ${f}`);
+    }
+  });
+
+  test('admin.html no tiene la clave en texto plano', async () => {
+    const admin = fs.readFileSync(path.join(raiz, 'admin.html'), 'utf8');
+    expect(admin).not.toMatch(/simpleHash\(\s*['"]/);
+  });
+});
+
 test.describe('Visor', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');

@@ -384,7 +384,9 @@ function simpleHash(str) {
   }
   return h.toString(16);
 }
-const HASH = simpleHash('fotosgerman');
+// Solo el hash, no la clave: este archivo está en un repo público.
+// Para cambiar la clave: en la consola del admin llamar a simpleHash con la clave nueva y pegar el resultado aquí.
+const HASH = 'cfbd5988';
 
 function checkLogin() {
   const pw = document.getElementById('pw-input').value;

@@ -1,0 +1,13 @@
+# GitHub Pages: estos archivos quedan en el repo pero NO se publican en germanweber.cl.
+# admin.html se usa solo en local (http://germanweberphotography.local:8765/admin.html).
+exclude:
+  - admin.html
+  - tests
+  - tools
+  - node_modules
+  - test-results
+  - playwright-report
+  - package.json
+  - package-lock.json
+  - playwright.config.js
+  - README.md
