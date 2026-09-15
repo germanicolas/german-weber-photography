@@ -905,6 +905,17 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   gap: 0.5rem;
 }
 .pm-submit:hover { background: var(--pm-gold-dark); }
+a.pm-submit { text-decoration: none; }
+/* Con WhatsApp activo, el correo pasa a ser la opción secundaria */
+.pm-submit.is-secondary {
+  background: transparent;
+  color: var(--pm-gold);
+  border: 1px solid var(--pm-gold);
+  box-shadow: none;
+}
+.pm-submit.is-secondary:hover { background: rgba(201,169,110,0.12); }
+/* .pm-submit y .contact-detail usan display:flex, que le gana al atributo hidden */
+[hidden] { display: none !important; }
 .pm-note {
   font-size: 0.68rem;
   color: var(--pm-text-dim);
@@ -1026,6 +1037,21 @@ section { padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
   color: var(--gold);
 }
 .contact-detail-value { font-size: 0.95rem; color: var(--text); }
+a.contact-detail-value { text-decoration: none; transition: color var(--transition); }
+a.contact-detail-value:hover { color: var(--gold); }
+.contact-wa {
+  align-self: flex-start;
+  margin-top: 0.3rem;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background var(--transition), color var(--transition);
+}
+.contact-wa:hover { background: var(--gold); color: var(--bg); }
 .contact-form {
   display: flex;
   flex-direction: column;

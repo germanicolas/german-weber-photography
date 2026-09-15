@@ -3,16 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>German Weber Photography</title>
-  <meta name="description" content="Fine Art Photography por German Weber — Fotografía de paisajes, naturaleza y arquitectura. Impresiones disponibles.">
-  <meta property="og:title" content="German Weber Photography">
-  <meta property="og:description" content="Fine Art Photography — Concón, Chile">
+  <title>German Weber · Fotografía Fine Art e impresiones | Concón, Chile</title>
+  <meta name="description" content="Fotografía fine art de German Weber: paisajes de Chile y el mundo, fotografía aérea, mar y arquitectura. Impresiones con marco o paspartú, producidas en Concón.">
+  <link rel="canonical" href="https://germanweber.cl/">
+
+  <!-- Vista previa al compartir el link (WhatsApp, Instagram, Facebook, LinkedIn) -->
+  <meta property="og:site_name" content="German Weber Photography">
+  <meta property="og:title" content="German Weber · Fotografía Fine Art">
+  <meta property="og:description" content="Paisajes, fotografía aérea y arquitectura. Impresiones fine art con marco o paspartú, desde Concón, Chile.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://germanweber.cl/">
+  <meta property="og:locale" content="es_CL">
+  <meta property="og:image" content="https://germanweber.cl/images/og-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Laguna Pinilla, Chile — fotografía de German Weber">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Datos estructurados para Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://germanweber.cl/#german",
+        "name": "German Weber",
+        "jobTitle": "Fotógrafo",
+        "url": "https://germanweber.cl/",
+        "image": "https://germanweber.cl/images/about-german.jpg",
+        "address": { "@type": "PostalAddress", "addressLocality": "Concón", "addressRegion": "Valparaíso", "addressCountry": "CL" },
+        "sameAs": ["https://www.instagram.com/germanicolas/"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://germanweber.cl/#web",
+        "url": "https://germanweber.cl/",
+        "name": "German Weber Photography",
+        "inLanguage": "es-CL",
+        "publisher": { "@id": "https://germanweber.cl/#german" }
+      }
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=24">
+  <link rel="stylesheet" href="css/style.css?v=27">
 </head>
 <body>
 
@@ -146,12 +184,15 @@
         <div class="pm-price-display"><span id="pm-price"></span></div>
       </div>
 
+      <a class="pm-submit" id="pm-wa" href="#" target="_blank" rel="noopener" hidden>
+        Pedir por WhatsApp
+      </a>
       <button class="pm-submit" id="pm-submit">
         Solicitar por correo
       </button>
 
       <p class="pm-note">
-        Al hacer clic se abrirá tu cliente de correo con los detalles de tu pedido. Respondo en menos de 48 horas para confirmar disponibilidad y coordinar el pago.
+        Se abre el mensaje con los detalles de tu pedido ya escritos. Respondo en menos de 48 horas para confirmar disponibilidad y coordinar el pago.
       </p>
     </div>
   </div>
@@ -220,6 +261,14 @@
         <div class="contact-detail-label">Email</div>
         <div class="contact-detail-value">germanicolas@gmail.com</div>
       </div>
+      <div class="contact-detail wa-only" hidden>
+        <div class="contact-detail-label">WhatsApp</div>
+        <a class="contact-wa" id="contact-wa" href="#" target="_blank" rel="noopener">Escríbeme por WhatsApp</a>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-label">Instagram</div>
+        <a class="contact-detail-value" href="https://www.instagram.com/germanicolas/" target="_blank" rel="noopener">@germanicolas</a>
+      </div>
     </div>
 
     <form class="contact-form" id="contact-form">
@@ -251,7 +300,8 @@
       </div>
       <button type="submit" class="form-submit">Enviar mensaje</button>
       <div class="form-success" id="form-success">
-        ¡Mensaje enviado! Te responderé pronto.
+        Se abrió tu programa de correo con el mensaje listo para enviar.
+        Si no se abrió, escríbeme directo a germanicolas@gmail.com.
       </div>
     </form>
   </div>
@@ -278,7 +328,7 @@
 <!-- ── Footer ── -->
 <footer>
   <div class="footer-logo">German Weber Photography</div>
-  <div class="footer-copy">© 2025 · Concón, Chile</div>
+  <div class="footer-copy">© <span id="footer-year">2026</span> · Concón, Chile</div>
   <div class="footer-links">
     <a href="#gallery">Impresiones</a>
     <a href="#about">Sobre mí</a>
@@ -286,8 +336,8 @@
   </div>
 </footer>
 
-<script src="js/data.js?v=25"></script>
-<script src="js/thumbs.js?v=25"></script>
-<script src="js/main.js?v=25"></script>
+<script src="js/data.js?v=27"></script>
+<script src="js/thumbs.js?v=27"></script>
+<script src="js/main.js?v=27"></script>
 </body>
 </html>

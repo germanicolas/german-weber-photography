@@ -104,6 +104,92 @@ test.describe('Archivos no publicados', () => {
   });
 });
 
+test.describe('SEO y vista previa al compartir', () => {
+  test('tiene og:image absoluta y la imagen existe', async ({ page, request }) => {
+    await page.goto('/');
+    const og = await page.locator('meta[property="og:image"]').getAttribute('content');
+    expect(og).toMatch(/^https:\/\/germanweber\.cl\/images\/.+\.jpg$/);
+    const local = await request.get('/' + og.replace('https://germanweber.cl/', ''));
+    expect(local.status()).toBe(200);
+  });
+
+  test('tiene canonical y datos estructurados válidos', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://germanweber.cl/');
+    const ld = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
+    expect(ld['@graph'].map(n => n['@type'])).toEqual(['Person', 'WebSite']);
+  });
+
+  test('robots.txt apunta al sitemap', async ({ request }) => {
+    const r = await request.get('/robots.txt');
+    expect(r.status()).toBe(200);
+    expect(await r.text()).toContain('Sitemap: https://germanweber.cl/sitemap.xml');
+  });
+
+  test('sitemap.xml incluye todas las fotos', async ({ page, request }) => {
+    await page.goto('/');
+    const total = await page.evaluate(() => PHOTOS.length);
+    const xml = await (await request.get('/sitemap.xml')).text();
+    expect((xml.match(/<image:image>/g) || []).length).toBe(total);
+  });
+});
+
+test.describe('WhatsApp', () => {
+  const NUMERO = '56911112222';
+  // Reemplaza el número de main.js para probar con y sin WhatsApp, sin depender del real.
+  const usarNumero = async (page, numero) => {
+    await page.route('**/js/main.js*', async route => {
+      const r = await route.fetch();
+      const body = (await r.text()).replace(/var WHATSAPP = '\d*';/, `var WHATSAPP = '${numero}';`);
+      await route.fulfill({ response: r, body });
+    });
+  };
+  const conNumero = page => usarNumero(page, NUMERO);
+
+  test('main.js tiene un número de WhatsApp válido', async () => {
+    const main = require('fs').readFileSync(require('path').join(__dirname, '..', 'js', 'main.js'), 'utf8');
+    expect(main).toMatch(/var WHATSAPP = '569\d{8}';/);
+  });
+
+  test('sin número, los botones de WhatsApp no aparecen', async ({ page }) => {
+    await usarNumero(page, '');
+    await page.goto('/');
+    await page.evaluate(() => { openViewer('LND-001'); });
+    await page.locator('#pm-vb-options').click();
+    await expect(page.locator('#pm-wa')).toBeHidden();
+    await expect(page.locator('#pm-submit')).toBeVisible();
+    await expect(page.locator('#contact-wa')).toBeHidden();
+  });
+
+  test('con número, el pedido va con foto, tamaño y precio', async ({ page }) => {
+    await conNumero(page);
+    await page.goto('/');
+    await page.evaluate(() => { openViewer('LND-001'); });
+    await page.locator('#pm-vb-options').click();
+    await page.locator('.pm-size[data-size="m"]').click();
+    await page.locator('.pm-frame[data-frame="marco"]').click();
+
+    const wa = page.locator('#pm-wa');
+    await expect(wa).toBeVisible();
+    await expect(page.locator('#pm-submit')).toHaveClass(/is-secondary/);
+    const href = await wa.getAttribute('href');
+    expect(href.startsWith(`https://wa.me/${NUMERO}?text=`)).toBe(true);
+    const texto = decodeURIComponent(href.split('?text=')[1]);
+    const precio = await page.locator('#pm-price').textContent();
+    expect(texto).toContain('(LND-001)');
+    expect(texto).toContain('40 × 60 cm');
+    expect(texto).toContain('Con marco');
+    expect(texto).toContain(precio);
+  });
+
+  test('con número, aparece WhatsApp en contacto', async ({ page }) => {
+    await conNumero(page);
+    await page.goto('/');
+    await expect(page.locator('#contact-wa')).toBeVisible();
+    await expect(page.locator('#contact-wa')).toHaveAttribute('href', new RegExp(`^https://wa\\.me/${NUMERO}\\?text=`));
+  });
+});
+
 test.describe('Visor', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');

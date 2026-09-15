@@ -1,3 +1,23 @@
+/* ── WhatsApp ── */
+// Número solo con dígitos y código de país, ej: '56912345678'.
+// Vacío = los botones de WhatsApp quedan ocultos y solo se ofrece el correo.
+var WHATSAPP = '56962964266';
+
+function waLink(text) {
+  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`;
+}
+
+(function () {
+  if (!WHATSAPP) return;
+  document.querySelectorAll('.wa-only, #pm-wa').forEach(el => { el.hidden = false; });
+  document.getElementById('pm-submit')?.classList.add('is-secondary');
+  const contactWa = document.getElementById('contact-wa');
+  if (contactWa) contactWa.href = waLink('Hola German, te escribo desde tu web.');
+})();
+
+const footerYear = document.getElementById('footer-year');
+if (footerYear) footerYear.textContent = new Date().getFullYear();
+
 /* ── Apply editable texts ── */
 (function () {
   if (typeof TEXTS === 'undefined') return;
@@ -473,6 +493,7 @@ function renderPrintModal() {
   renderSizeNote();
 
   document.getElementById('pm-price').textContent = formatPrice(calcPrice());
+  updateWaLink();
 }
 
 function renderSizeNote() {
@@ -515,19 +536,30 @@ document.querySelectorAll('.pm-color-btn').forEach(b => b.addEventListener('clic
   pmColor = b.dataset.color; renderPrintModal();
 }));
 
-document.getElementById('pm-submit')?.addEventListener('click', () => {
-  if (!pmPhoto) return;
+/* Detalle del pedido, igual para el correo y para WhatsApp */
+function orderDetails() {
   const sz = SIZES.find(s => s.id === pmSize);
   const frameMap = { sin:'Sin enmarcar', marco:'Con marco', passe:'Con paspartú' };
   const colorLabel = pmFrame !== 'sin' ? ` — ${MARCO_COLORS[pmColor].label}` : '';
-  const subject = encodeURIComponent(`Solicitud de impresión — ${pmPhoto.title}`);
-  const body = encodeURIComponent(
-    `Hola German,\n\nMe gustaría solicitar una impresión:\n\n` +
-    `Fotografía: ${pmPhoto.title} (${pmPhoto.code})\n` +
+  return `Fotografía: ${pmPhoto.title} (${pmPhoto.code})\n` +
     `Tamaño: ${sz.label}\n` +
     `Terminación: ${frameMap[pmFrame]}${colorLabel}\n` +
     (pmPhoto.limitedEdition ? `Edición: ${pmPhoto.edition}\n` : '') +
-    `Precio estimado: ${formatPrice(calcPrice())}\n\n` +
+    `Precio estimado: ${formatPrice(calcPrice())}`;
+}
+
+/* El link de WhatsApp se rearma cada vez que cambia una opción del pedido */
+function updateWaLink() {
+  const wa = document.getElementById('pm-wa');
+  if (!wa || !WHATSAPP || !pmPhoto) return;
+  wa.href = waLink(`Hola German, me interesa esta impresión:\n\n${orderDetails()}\n\n¿Está disponible?`);
+}
+
+document.getElementById('pm-submit')?.addEventListener('click', () => {
+  if (!pmPhoto) return;
+  const subject = encodeURIComponent(`Solicitud de impresión — ${pmPhoto.title}`);
+  const body = encodeURIComponent(
+    `Hola German,\n\nMe gustaría solicitar una impresión:\n\n${orderDetails()}\n\n` +
     `Por favor confirmar disponibilidad y forma de pago.\n\nGracias.`
   );
   window.location.href = `mailto:germanicolas@gmail.com?subject=${subject}&body=${body}`;
