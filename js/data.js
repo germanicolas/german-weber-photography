@@ -4,7 +4,6 @@ var PHOTOS = [
   { code:'AER-003', title:"Mar Verde", location:"Chile", category:'aerial', src:'images/web/AER-003.jpg', available:true, limitedEdition:false },
   { code:'AER-005', title:"Río Loa", location:"Calama, Chile", category:'aerial', src:'images/web/AER-005.jpg', available:true, limitedEdition:false },
   { code:'AER-007', title:"Reñaca", location:"Reñaca, Chile", category:'aerial', src:'images/web/AER-007.jpg', available:true, limitedEdition:false },
-  { code:'AER-008', title:"Puente & Niebla", location:"Chile", category:'aerial', src:'images/web/AER-008.jpg', available:true, limitedEdition:false },
   { code:'AER-009', title:"Peñuelas", location:"Valparaíso, Chile", category:'aerial', src:'images/web/AER-009.jpg', available:true, limitedEdition:false },
   { code:'AER-010', title:"Hipódromo", location:"Melbourne, Australia", category:'aerial', src:'images/web/AER-010.jpg', available:true, limitedEdition:false },
   { code:'AER-011', title:"UAI", location:"Santiago, Chile", category:'aerial', src:'images/web/AER-011.jpg', available:true, limitedEdition:false },
@@ -84,20 +83,17 @@ var PHOTOS = [
   { code:'SEA-008', title:"Lonely", location:"Chile", category:'seascape', categories:['seascape','bw'], ratio:'1:1', src:'images/web/SEA-008.jpg', available:true, limitedEdition:false },
   { code:'STR-006', title:"Generalitat", location:"Barcelona, España", category:'street', categories:['street','bw'], src:'images/web/STR-006.jpg', available:true, limitedEdition:false },
   { code:'LND-021', title:"Pastos", location:"Chile", category:'landscape', src:'images/web/LND-021.jpg', available:true, limitedEdition:false },
-  { code:'LND-022', title:"Pastos II", location:"Chile", category:'landscape', src:'images/web/LND-022.jpg', available:true, limitedEdition:false },
   { code:'LND-023', title:"Torres al Alba", location:"Torres del Paine, Chile", category:'landscape', src:'images/web/LND-023.jpg', available:true, limitedEdition:false },
   { code:'LND-024', title:"Torres del Paine", location:"Torres del Paine, Chile", category:'landscape', src:'images/web/LND-024.jpg', available:true, limitedEdition:false },
   { code:'LND-025', title:"Reflejo", location:"Torres del Paine, Chile", category:'landscape', src:'images/web/LND-025.jpg', available:true, limitedEdition:false },
   { code:'LND-026', title:"Piedras", location:"Torres del Paine, Chile", category:'landscape', src:'images/web/LND-026.jpg', available:true, limitedEdition:false },
   { code:'LND-027', title:"Bosque en Niebla", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-027.jpg', available:true, limitedEdition:false },
-  { code:'LND-028', title:"Niebla sobre el Humedal I", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-028.jpg', available:true, limitedEdition:false },
   { code:'LND-029', title:"Niebla sobre el Humedal II", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-029.jpg', available:true, limitedEdition:false },
   { code:'LND-031', title:"Lluvia", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-031.jpg', available:true, limitedEdition:false },
   { code:'LND-032', title:"Juncos en Movimiento", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-032.jpg', available:true, limitedEdition:false },
   { code:'LND-033', title:"Orilla", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-033.jpg', available:true, limitedEdition:false },
   { code:'LND-036', title:"Corriente", location:"Valdivia, Chile", category:'landscape', categories:['landscape','bw'], src:'images/web/LND-036.jpg', available:true, limitedEdition:false },
   { code:'LND-039', title:"Flor de Ciruelo", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-039.jpg', available:true, limitedEdition:false },
-  { code:'LND-040', title:"Botón de Camelia", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-040.jpg', available:true, limitedEdition:false },
   { code:'LND-041', title:"Camelia", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-041.jpg', available:true, limitedEdition:false },
   { code:'LND-042', title:"Ciprés", location:"Valdivia, Chile", category:'landscape', src:'images/web/LND-042.jpg', available:true, limitedEdition:false }
 ];
@@ -152,7 +148,7 @@ var TEXTS = {
   "contactDesc": "Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas."
 };
 
-var DATA_VERSION = 16;
+var DATA_VERSION = 17;
 
 var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","AER-020","AER-022","ARC-004","ARC-013","ARC-014","ARC-017","ARC-020","ARC-021","ARC-027","LND-001","LND-002","LND-003","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","LND-023","LND-029","LND-031","LND-032","LND-033","LND-036","SEA-003","SEA-004","STR-006","WLD-004","WLD-006","WLD-007","WLD-010","WLD-015","WLD-017","WLD-018"]);
 
