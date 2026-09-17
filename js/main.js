@@ -253,10 +253,20 @@ function imgDims(src) {
     }, { once: true });
   });
 
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(justifyGallery, 120);
-  });
+  // Recalcular cada vez que cambie el ancho real de la galería (no solo al
+  // redimensionar la ventana): al cargar, Safari puede medir un ancho provisorio.
+  let lastW = Math.floor(grid.getBoundingClientRect().width);
+  let rafId = 0;
+  const relayout = () => {
+    const w = Math.floor(grid.getBoundingClientRect().width);
+    if (w === lastW) return;
+    lastW = w;
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(justifyGallery);
+  };
+  if ('ResizeObserver' in window) new ResizeObserver(relayout).observe(grid);
+  window.addEventListener('resize', relayout);
+  window.addEventListener('load', () => { lastW = -1; relayout(); });
   grid._justify = justifyGallery; // para relayout al filtrar
 
   // Filters
