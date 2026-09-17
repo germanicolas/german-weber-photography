@@ -47,86 +47,14 @@ if (footerYear) footerYear.textContent = new Date().getFullYear();
   }
 })();
 
-/* ── Nav scroll + hero logo migration ── */
+/* ── Nav scroll ── */
 const nav = document.getElementById('nav');
-const heroEl = document.getElementById('hero');
-const heroLogo = document.querySelector('.hero-logo');
-const heroSubtitle = document.querySelector('.hero-subtitle');
-const heroScrollLink = document.querySelector('.hero-scroll');
-
-let _fixedLogo = null;
-let _initPos   = null;
-let _smoothP   = 0;
-let _targetP   = 0;
-
-function _lerp(a, b, t) { return a + (b - a) * t; }
-function _ease(t) { return t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t; }
-
-function _initAnim() {
-  if (!heroLogo || !heroEl) return;
-  const rect = heroLogo.getBoundingClientRect();
-  _initPos = { top: rect.top + window.scrollY, left: rect.left, w: rect.width, h: rect.height };
-
-  _fixedLogo = document.createElement('img');
-  _fixedLogo.src = heroLogo.src;
-  _fixedLogo.alt = '';
-  Object.assign(_fixedLogo.style, {
-    position: 'fixed', zIndex: '200',
-    filter: 'brightness(0) invert(1)',
-    pointerEvents: 'none', display: 'block',
-  });
-  document.body.appendChild(_fixedLogo);
-  heroLogo.style.opacity = '0';
-  _rafLoop();
-}
-
-function _rafLoop() {
-  // Smooth interpolation toward target — runs every frame
-  _smoothP += (_targetP - _smoothP) * 0.09;
-
-  if (_fixedLogo && _initPos) {
-    const scrollY = window.scrollY;
-    const p = _ease(_smoothP);
-
-    const destH   = 28;
-    const destW   = destH * (_initPos.w / _initPos.h);
-    const destTop = (72 - destH) / 2;
-    const destLeft = 40;
-
-    _fixedLogo.style.top    = _lerp(_initPos.top - scrollY, destTop,  p) + 'px';
-    _fixedLogo.style.left   = _lerp(_initPos.left,          destLeft, p) + 'px';
-    _fixedLogo.style.width  = _lerp(_initPos.w,             destW,    p) + 'px';
-    _fixedLogo.style.height = 'auto';
-
-    const fadeOther = Math.max(1 - _smoothP * 2.5, 0);
-    if (heroSubtitle)   heroSubtitle.style.opacity   = fadeOther;
-    if (heroScrollLink) heroScrollLink.style.opacity = fadeOther;
-  }
-
-  requestAnimationFrame(_rafLoop);
-}
+const heroArrow = document.querySelector('.hero-arrow');
 
 window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  nav.classList.toggle('scrolled', scrollY > 60);
-  if (heroEl) {
-    _targetP = Math.min(Math.max(scrollY / (heroEl.offsetHeight * 0.55), 0), 1);
-  }
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+  heroArrow?.classList.toggle('hidden', window.scrollY > 40);
 }, { passive: true });
-
-window.addEventListener('load', _initAnim);
-
-/* ── Mobile nav ── */
-const toggle = document.querySelector('.nav-toggle');
-const mobileNav = document.querySelector('.nav-mobile');
-toggle?.addEventListener('click', () => {
-  mobileNav.classList.toggle('open');
-  document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
-});
-mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-  mobileNav.classList.remove('open');
-  document.body.style.overflow = '';
-}));
 
 /* ── Hero slideshow ── */
 (function () {

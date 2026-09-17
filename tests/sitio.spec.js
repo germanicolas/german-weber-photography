@@ -3,8 +3,7 @@ const { test, expect } = require('@playwright/test');
 test.describe('Hero', () => {
   test('muestra la caligrafía y el subtítulo', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('.hero-logo')).toBeVisible();
-    await expect(page.locator('.hero-subtitle')).toContainText('Fine Art Photography');
+    await expect(page.locator('.nav-logo img')).toBeVisible();
   });
 
   test('el slideshow cambia de foto', async ({ page }) => {
@@ -269,17 +268,9 @@ test.describe('Panel de opciones', () => {
 test.describe('Navegación mobile', () => {
   test.use({ viewport: { width: 375, height: 812 } });
 
-  test('hamburguesa abre el menú', async ({ page }) => {
+  test('Contacto visible arriba a la derecha', async ({ page }) => {
     await page.goto('/');
-    await page.locator('.nav-toggle').click();
-    await expect(page.locator('.nav-mobile')).toHaveClass(/open/);
-  });
-
-  test('menú mobile se cierra al hacer click en un link', async ({ page }) => {
-    await page.goto('/');
-    await page.locator('.nav-toggle').click();
-    await page.locator('.nav-mobile a').first().click();
-    await expect(page.locator('.nav-mobile')).not.toHaveClass(/open/);
+    await expect(page.locator('.nav-links a[href="#contact"]')).toBeVisible();
   });
 });
 

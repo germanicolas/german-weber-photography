@@ -61,7 +61,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=33">
+  <link rel="stylesheet" href="css/style.css?v=38">
 </head>
 <body>
 
@@ -95,9 +95,22 @@
     if(done) return; done=true;
     var wait=Math.max(0,MIN-(performance.now()-start));
     setTimeout(function(){
-      intro.classList.add('out');
+      var logo=intro.querySelector('.intro-logo');
+      var target=document.querySelector('.nav-logo img');
+      var from=logo.getBoundingClientRect();
+      var to=target&&target.getBoundingClientRect();
+      root.classList.add('intro-landing');
       root.classList.remove('intro-on');
-      setTimeout(function(){ intro.remove(); },1500);
+      if(to&&to.width&&!reduced){
+        // FLIP: solo transform (escala + traslación) para que vaya a 60fps en GPU
+        var s=to.width/from.width;
+        logo.style.transform='translate('+(to.left-from.left)+'px,'+(to.top-from.top)+'px) scale('+s+')';
+      }
+      intro.classList.add('out');
+      setTimeout(function(){
+        root.classList.remove('intro-landing');
+        intro.remove();
+      },1500);
     },wait);
   }
   if(document.readyState==='complete') finish(); else window.addEventListener('load',finish);
@@ -107,34 +120,20 @@
 
 <!-- ── Navigation ── -->
 <nav id="nav">
-  <a href="#" class="nav-logo"></a>
+  <a href="#" class="nav-logo" aria-label="German Weber — inicio"><img src="images/logo.svg" alt="German Weber"></a>
   <ul class="nav-links">
-    <li><a href="#gallery">Impresiones</a></li>
-    <li><a href="#about">Sobre mí</a></li>
     <li><a href="#contact">Contacto</a></li>
   </ul>
-  <button class="nav-toggle" aria-label="Menú">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
-
-<!-- Mobile nav overlay -->
-<div class="nav-mobile">
-  <a href="#gallery">Impresiones</a>
-  <a href="#about">Sobre mí</a>
-  <a href="#contact">Contacto</a>
-</div>
 
 <!-- ── Hero ── -->
 <section id="hero">
   <div class="hero-slides"></div>
   <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <p class="hero-subtitle">Fine Art Photography</p>
-    <img class="hero-logo" src="images/logo.svg" alt="German Weber">
-    <a class="hero-scroll" href="#gallery">Explorar</a>
-  </div>
   <div class="hero-dots"></div>
+  <a class="hero-arrow" href="#gallery" aria-label="Ver más">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
 </section>
 
 <!-- ── Gallery ── -->
@@ -388,8 +387,8 @@
   </div>
 </footer>
 
-<script src="js/data.js?v=33"></script>
-<script src="js/thumbs.js?v=33"></script>
-<script src="js/main.js?v=33"></script>
+<script src="js/data.js?v=38"></script>
+<script src="js/thumbs.js?v=38"></script>
+<script src="js/main.js?v=38"></script>
 </body>
 </html>
