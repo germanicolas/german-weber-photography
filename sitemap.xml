@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://germanweber.cl/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <image:image>
       <image:loc>https://germanweber.cl/images/web/AER-001.jpg</image:loc>
       <image:title>Caburgua</image:title>
@@ -418,11 +418,6 @@
       <image:loc>https://germanweber.cl/images/web/SEA-008.jpg</image:loc>
       <image:title>Lonely</image:title>
       <image:caption>Lonely — Chile. Fotografía de German Weber</image:caption>
-    </image:image>
-    <image:image>
-      <image:loc>https://germanweber.cl/images/web/STR-005.jpg</image:loc>
-      <image:title>BCN</image:title>
-      <image:caption>BCN — Barcelona, España. Fotografía de German Weber</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://germanweber.cl/images/web/STR-006.jpg</image:loc>

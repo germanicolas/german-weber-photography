@@ -89,7 +89,6 @@ var IMG_DIMS = {
   "images/web/STR-002.jpg": [1334, 2000],
   "images/web/STR-003.jpg": [1334, 2000],
   "images/web/STR-004.jpg": [1334, 2000],
-  "images/web/STR-005.jpg": [2000, 1334],
   "images/web/STR-006.jpg": [2000, 1334],
   "images/web/WLD-001.jpg": [1334, 2000],
   "images/web/WLD-004.jpg": [2000, 1499],

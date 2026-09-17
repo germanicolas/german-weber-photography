@@ -82,7 +82,6 @@ var PHOTOS = [
   { code:'SEA-006', title:"Marea baja", location:"Chile", category:'seascape', categories:['seascape','bw'], ratio:'1:1', src:'images/web/SEA-006.jpg', available:true, limitedEdition:false },
   { code:'SEA-007', title:"Rock", location:"Chile", category:'seascape', categories:['seascape','bw'], ratio:'1:1', src:'images/web/SEA-007.jpg', available:true, limitedEdition:false },
   { code:'SEA-008', title:"Lonely", location:"Chile", category:'seascape', categories:['seascape','bw'], ratio:'1:1', src:'images/web/SEA-008.jpg', available:true, limitedEdition:false },
-  { code:'STR-005', title:"BCN", location:"Barcelona, España", category:'street', categories:['street','bw'], src:'images/web/STR-005.jpg', available:true, limitedEdition:false },
   { code:'STR-006', title:"Generalitat", location:"Barcelona, España", category:'street', categories:['street','bw'], src:'images/web/STR-006.jpg', available:true, limitedEdition:false },
   { code:'LND-021', title:"Pastos", location:"Chile", category:'landscape', src:'images/web/LND-021.jpg', available:true, limitedEdition:false },
   { code:'LND-022', title:"Pastos II", location:"Chile", category:'landscape', src:'images/web/LND-022.jpg', available:true, limitedEdition:false },
@@ -153,9 +152,9 @@ var TEXTS = {
   "contactDesc": "Para consultas sobre impresiones, pedidos personalizados o cualquier otra pregunta, escríbeme directamente. Respondo en menos de 48 horas."
 };
 
-var DATA_VERSION = 15;
+var DATA_VERSION = 16;
 
-var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","AER-020","AER-022","ARC-004","ARC-013","ARC-014","ARC-017","ARC-020","ARC-021","ARC-027","LND-001","LND-002","LND-003","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","LND-023","LND-029","LND-031","LND-032","LND-033","LND-036","SEA-003","SEA-004","STR-005","STR-006","WLD-004","WLD-006","WLD-007","WLD-010","WLD-015","WLD-017","WLD-018"]);
+var HORIZONTAL = new Set(["AER-002","AER-005","AER-007","AER-015","AER-017","AER-018","AER-020","AER-022","ARC-004","ARC-013","ARC-014","ARC-017","ARC-020","ARC-021","ARC-027","LND-001","LND-002","LND-003","LND-008","LND-009","LND-010","LND-011","LND-014","LND-016","LND-017","LND-018","LND-020","LND-023","LND-029","LND-031","LND-032","LND-033","LND-036","SEA-003","SEA-004","STR-006","WLD-004","WLD-006","WLD-007","WLD-010","WLD-015","WLD-017","WLD-018"]);
 
 // Admin overrides from localStorage.
 // El cache solo se aplica cuando su versión coincide con la del data.js publicado
