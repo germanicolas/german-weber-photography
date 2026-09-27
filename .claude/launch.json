@@ -4,7 +4,10 @@
     {
       "name": "german-weber-photo",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8765"],
+      "runtimeArgs": [
+        "/Users/germanweber/Claude/German Weber/website/tools/servidor.py",
+        "8765"
+      ],
       "port": 8765
     }
   ]

@@ -69,7 +69,9 @@ window.addEventListener('scroll', () => {
   heroPics.forEach((p, i) => {
     const slide = document.createElement('div');
     slide.className = 'hero-slide' + (i === 0 ? ' active' : '');
-    slide.dataset.bg = p.src;
+    // En el teléfono basta la miniatura de 1400 px (~4 veces más liviana que el original)
+    slide.dataset.bg = isMobile ? thumbPath(p.src, 'md') : p.src;
+    slide.dataset.orig = p.src;
     slidesEl.appendChild(slide);
 
     const dot = document.createElement('div');
@@ -82,7 +84,13 @@ window.addEventListener('scroll', () => {
   const slides = slidesEl.querySelectorAll('.hero-slide');
   function loadSlide(i) {
     const s = slides[i];
-    if (s && !s.style.backgroundImage) s.style.backgroundImage = `url('${s.dataset.bg}')`;
+    if (!s || s.dataset.pedida) return;
+    s.dataset.pedida = '1';
+    const img = new Image();
+    img.onload = () => { s.style.backgroundImage = `url('${img.getAttribute('src')}')`; };
+    // Foto nueva sin miniatura todavía: cae al original
+    img.onerror = () => { if (img.getAttribute('src') !== s.dataset.orig) img.src = s.dataset.orig; };
+    img.src = s.dataset.bg;
   }
   loadSlide(0);
   loadSlide(1);
@@ -98,7 +106,21 @@ window.addEventListener('scroll', () => {
     dots[cur].classList.add('active');
     loadSlide((cur + 1) % slides.length);
   }
-  setInterval(next, 5000);
+  if (slides.length < 2) return;
+
+  // Solo avanza mientras la portada se ve: así no descarga fotos que nadie mira
+  let timer = null;
+  let heroVisible = true;
+  const arrancar = () => { if (!timer && heroVisible && !document.hidden) timer = setInterval(next, 5000); };
+  const parar = () => { clearInterval(timer); timer = null; };
+  document.addEventListener('visibilitychange', () => (document.hidden ? parar() : arrancar()));
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      heroVisible = e.isIntersecting;
+      heroVisible ? arrancar() : parar();
+    }).observe(document.getElementById('hero'));
+  }
+  arrancar();
 })();
 
 /* ── Miniaturas (generadas por tools/miniaturas.py) ── */
@@ -108,6 +130,15 @@ function thumbPath(src, size) {
 }
 function imgDims(src) {
   return (typeof IMG_DIMS !== 'undefined' && src && IMG_DIMS[src]) || null;
+}
+
+/* Proporción de una tarjeta de ambiente en la grilla: video 9:16; escena 16:9 en
+   computador y 4:5 en el teléfono (la misma que elige su <picture>) */
+function aspectoAmbiente(el) {
+  if (el.classList.contains('is-video')) return 9 / 16;
+  const movil = window.matchMedia('(max-width: 768px)').matches;
+  if (movil) return el.classList.contains('is-v') ? 4 / 5 : 16 / 9;
+  return el.classList.contains('is-h') ? 16 / 9 : 4 / 5;
 }
 
 /* ── Gallery ── */
@@ -121,6 +152,10 @@ function imgDims(src) {
     item.className = 'gallery-item' + (p.limitedEdition ? ' le' : '');
     item.dataset.category = photoCats(p).join(' ');
     item.dataset.code = p.code;
+    // Con teclado: la tarjeta recibe foco y se abre con Enter o Espacio
+    item.tabIndex = 0;
+    item.setAttribute('role', 'button');
+    item.setAttribute('aria-label', `${p.title}, ${p.location}${p.limitedEdition ? ', edición limitada' : ''}`);
     if (typeof HORIZONTAL !== 'undefined' && HORIZONTAL.has(p.code)) {
       item.dataset.orientation = 'h';
     }
@@ -129,7 +164,8 @@ function imgDims(src) {
     img.alt = p.title;
     img.loading = 'lazy';
     img.decoding = 'async';
-    const full = p.mockup || p.src;
+    // La grilla muestra siempre la foto; los mockups se ven como miniaturas en el visor
+    const full = p.src;
     img.setAttribute('data-full', full);
     const dims = imgDims(full);
     if (dims) {
@@ -166,6 +202,9 @@ function imgDims(src) {
     }
 
     item.addEventListener('click', () => openViewer(p.code));
+    item.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openViewer(p.code); }
+    });
     return item;
   }
 
@@ -207,7 +246,7 @@ function imgDims(src) {
     const W = Math.floor(grid.getBoundingClientRect().width) - 1;
     if (W <= 0) return;
 
-    const items = [...grid.querySelectorAll('.gallery-item')]
+    const items = [...grid.querySelectorAll('.gallery-item, .amb-card')]
       .filter(el => el.dataset.visible !== 'false');
 
     let row = [], aspectSum = 0;
@@ -224,11 +263,17 @@ function imgDims(src) {
         used += w;
         r.el.style.width = w + 'px';
         r.el.style.height = Math.floor(h) + 'px';
-        r.img.sizes = w + 'px';
+        if (r.img) r.img.sizes = w + 'px';
       });
       row = []; aspectSum = 0;
     };
     items.forEach(el => {
+      if (el.classList.contains('amb-card')) {
+        row.push({ el, img: null, aspect: aspectoAmbiente(el) });
+        aspectSum += row[row.length - 1].aspect;
+        if (aspectSum * TARGET_H >= W - GAP * (row.length - 1) || row.length >= MAX_PER_ROW) flush(false);
+        return;
+      }
       const img = el.querySelector('img');
       const dims = imgDims(img.getAttribute('data-full'));
       const aspect = dims ? dims[0] / dims[1]
@@ -273,12 +318,17 @@ function imgDims(src) {
   CATEGORIES.forEach(cat => {
     const btn = document.createElement('button');
     btn.className = 'filter-btn' + (cat.id === 'all' ? ' active' : '');
+    btn.setAttribute('aria-pressed', cat.id === 'all');
     btn.dataset.cat = cat.id;
     btn.textContent = cat.label;
     btn.addEventListener('click', () => {
-      filters.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      filters.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
       btn.classList.add('active');
-      document.querySelectorAll('.gallery-item').forEach(el => {
+      btn.setAttribute('aria-pressed', 'true');
+      grid.querySelectorAll('.gallery-item, .amb-card').forEach(el => {
         const cats = el.dataset.category.split(' ');
         el.dataset.visible = (cat.id === 'all' || cats.includes(cat.id)) ? 'true' : 'false';
       });
@@ -288,28 +338,256 @@ function imgDims(src) {
   });
 })();
 
+/* ── Vistas de una foto: la foto sola, sus mockups y sus ambientes ──
+   Los ambientes (videos y escenas en casas) vienen de js/ambientes.js,
+   generado por tools/ambientes.py. */
+const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MOVIL = window.matchMedia('(max-width: 768px)');
+
+// Una escena puede mostrar varias fotos (díptico, tríptico...): codes las trae todas
+const codigosDe = a => a.codes || [a.code];
+
+// Foto fija de una escena: 16:9 en computador y 4:5 en el teléfono, si existen
+function fijaDe(a) {
+  const h = a.horiz && { src: a.horiz, thumb: a.horiz_sm };
+  const v = a.foto && { src: a.foto, thumb: a.foto_sm };
+  return MOVIL.matches ? (v || h) : (h || v);
+}
+
+function vistasDe(p) {
+  const vistas = [{ tipo: 'foto', thumb: thumbPath(p.src, 'sm') }];
+  [p.mockup, p.mockup2].filter(Boolean).forEach(src => {
+    vistas.push({ tipo: 'img', src, thumb: thumbPath(src, 'sm') });
+  });
+  const ambientes = typeof AMBIENTES !== 'undefined' ? AMBIENTES.filter(a => codigosDe(a).includes(p.code)) : [];
+  ambientes.forEach(a => {
+    if (a.video) vistas.push({ tipo: 'video', src: a.video, poster: a.poster, thumb: a.poster, lugar: a.lugar, n: a.n });
+    const f = fijaDe(a);
+    // n solo en la primera vista de la escena: es la que abre su tarjeta
+    if (f) vistas.push({ tipo: 'img', src: f.src, thumb: f.thumb, lugar: a.lugar, n: a.video ? null : a.n });
+  });
+  return vistas;
+}
+
+/* ── Ambientes: videos y escenas repartidos entre las fotos de la galería ──
+   Cada tarjeta ocupa su lugar en las filas justificadas y responde a los filtros
+   según las categorías de sus fotos. */
+const ambSeccion = (function () {
+  const grid = document.getElementById('gallery-grid');
+  const nota = document.getElementById('amb-nota');
+  const lista = typeof AMBIENTES !== 'undefined'
+    ? AMBIENTES.filter(a => PHOTOS.some(p => p.code === a.code)) : [];
+  if (!grid || !lista.length) {
+    nota?.remove();
+    return null;
+  }
+
+  function crearTarjeta(a) {
+    const p = PHOTOS.find(x => x.code === a.code);
+    const fotos = codigosDe(a).map(c => PHOTOS.find(x => x.code === c)).filter(Boolean);
+    const titulo = fotos.map(f => f.title).join(' · ');
+    const card = document.createElement('button');
+    // is-h: tiene 16:9 (computador) · is-v: tiene 4:5 (teléfono); aspectoAmbiente() elige la proporción
+    card.className = 'amb-card' + (a.video ? ' is-video' : (a.horiz ? ' is-h' : '') + (a.foto ? ' is-v' : ''));
+    card.dataset.code = a.code;
+    card.dataset.category = [...new Set(fotos.flatMap(photoCats))].join(' ');
+
+    const media = document.createElement('span');
+    media.className = 'amb-media';
+    if (a.video) {
+      // Se descarga recién cuando la tarjeta entra en pantalla
+      const v = document.createElement('video');
+      v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'none';
+      ['muted', 'playsinline', 'disablepictureinpicture'].forEach(at => v.setAttribute(at, ''));
+      v.poster = a.poster;
+      v.dataset.src = a.video;
+      v.setAttribute('aria-hidden', 'true');
+      media.appendChild(v);
+    } else {
+      // <picture>: el teléfono baja la 4:5 y el computador la 16:9 (si la escena tiene ambas)
+      const pic = document.createElement('picture');
+      if (a.horiz_sm && a.foto_sm) {
+        const s = document.createElement('source');
+        s.media = '(max-width: 768px)';
+        s.srcset = a.foto_sm;
+        pic.appendChild(s);
+      }
+      const img = document.createElement('img');
+      img.src = a.horiz_sm || a.foto_sm;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.alt = `${titulo} en ${a.lugar}`;
+      pic.appendChild(img);
+      media.appendChild(pic);
+    }
+
+    // Mismo lenguaje que las fotos: título al pasar el mouse y una etiqueta fija
+    const cap = document.createElement('span');
+    cap.className = 'amb-cap';
+    const t = document.createElement('span');
+    t.className = 'amb-title';
+    t.textContent = titulo;
+    const l = document.createElement('span');
+    l.className = 'amb-place';
+    l.textContent = a.lugar;
+    cap.append(t, l);
+    const badge = document.createElement('span');
+    badge.className = 'amb-badge';
+    badge.textContent = 'Ambiente';
+
+    card.append(media, cap, badge);
+    card.addEventListener('click', () => {
+      openViewer(a.code, vistasDe(p).findIndex(v => v.n === a.n));
+    });
+    return card;
+  }
+
+  // Repartidas parejo entre las fotos (la primera, en las primeras filas),
+  // sin quedar pegadas a la foto que muestran
+  const fotos = [...grid.querySelectorAll('.gallery-item')];
+  const paso = fotos.length / (lista.length + 1);
+  lista.forEach((a, k) => {
+    const suya = el => !!el && codigosDe(a).includes(el.dataset.code);
+    let i = Math.max(1, Math.round((k + 1) * paso));
+    while (i < fotos.length && (suya(fotos[i]) || suya(fotos[i - 1]))) i++;
+    grid.insertBefore(crearTarjeta(a), fotos[i] || null);
+  });
+  grid._justify?.();
+
+  // Solo corren los videos que están a la vista (y ninguno con el visor abierto)
+  const visibles = new Set();
+  let enPausa = false;
+  const play = v => {
+    if (!v.getAttribute('src')) v.src = v.dataset.src;
+    v.play().catch(() => {});
+  };
+  if (!REDUCED_MOTION && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { visibles.add(e.target); if (!enPausa) play(e.target); }
+      else { visibles.delete(e.target); e.target.pause(); }
+    }), { threshold: 0.5 });
+    grid.querySelectorAll('.amb-card video').forEach(v => io.observe(v));
+  }
+
+  return {
+    pausar() { enPausa = true; visibles.forEach(v => v.pause()); },
+    reanudar() { enPausa = false; visibles.forEach(play); },
+  };
+})();
+
 /* ── Visor unificado (foto grande → opciones) ── */
 let pmFiltered = [...PHOTOS];
 let pmIndex = 0;
+let pmVistas = [];
+let pmVista = 0;
+let focoPrevio = null;
+let cierreVisor = null;
 
-function openViewer(code) {
+/* Con el visor abierto, la página de atrás queda inerte: el Tab y los lectores
+   de pantalla se quedan dentro del visor. */
+function fondoInerte(si) {
+  document.querySelectorAll('body > *').forEach(el => {
+    if (el.id !== 'print-modal' && el.tagName !== 'SCRIPT') el.inert = si;
+  });
+}
+
+function openViewer(code, vista) {
   const activeFilter = document.querySelector('.filter-btn.active')?.dataset.cat || 'all';
   pmFiltered = activeFilter === 'all' ? PHOTOS : PHOTOS.filter(p => photoCats(p).includes(activeFilter));
   pmIndex = pmFiltered.findIndex(p => p.code === code);
-  if (pmIndex < 0) pmIndex = 0;
+  if (pmIndex < 0) {
+    // Abierta desde Ambientes con un filtro que no la incluye: navegar entre todas
+    pmFiltered = PHOTOS;
+    pmIndex = Math.max(0, PHOTOS.findIndex(p => p.code === code));
+  }
   const modal = document.getElementById('print-modal');
+  if (!modal.classList.contains('visible')) focoPrevio = document.activeElement;
   modal.classList.remove('options');
-  setPmPhoto(pmFiltered[pmIndex]);
+  setPmPhoto(pmFiltered[pmIndex], vista);
+  clearTimeout(cierreVisor);
   modal.classList.add('open');
+  modal.getBoundingClientRect();          // fuerza el estilo inicial para que el fundido corra
+  modal.classList.add('visible');
   document.body.style.overflow = 'hidden';
+  ambSeccion?.pausar();
+  fondoInerte(true);
+  modal.querySelector('.print-modal-inner').focus({ preventScroll: true });
 }
 
-function setPmPhoto(p) {
+function setPmPhoto(p, vista) {
   pmPhoto = p;
   renderSizeButtons(p);
   pmFrame = 'sin';
   pmColor = p.suggestedFrame || 'negro';
   renderPrintModal();
+  pmVistas = vistasDe(p);
+  renderThumbs();
+  showVista(vista > 0 ? vista : 0);
+}
+
+/* Miniaturas del visor: foto, mockups y ambientes (solo si hay más de una vista) */
+function renderThumbs() {
+  const box = document.getElementById('pm-thumbs');
+  if (!box) return;
+  const hay = pmVistas.length > 1;
+  box.innerHTML = '';
+  box.hidden = !hay;
+  box.closest('.pm-visual')?.classList.toggle('has-thumbs', hay);
+  if (!hay) return;
+  pmVistas.forEach((v, i) => {
+    const b = document.createElement('button');
+    b.className = 'pm-thumb' + (v.tipo === 'video' ? ' is-video' : '');
+    b.setAttribute('aria-label', v.tipo === 'foto' ? 'Ver la foto'
+      : `${v.tipo === 'video' ? 'Video' : 'Ambiente'}${v.lugar ? ': ' + v.lugar : ''}`);
+    const img = document.createElement('img');
+    img.alt = '';
+    img.src = v.thumb;
+    img.addEventListener('error', () => {
+      const orig = v.tipo === 'foto' ? pmPhoto.src : v.src;
+      if (v.tipo !== 'video' && !img.src.endsWith(encodeURI(orig))) img.src = orig;
+    }, { once: true });
+    b.appendChild(img);
+    b.addEventListener('click', () => showVista(i));
+    box.appendChild(b);
+  });
+}
+
+function showVista(i) {
+  pmVista = pmVistas[i] ? i : 0;
+  const v = pmVistas[pmVista];
+  const esFoto = v.tipo === 'foto';
+  const amb = document.getElementById('pm-amb');
+  const img = document.getElementById('pm-amb-img');
+  const vid = document.getElementById('pm-amb-video');
+  const cap = document.getElementById('pm-amb-cap');
+  document.getElementById('pm-frame-wrap').hidden = !esFoto;
+  amb.hidden = esFoto;
+  amb.closest('.pm-visual').classList.toggle('is-amb', !esFoto);
+  img.hidden = v.tipo !== 'img';
+  vid.hidden = v.tipo !== 'video';
+  if (v.tipo === 'img') {
+    img.src = v.src;
+    img.alt = `${pmPhoto.title} en un ambiente`;
+  }
+  if (v.tipo === 'video') {
+    if (vid.getAttribute('src') !== v.src) {
+      vid.poster = v.poster;
+      vid.src = v.src;
+    }
+    vid.muted = true;
+    vid.controls = REDUCED_MOTION;
+    // iPhone en modo ahorro de batería bloquea la reproducción automática:
+    // en ese caso se muestran los controles para darle play a mano.
+    if (!REDUCED_MOTION) vid.play().catch(e => { if (e.name === 'NotAllowedError') vid.controls = true; });
+  } else {
+    vid.pause();
+  }
+  cap.hidden = esFoto;
+  cap.textContent = esFoto ? '' : (v.lugar ? `${v.lugar} · ambiente recreado` : 'Ambiente de referencia');
+  document.querySelectorAll('#pm-thumbs .pm-thumb').forEach((b, j) => {
+    b.classList.toggle('active', j === pmVista);
+    b.setAttribute('aria-pressed', j === pmVista);
+  });
 }
 
 /* Los tamaños dependen de la proporción de la foto: una cuadrada no se
@@ -339,6 +617,7 @@ document.getElementById('pm-next')?.addEventListener('click', () => {
   setPmPhoto(pmFiltered[pmIndex]);
 });
 document.getElementById('pm-vb-options')?.addEventListener('click', () => {
+  showVista(0); // el marco y el paspartú se simulan sobre la foto sola
   document.getElementById('print-modal').classList.add('options');
 });
 document.getElementById('pm-back')?.addEventListener('click', () => {
@@ -364,8 +643,17 @@ function openPrintModal(code) {
 }
 
 function closePrintModal() {
-  document.getElementById('print-modal').classList.remove('open');
+  const modal = document.getElementById('print-modal');
+  modal.classList.remove('visible');
+  clearTimeout(cierreVisor);
+  cierreVisor = setTimeout(() => modal.classList.remove('open'), 180);
   document.body.style.overflow = '';
+  document.getElementById('pm-amb-video')?.pause();
+  ambSeccion?.reanudar();
+  fondoInerte(false);
+  // El foco vuelve a la foto o escena desde la que se abrió
+  if (focoPrevio && document.contains(focoPrevio)) focoPrevio.focus({ preventScroll: true });
+  focoPrevio = null;
 }
 
 function calcPrice() {
@@ -383,7 +671,15 @@ function renderPrintModal() {
   if (!pmPhoto) return;
 
   const imgEl = document.getElementById('pm-img');
-  imgEl.src = pmPhoto.src;
+  if (imgEl.getAttribute('src') !== pmPhoto.src) {
+    imgEl.src = pmPhoto.src;
+    if (!imgEl.complete) {                // si ya estaba en caché, sin fundido (flechas instantáneas)
+      imgEl.classList.add('cargando');
+      const listo = () => imgEl.classList.remove('cargando');
+      imgEl.addEventListener('load', listo, { once: true });
+      imgEl.addEventListener('error', listo, { once: true });
+    }
+  }
   imgEl.alt = pmPhoto.title;
 
   // Frame/mat CSS simulation (only on raw photo, not lifestyle mockups)
@@ -403,6 +699,7 @@ function renderPrintModal() {
     colorSection.style.display = pmFrame !== 'sin' ? '' : 'none';
     colorSection.querySelectorAll('.pm-color-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.color === pmColor);
+      b.setAttribute('aria-pressed', b.dataset.color === pmColor);
     });
   }
 
@@ -422,15 +719,18 @@ function renderPrintModal() {
   // sizes
   document.querySelectorAll('.pm-size').forEach(b => {
     b.classList.toggle('active', b.dataset.size === pmSize);
+    b.setAttribute('aria-pressed', b.dataset.size === pmSize);
   });
   // frames
   document.querySelectorAll('.pm-frame').forEach(b => {
     b.classList.toggle('active', b.dataset.frame === pmFrame);
+    b.setAttribute('aria-pressed', b.dataset.frame === pmFrame);
   });
 
   renderSizeNote();
 
-  document.getElementById('pm-price').textContent = formatPrice(calcPrice());
+  // En el visor, el número va grande en serif y "CLP" aparte, chico (ver .pm-currency)
+  document.getElementById('pm-price').textContent = '$' + calcPrice().toLocaleString('es-CL');
   updateWaLink();
 }
 
@@ -459,7 +759,7 @@ document.getElementById('print-modal')?.addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => {
   const modal = document.getElementById('print-modal');
-  if (!modal.classList.contains('open')) return;
+  if (!modal.classList.contains('visible')) return;   // cerrado o saliendo
   if (e.key === 'Escape') closePrintModal();
   if (!modal.classList.contains('options')) {
     if (e.key === 'ArrowLeft')  { pmIndex = (pmIndex - 1 + pmFiltered.length) % pmFiltered.length; setPmPhoto(pmFiltered[pmIndex]); }
@@ -503,18 +803,40 @@ document.getElementById('pm-submit')?.addEventListener('click', () => {
   window.location.href = `mailto:germanicolas@gmail.com?subject=${subject}&body=${body}`;
 });
 
-/* ── Contact form ── */
+/* ── Contact form ──
+   Si el computador no tiene programa de correo, mailto: no abre nada. Por eso
+   el formulario no se vacía y se ofrece copiar el mensaje o mandarlo por WhatsApp. */
 document.getElementById('contact-form')?.addEventListener('submit', e => {
   e.preventDefault();
-  const form = e.target;
-  const data = Object.fromEntries(new FormData(form));
-  const subject = encodeURIComponent(`[German Weber Photo] ${data.asunto || 'Consulta'}`);
-  const body = encodeURIComponent(
-    `Nombre: ${data.nombre}\nEmail: ${data.email}${data.telefono ? '\nTeléfono: ' + data.telefono : ''}\n\n${data.mensaje}`
-  );
-  window.location.href = `mailto:germanicolas@gmail.com?subject=${subject}&body=${body}`;
+  const data = Object.fromEntries(new FormData(e.target));
+  const asunto = data.asunto || 'Consulta';
+  const texto = `Nombre: ${data.nombre}\nEmail: ${data.email}${data.telefono ? '\nTeléfono: ' + data.telefono : ''}\n\n${data.mensaje}`;
+  window.location.href = `mailto:germanicolas@gmail.com?subject=${encodeURIComponent(`[German Weber Photo] ${asunto}`)}&body=${encodeURIComponent(texto)}`;
+
+  const copiar = document.getElementById('form-copy');
+  if (copiar) { copiar.dataset.texto = `Asunto: ${asunto}\n${texto}`; copiar.textContent = 'Copiar mensaje'; }
+  const wa = document.getElementById('form-wa');
+  if (wa && WHATSAPP) wa.href = waLink(`Hola German, te escribo desde tu web (${asunto}):\n\n${texto}`);
   document.getElementById('form-success').style.display = 'block';
-  form.reset();
+});
+
+document.getElementById('form-copy')?.addEventListener('click', async e => {
+  const b = e.currentTarget;
+  const texto = b.dataset.texto || '';
+  try {
+    await navigator.clipboard.writeText(texto);
+  } catch {
+    // Respaldo para navegadores sin acceso al portapapeles
+    const ta = document.createElement('textarea');
+    ta.value = texto;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+  }
+  b.textContent = 'Copiado';
 });
 
 /* ── Smooth scroll for nav links ── */
@@ -523,7 +845,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const target = document.querySelector(a.getAttribute('href'));
     if (target) {
       e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      target.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'start' });
     }
   });
 });
@@ -533,7 +855,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
    pero frena el clic derecho → "Guardar", el arrastre y el menú móvil. */
 (function () {
   document.addEventListener('contextmenu', function (e) {
-    if (e.target && e.target.tagName === 'IMG') e.preventDefault();
+    if (e.target && (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO')) e.preventDefault();
   });
   document.addEventListener('dragstart', function (e) {
     if (e.target && e.target.tagName === 'IMG') e.preventDefault();

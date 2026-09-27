@@ -14,6 +14,12 @@
   </script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="color-scheme" content="dark">
+  <!-- Ícono: "GW" de la firma manuscrita (images/logo.svg) -->
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" href="images/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <title>German Weber · Fotografía Fine Art e impresiones | Concón, Chile</title>
   <meta name="description" content="Fotografía fine art de German Weber: paisajes de Chile y el mundo, fotografía aérea, mar y arquitectura. Impresiones con marco o paspartú, producidas en Concón.">
   <link rel="canonical" href="https://germanweber.cl/">
@@ -61,7 +67,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=39">
+  <link rel="stylesheet" href="css/style.css?v=46">
 </head>
 <body>
 
@@ -128,9 +134,10 @@
 
 <!-- ── Hero ── -->
 <section id="hero">
+  <h1 class="sr-only">German Weber · Fotografía fine art e impresiones</h1>
   <div class="hero-slides"></div>
   <div class="hero-overlay"></div>
-  <div class="hero-dots"></div>
+  <div class="hero-dots" aria-hidden="true"></div>
   <a class="hero-arrow" href="#gallery" aria-label="Ver más">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </a>
@@ -144,10 +151,13 @@
   <p class="gallery-intro" id="text-tienda-desc">
     Cada imagen está disponible como impresión fine art de alta calidad, producida en conjunto con una galería especializada en Concón, Chile. Disponible en múltiples tamaños, con o sin marco o paspartú.
   </p>
+  <p class="gallery-intro amb-nota" id="amb-nota">
+    Entre las fotos verás algunas obras en casas de Chile: son ambientes recreados digitalmente, con la fotografía original en su proporción real.
+  </p>
 
   <hr class="section-divider">
 
-  <p class="section-label">Portfolio</p>
+  <h2 class="section-label">Portfolio</h2>
   <div class="gold-line"></div>
   <div class="gallery-filters" id="gallery-filters"></div>
   <div class="gallery-grid" id="gallery-grid"></div>
@@ -156,11 +166,12 @@
     ¿No ves lo que buscas?
     <a href="#contact" class="prints-contact-link">Escríbeme</a> y veamos si tengo algo en mi colección personal.
   </p>
+
 </section>
 
 <!-- ── Print Modal (visor + opciones) ── -->
-<div id="print-modal" role="dialog" aria-modal="true">
-  <div class="print-modal-inner">
+<div id="print-modal" role="dialog" aria-modal="true" aria-labelledby="pm-vb-title">
+  <div class="print-modal-inner" tabindex="-1">
     <button class="pm-close" id="pm-close" aria-label="Cerrar">✕</button>
     <div class="pm-visual">
       <button class="pm-prev" id="pm-prev" aria-label="Anterior">‹</button>
@@ -171,15 +182,21 @@
         <span class="pm-rail pm-rail-bottom"></span>
         <span class="pm-rail pm-rail-left"></span>
         <div class="pm-mat" id="pm-mat">
-          <img id="pm-img" src="" alt="">
+          <img id="pm-img" alt="">
         </div>
       </div>
-      <div class="pm-toggle" id="pm-toggle"></div>
+      <!-- Mockups y videos de la foto: se muestran en lugar de la foto sola -->
+      <div class="pm-amb" id="pm-amb" hidden>
+        <img id="pm-amb-img" alt="" hidden>
+        <video id="pm-amb-video" muted loop playsinline disablepictureinpicture controlslist="nodownload" hidden></video>
+      </div>
+      <div class="pm-amb-cap" id="pm-amb-cap" hidden></div>
       <div class="pm-viewer-bar" id="pm-viewer-bar">
-        <div>
+        <div class="pm-vb-text">
           <div class="pm-vb-title" id="pm-vb-title"></div>
           <div class="pm-vb-loc" id="pm-vb-loc"></div>
         </div>
+        <div class="pm-thumbs" id="pm-thumbs" hidden></div>
         <button class="pm-vb-options" id="pm-vb-options">Ver opciones</button>
       </div>
     </div>
@@ -231,7 +248,12 @@
 
       <div>
         <div class="pm-label">Precio estimado</div>
-        <div class="pm-price-display"><span id="pm-price"></span></div>
+        <div class="pm-price-display"><span id="pm-price"></span><span class="pm-currency">CLP</span></div>
+        <ul class="pm-info">
+          <li><strong>Plazo:</strong> depende de la impresión y el enmarcado; te lo confirmo al responder.</li>
+          <li><strong>Despacho:</strong> fuera de Concón, con el envío a cargo del cliente.</li>
+          <li><strong>Pago:</strong> transferencia o Mercado Pago.</li>
+        </ul>
       </div>
 
       <a class="pm-submit" id="pm-wa" href="#" target="_blank" rel="noopener" hidden>
@@ -242,7 +264,7 @@
       </button>
 
       <p class="pm-note">
-        Se abre el mensaje con los detalles de tu pedido ya escritos. Respondo en menos de 48 horas para confirmar disponibilidad y coordinar el pago.
+        Se abre el mensaje con los detalles de tu pedido ya escritos. Respondo en menos de 48 horas para confirmar disponibilidad, plazo y pago.
       </p>
     </div>
   </div>
@@ -277,7 +299,7 @@
     </p>
     <div class="about-stat-grid">
       <div>
-        <div class="about-stat-num" id="stat-img">76</div>
+        <div class="about-stat-num" id="stat-img">97</div>
         <div class="about-stat-lbl">Imágenes en colección</div>
       </div>
       <div>
@@ -332,7 +354,7 @@
         <input type="email" id="f-email" name="email" required placeholder="tu@email.com">
       </div>
       <div class="form-group">
-        <label for="f-telefono">Teléfono <span style="font-size:0.75em;color:#888;font-weight:400">(opcional)</span></label>
+        <label for="f-telefono">Teléfono <span class="form-opt">(opcional)</span></label>
         <input type="tel" id="f-telefono" name="telefono" placeholder="+56 9 1234 5678">
       </div>
       <div class="form-group">
@@ -350,9 +372,13 @@
         <textarea id="f-mensaje" name="mensaje" required placeholder="Cuéntame en qué puedo ayudarte..."></textarea>
       </div>
       <button type="submit" class="form-submit">Enviar mensaje</button>
-      <div class="form-success" id="form-success">
-        Se abrió tu programa de correo con el mensaje listo para enviar.
-        Si no se abrió, escríbeme directo a germanicolas@gmail.com.
+      <div class="form-success" id="form-success" role="status">
+        <p>Si se abrió tu programa de correo, solo falta enviarlo. Si no se abrió,
+        copia el mensaje y mándalo a germanicolas@gmail.com, o envíalo por WhatsApp.</p>
+        <div class="form-success-actions">
+          <button type="button" class="form-alt" id="form-copy">Copiar mensaje</button>
+          <a class="form-alt wa-only" id="form-wa" href="#" target="_blank" rel="noopener" hidden>Enviar por WhatsApp</a>
+        </div>
       </div>
     </form>
   </div>
@@ -387,8 +413,9 @@
   </div>
 </footer>
 
-<script src="js/data.js?v=39"></script>
-<script src="js/thumbs.js?v=39"></script>
-<script src="js/main.js?v=39"></script>
+<script src="js/data.js?v=40"></script>
+<script src="js/thumbs.js?v=40"></script>
+<script src="js/ambientes.js?v=41"></script>
+<script src="js/main.js?v=46"></script>
 </body>
 </html>

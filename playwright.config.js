@@ -6,7 +6,7 @@ module.exports = defineConfig({
     baseURL: 'http://localhost:8765',
   },
   webServer: {
-    command: 'python3 -m http.server 8765',
+    command: 'python3 tools/servidor.py 8765', // con Range: Safari/Chrome necesitan eso para video
     port: 8765,
     reuseExistingServer: true,
   },
